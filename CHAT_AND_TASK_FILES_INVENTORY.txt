@@ -1,0 +1,171 @@
+================================================================================
+WHOLCURE CRM - CHAT WORKSPACE & TASK MANAGEMENT FILES INVENTORY
+(UI Components, Hardcoded Seed Data, State Management, Services & App Routes)
+================================================================================
+
+Total Files Listed: 23 Files
+Note: Unified Workspace (UnifiedWorkspace.tsx / /workspace/page.tsx) is excluded as per request.
+
+--------------------------------------------------------------------------------
+1. CHAT WORKSPACE MODULE (UI, Hardcoded Data & State)
+--------------------------------------------------------------------------------
+
+[1] Main Chat Workspace UI, Hardcoded Seed Data & State Management:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\chat\ChatWorkspaceView.tsx
+    Description:
+    - Primary full-featured chat workspace view.
+    - Contains hardcoded seed data for:
+      * HARDCODED_USERS (User directory with roles, presence, status)
+      * INITIAL_CHANNELS (General, sales-hotline, marketing-campaigns, task-dispatches, etc.)
+      * INITIAL_MESSAGES (Message feed with reactions, task cards, file attachments)
+    - Multi-window tab management (up to 3 simultaneous chat views).
+    - Emoji picker, message composer, reactions, thread management, task quick-dispatch.
+
+[2] Standalone Chat Hub UI & State Component:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\workspace\ChatHub.tsx
+    Description:
+    - Modular Slack-style chat interface.
+    - Local state management for channels, DMs, thread drawers, and user profiles.
+    - Hardcoded seed dataset for USERS, CHANNELS, DMS, INITIAL_MESSAGES, and auto-replies.
+
+[3] Chat App Router Page (Route: /chat):
+    Path: E:\Wholcure-crm\frontend\app\(dashboard)\chat\page.tsx
+    Description:
+    - Next.js App Router entry point for `/chat`.
+    - Mounts the Chat Workspace within the dashboard layout.
+
+
+--------------------------------------------------------------------------------
+2. TASK MANAGEMENT MODULE - STORE & STATE MANAGEMENT (HARDCODED SEED DATA)
+--------------------------------------------------------------------------------
+
+[4] Global ClickUp-Style Task Store (Primary State & Seed Data):
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\data\taskStore.ts
+    Description:
+    - Core state store (Zustand/Observable pattern with LocalStorage persistence).
+    - Contains complete hardcoded seed data:
+      * seedTasks() -> 10+ operational tasks (priorities, assignees, subtasks, tags, comments)
+      * seedTriggers() -> Automation rules & triggers
+      * seedLogs() -> Execution and activity run logs
+      * TEAM -> Team members directory (initials, roles, ids)
+      * LISTS -> Spaces and task lists (CRM Ops, Sales, Marketing, Product)
+    - Full actions: createTask, updateTask, deleteTask, toggleSubtask, addComment, automations engine.
+
+
+--------------------------------------------------------------------------------
+3. TASK MANAGEMENT MODULE - UI COMPONENTS
+--------------------------------------------------------------------------------
+
+[5] ClickUp-Style Task Workstation Component:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\TaskWorkSpace\TaskWorkspace.tsx
+    Description:
+    - Interactive Kanban Board + Table view switcher.
+    - Drag-and-drop column status moves, quick filters, detail side-panel.
+
+[6] Modular Task Board Component (Kanban & List):
+    Path: E:\Wholcure-crm\frontend\src\components\ui\workspace\TaskBoard.tsx
+    Description:
+    - Self-contained ClickUp-style Task Board with 12 hardcoded tasks and 6 team members.
+    - Drag-and-drop, stat cards (Open, Urgent, In Progress, Done %), filters, task modal.
+
+[7] Tasks Dashboard Overview:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\TasksDashboard.tsx
+    Description:
+    - High-level overview cards, recent activity table, quick links to operational sub-modules.
+
+[8] Tasks Base View Wrapper:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\TasksView.tsx
+    Description:
+    - Main container that mounts TasksDashboard.
+
+[9] Kanban Board Column View:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\TaskKanbanBoard.tsx
+    Description:
+    - Column-based task view grouped by Status (TODO, IN_PROGRESS, IN_REVIEW, DONE).
+
+[10] Task List (Table View):
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\TaskListView.tsx
+    Description:
+    - Tabular task view with column sorting and status selectors.
+
+[11] Personal Task Queue (My Assigned Tasks):
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\MyAssignedTasks.tsx
+    Description:
+    - User-specific task list grouped by due date (Overdue, Today, Upcoming).
+
+[12] Automated Triggers UI:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\AutomatedTriggers.tsx
+    Description:
+    - Automation rule builder and trigger switcher (CRM event / SLA / status trigger rules).
+
+[13] Automation Execution Logs UI:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\ExecutionLogs.tsx
+    Description:
+    - Audit log viewer showing executed automation triggers, success/skip status, timestamps.
+
+[14] Task Reports & Analytics View:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\TaskAnalytics.tsx
+    Description:
+    - Velocity, completion rate, and workload analytics charts and metrics.
+
+[15] Task Analytics Cards:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\TaskAnalyticsCards.tsx
+    Description:
+    - Reusable metric cards for task performance and counts.
+
+[16] Task Filter Bar:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\TaskFilters.tsx
+    Description:
+    - Filter controls for module, status, priority, and date range.
+
+[17] Task Helpers & Column Formatting:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\taskHelpers.ts
+    Description:
+    - Status column definitions, priority color maps, badge style helpers.
+
+[18] Task Form Modal (Edit / Create):
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\TaskFormModal.tsx
+    Description:
+    - Dialog for adding or updating task fields (title, priority, assignee, due date).
+
+[19] Create Task Modal:
+    Path: E:\Wholcure-crm\frontend\src\components\ui\tasks\modals\CreateTaskModal.tsx
+    Description:
+    - Modal popup for quick task generation.
+
+
+--------------------------------------------------------------------------------
+4. TASK MANAGEMENT MODULE - SERVICES & API LAYER
+--------------------------------------------------------------------------------
+
+[20] Sales Tasks Service:
+    Path: E:\Wholcure-crm\frontend\src\services\sales\tasksService.ts
+    Description:
+    - API client service handling task fetch, create, update, delete requests.
+
+
+--------------------------------------------------------------------------------
+5. TASK MANAGEMENT - APP ROUTER PAGES (ROUTES)
+--------------------------------------------------------------------------------
+
+[21] Main Tasks Page (Route: /tasks):
+    Path: E:\Wholcure-crm\frontend\app\(dashboard)\tasks\page.tsx
+    Path: E:\Wholcure-crm\frontend\app\(dashboard)\tasks\layout.tsx
+
+[22] Task Workstation Board (Route: /tasks/workspace):
+    Path: E:\Wholcure-crm\frontend\app\(dashboard)\tasks\workspace\page.tsx
+    Path: E:\Wholcure-crm\frontend\app\(dashboard)\tasks\workspace\layout.tsx
+
+[23] Other Task Sub-Pages:
+    - My Tasks (Route: /tasks/my-tasks):
+      Path: E:\Wholcure-crm\frontend\app\(dashboard)\tasks\my-tasks\page.tsx
+    - Automation Triggers (Route: /tasks/automation):
+      Path: E:\Wholcure-crm\frontend\app\(dashboard)\tasks\automation\page.tsx
+    - Activity & Execution Logs (Route: /tasks/activity-log):
+      Path: E:\Wholcure-crm\frontend\app\(dashboard)\tasks\activity-log\page.tsx
+    - Analytics & Reports (Route: /tasks/analytics):
+      Path: E:\Wholcure-crm\frontend\app\(dashboard)\tasks\analytics\page.tsx
+
+================================================================================
+END OF INVENTORY
+================================================================================

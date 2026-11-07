@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@import "@xyflow/react/dist/style.css";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --crm-primary: #0066FF;
+  --crm-accent: #0f172a;
+  --crm-primary-soft: #0066FF22;
+  --primary: #0066FF;
+  --accent: #0f172a;
+  --sidebar-bg: #ffffff;
+  --sidebar-text: #1e293b;
+  --card-border: #e2e8f0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--crm-primary-soft);
+  color: var(--crm-accent);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--crm-primary) !important;
+  box-shadow: 0 0 0 3px var(--crm-primary-soft) !important;
+}
+
+a {
+  color: var(--crm-primary);
+}

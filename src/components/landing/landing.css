@@ -1,0 +1,214 @@
+/* Marketing surface tokens */
+html[data-landing='true'] {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --crm-primary: #00aeef;
+  --crm-accent: #0f172a;
+  --crm-primary-soft: rgb(0 174 239 / 0.12);
+  --primary: #00aeef;
+  --accent: #0f172a;
+  --sidebar-bg: #ffffff;
+  --sidebar-text: #0f172a;
+  --card-border: #e2e8f0;
+  color-scheme: only light;
+  background: #ffffff;
+}
+
+html[data-landing='true'] body {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Fix for Link/Anchor text color overriding button text */
+html[data-landing='true'] a {
+  color: inherit;
+}
+
+/* Explicit rule for white-text buttons & utility classes */
+html[data-landing='true'] a.bg-\[\#00AEEF\],
+html[data-landing='true'] a.bg-sky-500,
+html[data-landing='true'] a.bg-sky-600,
+html[data-landing='true'] .lp-btn-solid,
+.text-white,
+.\!text-white {
+  color: #ffffff !important;
+}
+
+.lp-root {
+  --lp-bg: #ffffff;
+  --lp-bg-mid: #f8fafc;
+  --lp-elev: #ffffff;
+  --lp-soft: #f1f5f9;
+  --lp-ink: #0f172a;
+  --lp-muted: #475569;
+  --lp-faint: #94a3b8;
+  
+  /* Brand 4 colors */
+  --lp-blue: #00aeef;
+  --lp-green: #8dc63f;
+  --lp-yellow: #ffc20e;
+  --lp-red: #ed1c24;
+
+  --lp-line: #e2e8f0;
+  --lp-line-2: #cbd5e1;
+
+  isolation: isolate;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--lp-bg);
+  color: var(--lp-ink);
+  font-feature-settings: "ss01" on, "cv11" on;
+}
+
+/* Strictly Clean Typography - NO Italics */
+.lp-root h1,
+.lp-root h2,
+.lp-root h3,
+.lp-root h4,
+.lp-root em,
+.lp-root blockquote {
+  font-family: inherit;
+  font-style: normal !important;
+  font-weight: 600;
+}
+
+.lp-wrap {
+  width: min(1200px, calc(100% - 2.5rem));
+  margin-inline: auto;
+}
+
+.lp-card {
+  border: 1px solid var(--lp-line);
+  background: var(--lp-elev);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px -4px rgb(15 23 42 / 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lp-card:hover {
+  border-color: var(--lp-line-2);
+  box-shadow: 0 10px 30px -8px rgb(15 23 42 / 0.08);
+}
+
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 1.35rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.lp-btn-solid {
+  background: var(--lp-blue);
+  color: #ffffff !important;
+}
+
+.lp-btn-solid:hover {
+  background: #0284c7;
+  color: #ffffff !important;
+}
+
+.lp-marquee {
+  display: flex;
+  gap: 2.75rem;
+  width: max-content;
+  animation: lp-marquee 38s linear infinite;
+}
+
+@keyframes lp-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Enhanced animations */
+.lp-fade-in {
+  animation: lp-fadeIn 0.6s ease-out forwards;
+}
+
+@keyframes lp-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lp-slide-up {
+  animation: lp-slideUp 0.8s ease-out forwards;
+}
+
+@keyframes lp-slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Gradient text utility */
+.lp-gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #00aeef, #8dc63f, #ffc20e);
+}
+
+/* Better button hover effects */
+.lp-btn-hover-3d {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lp-btn-hover-3d:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.lp-btn-hover-3d:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,174,239,0.2);
+}
+
+/* Mobile menu improvements */
+.lp-mobile-menu-open {
+  overflow: hidden;
+}
+
+/* Glassmorphism utilities */
+.lp-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.lp-glass-dark {
+  background: rgba(10, 15, 26, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for mobile drawer */
+.lp-mobile-drawer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.lp-mobile-drawer::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.lp-mobile-drawer::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.lp-mobile-drawer::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Better focus states */
+:focus-visible {
+  outline: 2px solid #00aeef;
+  outline-offset: 2px;
+}

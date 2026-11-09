@@ -67,24 +67,26 @@ export default function CRMWorkflowCanvasPage() {
   return (
     <div className="flex h-[calc(100vh-64px)] w-full flex-col overflow-hidden bg-slate-50">
       {/* Immersive Top Bar */}
-      <header className="flex h-14 shrink-0 items-center justify-between border-b border-slate-200/90 bg-white px-4 shadow-2xs z-10">
-        <div className="flex items-center gap-3">
+      <header className="flex h-14 shrink-0 items-center justify-between border-b border-slate-200/90 bg-white px-3 sm:px-4 shadow-2xs z-10">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <Link
             href="/workflows"
-            className="flex items-center gap-1.5 rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
+            className="flex items-center gap-1.5 rounded-lg p-1.5 sm:p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors shrink-0"
           >
             <FiArrowLeft className="h-4 w-4" />
             <span className="text-xs font-semibold hidden sm:inline">All Workflows</span>
           </Link>
 
-          <div className="h-4 w-px bg-slate-200" />
+          <div className="h-4 w-px bg-slate-200 shrink-0" />
 
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-xs font-black text-slate-900 leading-tight">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 min-w-0">
+              <h2 className="text-xs font-black text-slate-900 leading-tight truncate max-w-[130px] xs:max-w-[180px] sm:max-w-xs md:max-w-md">
                 {workflow.workflow_name}
               </h2>
-              <WorkflowStatusBadge status={workflow.status} />
+              <div className="shrink-0">
+                <WorkflowStatusBadge status={workflow.status} />
+              </div>
             </div>
             <p className="text-[10px] text-slate-400 font-medium truncate max-w-md hidden sm:block">
               {workflow.description || 'Omni-CRM automated graph builder'}
@@ -93,7 +95,7 @@ export default function CRMWorkflowCanvasPage() {
         </div>
 
         {/* Live Mini Stats */}
-        <div className="flex items-center gap-4 text-xs font-medium">
+        <div className="flex items-center gap-2 sm:gap-4 text-xs font-medium shrink-0">
           <div className="hidden md:flex items-center gap-3 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1">
             <span className="text-[10px] text-slate-400 font-bold uppercase">Health:</span>
             <span className="font-bold text-emerald-600">

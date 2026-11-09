@@ -149,7 +149,7 @@ const WorkflowCanvasInner: React.FC<WorkflowCanvasProps> = ({ workflow, onSaveWo
   )
 
   const handleAddNode = useCallback(
-    (type: WorkflowNodeType, subType: string, domain: MarketingIntegrationDomain) => {
+    (type: WorkflowNodeType, subType: string, domain: CRMWorkflowDomain) => {
       const newNodeId = `node-${domain}-${Date.now().toString(36)}`
       const posX = 120 + (nodes.length % 5) * 80
       const posY = 120 + (nodes.length % 3) * 120
@@ -238,16 +238,16 @@ const WorkflowCanvasInner: React.FC<WorkflowCanvasProps> = ({ workflow, onSaveWo
 
       {/* Blank Canvas Empty State Overlay with Quick Action Buttons */}
       {nodes.length === 0 && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none p-6">
-          <div className="max-w-md w-full bg-white/95 backdrop-blur-md rounded-3xl p-8 border border-slate-200/90 shadow-2xl text-center pointer-events-auto animate-in fade-in zoom-in-95 duration-200">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none p-4 sm:p-6">
+          <div className="max-w-md w-full bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xl text-center pointer-events-auto animate-in fade-in zoom-in-95 duration-200">
             <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto mb-4 border border-blue-100">
               <FiZap className="w-7 h-7" />
             </div>
             <h3 className="text-base font-bold text-slate-900">Blank Automation Canvas</h3>
             <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
-              Start building your visual workflow by adding an entry trigger node or selecting a marketing action below.
+              Start building your visual workflow by adding an entry trigger node or selecting a module action below.
             </p>
-            <div className="grid grid-cols-2 gap-2 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
               <button
                 onClick={() => handleAddNode('trigger', 'Trigger-Lead-Captured', 'leads-capture')}
                 className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
@@ -256,52 +256,53 @@ const WorkflowCanvasInner: React.FC<WorkflowCanvasProps> = ({ workflow, onSaveWo
                 <span>Add Trigger</span>
               </button>
               <button
-                onClick={() => handleAddNode('action', 'Action-Enroll-Drip-Campaign', 'drip-campaigns')}
+                onClick={() => handleAddNode('action', 'Action-Enroll-Drip-Campaign', 'marketing')}
                 className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
               >
-                <FiLayers className="w-4 h-4" />
-                <span>Add Drip Step</span>
+                <FiPlus className="w-4 h-4" />
+                <span>Add Action</span>
               </button>
             </div>
           </div>
         </div>
       )}
 
+      {/* Main React Flow Grid Canvas */}
       <ReactFlow
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
-        onNodesChange={(changes) => {
-          onNodesChange(changes)
-          setHasUnsavedChanges(true)
-        }}
-        onEdgesChange={(changes) => {
-          onEdgesChange(changes)
-          setHasUnsavedChanges(true)
-        }}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         onNodeClick={onNodeClick}
         onPaneClick={onPaneClick}
         fitView
-        nodesDraggable={true}
-        nodesConnectable={true}
-        elementsSelectable={true}
+        minZoom={0.2}
+        maxZoom={1.5}
+        defaultViewport={{ x: 50, y: 50, zoom: 0.85 }}
         snapToGrid={true}
         snapGrid={[20, 20]}
-        defaultEdgeOptions={{
-          type: 'smoothstep',
-          style: { stroke: '#3b82f6', strokeWidth: 2.5 },
-        }}
-        proOptions={{ hideAttribution: true }}
-        className="bg-[#f8fafc]"
+        attributionPosition="bottom-left"
+        className="touch-none"
       >
-        <Background variant={BackgroundVariant.Dots} gap={24} size={1.4} color="#cbd5e1" />
-        <Controls
-          showInteractive={false}
-          className="!left-5 !bottom-5 !bg-white !shadow-xl !border !border-slate-200 !rounded-2xl overflow-hidden"
+        <Background
+          variant={BackgroundVariant.Dots}
+          gap={20}
+          size={1.5}
+          color="#cbd5e1"
+          className="opacity-70"
         />
 
-        {/* Clean Modern Glassy Minimap */}
+        {/* Clean Controls Widget */}
+        <Controls
+          showZoom={false}
+          showFitView={false}
+          showInteractive={false}
+          className="!left-4 !bottom-4 !bg-white !shadow-lg !border !border-slate-200 !rounded-2xl overflow-hidden"
+        />
+
+        {/* Modern Minimap - Hidden on small mobile screens to keep canvas spacious */}
         <MiniMap
           nodeColor={(node) => {
             switch (node.type) {
@@ -317,7 +318,7 @@ const WorkflowCanvasInner: React.FC<WorkflowCanvasProps> = ({ workflow, onSaveWo
           nodeStrokeWidth={3}
           zoomable
           pannable
-          className="!bottom-5 !right-5 !bg-white/95 !backdrop-blur-md !rounded-2xl !border !border-slate-200/90 !shadow-xl overflow-hidden !w-48 !h-32"
+          className="!hidden sm:!block !bottom-4 !right-4 !bg-white/95 !backdrop-blur-md !rounded-2xl !border !border-slate-200/90 !shadow-xl overflow-hidden !w-44 !h-28"
           maskColor="rgba(241, 245, 249, 0.85)"
         />
       </ReactFlow>

@@ -185,7 +185,7 @@ export const ProfileTable = () => {
                         <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Account Metadata</h3>
                     </div>
                     
-                    <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-y-5 gap-x-10">
+                    <div className="p-2 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
                         <InfoField label="Full Name" value={userData?.name} />
                         <InfoField label="Email Address" value={userData?.email} icon={<FiMail size={12} className="text-slate-400" />} />
                         <InfoField 

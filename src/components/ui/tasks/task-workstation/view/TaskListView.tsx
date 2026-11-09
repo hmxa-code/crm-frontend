@@ -33,39 +33,39 @@ export default function TaskListView({
   onEdit,
 }: TaskListViewProps) {
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xs">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <table className="w-full text-left text-xs">
-        <thead className="border-b border-slate-200/80 bg-slate-50/70 text-slate-500">
+        <thead className="bg-slate-50/70 text-slate-500">
           <tr>
-            <th className="px-5 py-3.5 font-bold uppercase tracking-wider text-[10px]">Ticket</th>
-            <th className="px-5 py-3.5 font-bold uppercase tracking-wider text-[10px]">Status</th>
-            <th className="px-5 py-3.5 font-bold uppercase tracking-wider text-[10px]">Priority</th>
-            <th className="px-5 py-3.5 font-bold uppercase tracking-wider text-[10px]">Module</th>
-            <th className="px-5 py-3.5 font-bold uppercase tracking-wider text-[10px]">Due Date</th>
-            <th className="px-5 py-3.5 text-right font-bold uppercase tracking-wider text-[10px]">Actions</th>
+            <th className="px-5 py-4 font-semibold uppercase tracking-wider">Ticket</th>
+            <th className="px-5 py-4 font-semibold uppercase tracking-wider">Status</th>
+            <th className="px-5 py-4 font-semibold uppercase tracking-wider">Priority</th>
+            <th className="px-5 py-4 font-semibold uppercase tracking-wider">Module</th>
+            <th className="px-5 py-4 font-semibold uppercase tracking-wider">Due Date</th>
+            <th className="px-5 py-4 text-right font-semibold uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-100">
           {tasks.length === 0 ? (
             <tr>
-              <td colSpan={6} className="px-5 py-12 text-center text-slate-400 font-medium">
+              <td colSpan={6} className="px-5 py-16 text-center text-slate-400 font-medium">
                 No tickets available.
               </td>
             </tr>
           ) : (
             tasks.map((task) => (
-              <tr key={task._id} className="hover:bg-slate-50/60 transition">
-                <td className="px-5 py-4 font-semibold text-slate-800">
-                  {task.title}
+              <tr key={task._id} className="transition hover:bg-slate-50/60">
+                <td className="px-5 py-4">
+                  <div className="font-semibold text-slate-800">{task.title}</div>
                   {task.description && (
-                    <p className="text-[11px] font-normal text-slate-400 line-clamp-1 mt-0.5">{task.description}</p>
+                    <p className="mt-1 text-xs text-slate-500 line-clamp-1">{task.description}</p>
                   )}
                 </td>
                 <td className="px-5 py-4">
                   <select
                     value={task.status}
                     onChange={(e) => onStatusChange(task._id, e.target.value as TaskStatus)}
-                    className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700 cursor-pointer outline-none"
+                    className="w-full max-w-[140px] rounded-lg border border-slate-200 bg-slate-50/70 px-3 py-1.5 text-xs font-semibold text-slate-700 cursor-pointer outline-none focus:border-blue-400 transition"
                   >
                     {STATUS_COLUMNS.map((s) => (
                       <option key={s.key} value={s.key}>
@@ -76,36 +76,36 @@ export default function TaskListView({
                 </td>
                 <td className="px-5 py-4">
                   <span
-                    className={`rounded px-2 py-0.5 text-[10px] font-bold uppercase border ${getPriorityBadge(
+                    className={`inline-flex items-center rounded px-2.5 py-1 text-[10px] font-bold uppercase border ${getPriorityBadge(
                       task.priority
                     )}`}
                   >
                     {task.priority}
                   </span>
                 </td>
-                <td className="px-5 py-4 font-semibold text-slate-500">{task.moduleType}</td>
-                <td className="px-5 py-4 font-mono text-slate-400 text-[11px]">
+                <td className="px-5 py-4 font-medium text-slate-600">{task.moduleType}</td>
+                <td className="px-5 py-4 font-mono text-slate-500 text-[11px]">
                   {task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '-'}
                 </td>
                 <td className="px-5 py-4 text-right">
                   <div className="flex items-center justify-end gap-1">
                     <button
                       onClick={() => onView(task)}
-                      className="rounded p-1 text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition"
+                      className="rounded p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition"
                       title="View Details"
                     >
                       <FiEye size={13} />
                     </button>
                     <button
                       onClick={() => onEdit(task)}
-                      className="rounded p-1 text-slate-400 hover:text-amber-600 hover:bg-slate-100 transition"
+                      className="rounded p-1.5 text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition"
                       title="Edit Task"
                     >
                       <FiEdit2 size={13} />
                     </button>
                     <button
                       onClick={() => onDelete(task._id)}
-                      className="rounded p-1 text-slate-400 hover:text-red-500 hover:bg-slate-100 transition"
+                      className="rounded p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 transition"
                       title="Delete Task"
                     >
                       <FiTrash2 size={13} />

@@ -30,20 +30,20 @@ const UsersDashboard = () => {
   ]
 
   return (
-    <div className="w-full bg-[#f8fafc] min-h-screen p-6 text-slate-900 font-sans antialiased">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="w-full bg-[#f8fafc] min-h-screen p-4 sm:p-6 md:p-8 text-slate-900 font-sans antialiased">
+      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
         
         {/* --- Header Section --- */}
-        <div className="bg-white border border-slate-200/80 rounded-xl px-5 py-4 shadow-2xs flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="bg-white border border-slate-200/80 rounded-xl px-3 sm:px-5 py-3 sm:py-4 shadow-2xs flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4">
           <div>
-            <h1 className="text-base font-bold text-slate-900 tracking-tight">User Management & Access Control</h1>
-            <p className="text-xs text-slate-500 font-medium mt-0.5">
+            <h1 className="text-[13px] sm:text-base font-bold text-slate-900 tracking-tight">User Management & Access Control</h1>
+            <p className="text-[10px] sm:text-xs text-slate-500 font-medium mt-0.5">
               Super Admin and Admin can manage sub-accounts, remote work check-in / check-out attendance, and security roles.
             </p>
           </div>
 
-          {/* Navigation Tabs */}
-          <div className="inline-flex p-1 bg-slate-100 border border-slate-200/60 rounded-lg gap-1">
+          {/* Navigation Tabs - Mobile Responsive */}
+          <div className="inline-flex p-1 bg-slate-100 border border-slate-200/60 rounded-lg gap-0.5 sm:gap-1 w-full sm:w-auto overflow-x-auto scrollbar-hide">
             {tabs.map((tab) => {
               const Icon = tab.icon
               const isActive = activeTab === tab.key
@@ -52,14 +52,19 @@ const UsersDashboard = () => {
                   key={tab.key}
                   type="button"
                   onClick={() => setActiveTab(tab.key)}
-                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-bold transition-all ${
+                  className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-md text-[10px] sm:text-xs font-bold transition-all whitespace-nowrap ${
                     isActive
                       ? 'bg-white text-slate-900 shadow-3xs border border-slate-200/80'
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   <Icon size={14} />
-                  {tab.label}
+                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="sm:hidden">
+                    {tab.label === 'Sub-Accounts' && 'Sub-Accts'}
+                    {tab.label === 'Check In / Out & Attendance' && 'Attendance'}
+                    {tab.label === 'Roles Management' && 'Roles'}
+                  </span>
                 </button>
               )
             })}
@@ -67,7 +72,7 @@ const UsersDashboard = () => {
         </div>
 
         {/* --- Tab Content --- */}
-        <div>
+        <div className="overflow-x-auto -mx-2 px-2">
           {activeTab === 'members' ? (
             <UserTable />
           ) : activeTab === 'attendance' ? (

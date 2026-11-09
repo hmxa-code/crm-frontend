@@ -22,13 +22,13 @@ const STATUS_DOTS: Record<TaskStatus, string> = {
 const getPriorityBadge = (priority: string) => {
   switch (priority) {
     case 'URGENT':
-      return 'bg-red-50 text-red-600 border-red-200';
+      return 'bg-red-50 text-red-600 border-red-100';
     case 'HIGH':
-      return 'bg-amber-50 text-amber-600 border-amber-200';
+      return 'bg-amber-50 text-amber-600 border-amber-100';
     case 'MEDIUM':
-      return 'bg-blue-50 text-blue-600 border-blue-200';
+      return 'bg-blue-50 text-blue-600 border-blue-100';
     default:
-      return 'bg-slate-50 text-slate-600 border-slate-200';
+      return 'bg-slate-50 text-slate-600 border-slate-100';
   }
 };
 
@@ -56,7 +56,7 @@ export default function TaskKanbanBoard({
   };
 
   return (
-    <div className="grid grid-cols-1 gap-5 overflow-x-auto pb-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-5 overflow-x-auto pb-6 sm:grid-cols-2 lg:grid-cols-4">
       {STATUS_COLUMNS.map((col) => {
         const columnTasks = tasks.filter((t) => t.status === col.key);
         return (
@@ -64,7 +64,7 @@ export default function TaskKanbanBoard({
             key={col.key}
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, col.key)}
-            className="flex min-w-[270px] min-h-[300px] flex-col rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 transition-colors"
+            className="flex min-w-[280px] max-w-[320px] flex-col rounded-2xl border border-slate-200/80 bg-slate-50/50 p-4 transition-colors"
           >
             <div className="mb-3.5 flex items-center justify-between px-1">
               <div className="flex items-center gap-2">
@@ -73,7 +73,7 @@ export default function TaskKanbanBoard({
                   {col.label}
                 </span>
               </div>
-              <span className="rounded-full bg-slate-200/60 px-2 py-0.5 text-[11px] font-bold text-slate-600">
+              <span className="rounded-full bg-slate-200/60 px-2.5 py-1 text-[11px] font-bold text-slate-600">
                 {columnTasks.length}
               </span>
             </div>
@@ -89,14 +89,14 @@ export default function TaskKanbanBoard({
                     key={task._id}
                     draggable
                     onDragStart={(e) => handleDragStart(e, task._id)}
-                    className="group relative rounded-xl border border-slate-200/90 bg-white p-4 shadow-xs transition hover:border-slate-300 hover:shadow-md cursor-grab active:cursor-grabbing"
+                    className="group relative rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md hover:border-blue-200 cursor-grab active:cursor-grabbing"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <h4 className="text-xs font-bold text-slate-800 leading-tight">
+                      <h4 className="text-sm font-semibold text-slate-800 leading-tight line-clamp-2">
                         {task.title}
                       </h4>
                       <span
-                        className={`shrink-0 rounded px-1.5 py-0.5 text-[9px] font-bold uppercase border ${getPriorityBadge(
+                        className={`shrink-0 rounded px-2 py-1 text-[10px] font-bold uppercase border ${getPriorityBadge(
                           task.priority
                         )}`}
                       >
@@ -105,26 +105,26 @@ export default function TaskKanbanBoard({
                     </div>
 
                     {task.description && (
-                      <p className="mt-1.5 line-clamp-2 text-[11px] text-slate-500">
+                      <p className="mt-2 line-clamp-2 text-xs text-slate-500">
                         {task.description}
                       </p>
                     )}
 
-                    <div className="mt-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-                      <span className="font-semibold text-slate-600">{task.moduleType}</span>
+                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
+                      <span className="font-medium text-slate-600">{task.moduleType}</span>
                       {task.dueDate && (
-                        <span className="flex items-center gap-1 font-mono text-[10px] text-slate-400">
-                          <FiCalendar size={11} />
+                        <span className="flex items-center gap-1 font-mono text-[9px] text-slate-400">
+                          <FiCalendar size={10} />
                           {new Date(task.dueDate).toISOString().split('T')[0]}
                         </span>
                       )}
                     </div>
 
-                    <div className="mt-2.5 pt-1.5 border-t border-slate-50 flex items-center justify-between">
+                    <div className="mt-3 pt-2 border-t border-slate-50 flex items-center justify-between">
                       <select
                         value={task.status}
                         onChange={(e) => onStatusChange(task._id, e.target.value as TaskStatus)}
-                        className="rounded border border-slate-200 bg-slate-50 px-2 py-0.5 text-[10px] font-medium text-slate-600 focus:outline-none cursor-pointer"
+                        className="rounded border border-slate-200 bg-slate-50/70 px-2 py-1 text-[10px] font-medium text-slate-600 focus:outline-none focus:border-blue-400 cursor-pointer"
                       >
                         {STATUS_COLUMNS.map((s) => (
                           <option key={s.key} value={s.key}>
@@ -133,24 +133,24 @@ export default function TaskKanbanBoard({
                         ))}
                       </select>
 
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition">
+                      <div className="flex items-center gap-1">
                         <button
                           onClick={() => onView(task)}
-                          className="p-1 text-slate-400 hover:text-slate-800 transition"
+                          className="rounded p-1 text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition"
                           title="View Details"
                         >
                           <FiEye size={12} />
                         </button>
                         <button
                           onClick={() => onEdit(task)}
-                          className="p-1 text-slate-400 hover:text-amber-600 transition"
+                          className="rounded p-1 text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition"
                           title="Edit Task"
                         >
                           <FiEdit2 size={12} />
                         </button>
                         <button
                           onClick={() => onDelete(task._id)}
-                          className="p-1 text-slate-400 hover:text-red-500 transition"
+                          className="rounded p-1 text-slate-400 hover:text-red-500 hover:bg-red-50 transition"
                           title="Delete Task"
                         >
                           <FiTrash2 size={12} />

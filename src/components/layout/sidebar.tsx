@@ -31,7 +31,8 @@ import {
   FiClock,
   FiFileText,
   FiPaperclip,
-  FiTarget
+  FiTarget,
+  FiX
 } from "react-icons/fi";
 
 // Utilities & Hooks
@@ -47,8 +48,13 @@ const cn = (...classes: (string | boolean | undefined | null)[]) => classes.filt
 export const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { isCollapsed, toggle } = useSidebar();
+  const { isCollapsed, toggle, isMobileOpen, setMobileOpen } = useSidebar();
   const [userInfo, setUserInfo] = useState<any>(null);
+
+  // Close mobile sidebar whenever user navigates
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname, setMobileOpen]);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [hoveredCollapsedItem, setHoveredCollapsedItem] = useState<string | null>(null);
   const [hasMounted, setHasMounted] = useState(false);
@@ -109,7 +115,7 @@ export const Sidebar = () => {
         { icon: FiHome, label: "Dashboard", href: "/dashboard", feature: "dashboard", badge: undefined },
         { icon: FiUsers, label: "User Management", href: "/user", feature: "users", requiresOwner: true, badge: undefined },
         { icon: FiCalendar, label: "Calendar", href: "/calendar", badge: "Today" },
-        { icon: FiGitCommit, label: "Automation Workflows", href: "/workflows", badge: "Flow", description: "Cross-CRM orchestration engine" },
+        { icon: FiGitCommit, label: "Automation Workflows", href: "/workflows", feature: "automation-workflow", badge: "Flow", description: "Cross-CRM orchestration engine" },
       ]
     },
     {
@@ -134,7 +140,7 @@ export const Sidebar = () => {
   icon: FiTrendingUp,
   label: "RenGrowCure",
   href: "/rengrowcure",
-  feature: "sales",
+  feature: "rengrowcure",
   badge: "Hot",
   description: "Pipeline, follow-ups, and revenue tracking",
   submenu: [
@@ -181,7 +187,6 @@ export const Sidebar = () => {
 },
         { icon: FiUsers, label: "Roles Management", href: "/roles", feature: "roles", requiresOwner: true },
         { icon: FiMessageSquare, label: "Chat Workspace", href: "/chat", feature: "chat", badge: "Live" },
-        { icon: FiZap, label: "Unified Workspace", href: "/workspace", feature: "tasks", description: "Task Board & Chat Hub" },
         { icon: FiSettings, label: "CRM Settings", href: "/crm-settings" },
       ]
     }
@@ -333,15 +338,29 @@ export const Sidebar = () => {
   };
 
   return (
-    <aside
-      className={cn(
-        "h-screen border-r transition-all duration-300 ease-in-out flex flex-col sticky top-0 left-0 z-50 select-none",
-        isCollapsed ? "w-[72px]" : "w-[255px]",
-        isDarkSuit && "bg-[#0b1329] text-slate-100 border-slate-800/80 shadow-2xl",
-        isGlassSuit && "bg-white/35 backdrop-blur-3xl text-slate-800 border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]",
-        (!isDarkSuit && !isGlassSuit) && "bg-white text-slate-900 border-slate-200 shadow-xs"
+    <>
+      {/* Mobile Off-canvas Backdrop */}
+      {isMobileOpen && (
+        <div
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-[140] md:hidden transition-opacity duration-300"
+          onClick={() => setMobileOpen(false)}
+        />
       )}
-    >
+
+      <aside
+        className={cn(
+          "h-screen border-r transition-all duration-300 ease-in-out flex flex-col select-none",
+          // Desktop positioning
+          "md:sticky md:top-0 md:left-0 md:z-40",
+          isCollapsed ? "md:w-[72px]" : "md:w-[255px]",
+          // Mobile Off-canvas Drawer (highest priority layer)
+          "fixed inset-y-0 left-0 z-[150] w-[270px] max-w-[85vw]",
+          isMobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full md:translate-x-0",
+          isDarkSuit && "bg-[#0b1329] text-slate-100 border-slate-800/80 shadow-2xl",
+          isGlassSuit && "bg-white/35 backdrop-blur-3xl text-slate-800 border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]",
+          (!isDarkSuit && !isGlassSuit) && "bg-white text-slate-900 border-slate-200 shadow-xs"
+        )}
+      >
       {/* Brand Header */}
       <div 
         className={cn(
@@ -422,6 +441,22 @@ export const Sidebar = () => {
             <FiChevronLeft className={cn("text-xs transition-transform duration-300", isCollapsed && "rotate-180")} />
           </button>
         )}
+
+        {/* Mobile Close Drawer Button */}
+        <button
+          type="button"
+          onClick={() => setMobileOpen(false)}
+          className={cn(
+            "p-1.5 rounded-lg md:hidden transition ml-1 cursor-pointer",
+            isDarkSuit
+              ? "text-slate-400 hover:text-white bg-slate-800"
+              : "text-slate-400 hover:text-slate-800 bg-slate-100"
+          )}
+          title="Close Navigation"
+          aria-label="Close navigation"
+        >
+          <FiX size={16} />
+        </button>
       </div>
 
       {/* Main Navigation with Group Titles */}
@@ -725,5 +760,6 @@ export const Sidebar = () => {
         </div>
       )}
     </aside>
+  </>
   );
 };

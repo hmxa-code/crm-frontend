@@ -306,6 +306,78 @@ export const INITIAL_MOCK_WORKFLOWS: Workflow[] = [
     created_date: Date.now() - 1000 * 60 * 60 * 24 * 3,
     updated_date: Date.now() - 1000 * 60 * 180,
   },
+  {
+    _id: 'wf-leadintel-score-matrix',
+    workflow_name: 'LeadIntel AI Qualification & Auto-Routing',
+    description:
+      'Real-time lead scoring: Routes enterprise accounts (>80 score) straight into Venture Matrix and fires urgent outreach tasks.',
+    status: 'Active',
+    trigger_type: 'Trigger-LeadIntel-Score-Updated',
+    action_type: 'Action-RenGrowCure-Move-Stage',
+    domain: 'rengrowcure',
+    total_contacts: 730,
+    processed_contacts: 730,
+    successful_actions: 722,
+    failed_actions: 8,
+    automation_efficiency: 99,
+    created_by: 'Dr. Sarah Patel',
+    created_date: Date.now() - 1000 * 60 * 60 * 24 * 6,
+    updated_date: Date.now() - 1000 * 60 * 30,
+  },
+  {
+    _id: 'wf-calendar-demo-dispatch',
+    workflow_name: 'Instant Consultation Booking & Meeting Lock',
+    description:
+      'Triggered when client books a consultation via Calendar link. Locks Zoom room, dispatches prep task, and adds to CRM pipeline.',
+    status: 'Active',
+    trigger_type: 'Trigger-Calendar-Event-Scheduled',
+    action_type: 'Action-Create-Task',
+    domain: 'calendar',
+    total_contacts: 540,
+    processed_contacts: 540,
+    successful_actions: 536,
+    failed_actions: 4,
+    automation_efficiency: 99,
+    created_by: 'Super Admin',
+    created_date: Date.now() - 1000 * 60 * 60 * 24 * 2,
+    updated_date: Date.now() - 1000 * 60 * 10,
+  },
+  {
+    _id: 'wf-sla-task-escalation',
+    workflow_name: 'Critical Task SLA Overdue Escalation Guard',
+    description:
+      'Monitors unresolved Priority tasks in Workstation. If overdue by 4 hours, escalates manager notification and reassigns distro.',
+    status: 'Paused',
+    trigger_type: 'Trigger-Task-Status-Changed',
+    action_type: 'Action-Notify-Team-Member',
+    domain: 'tasks',
+    total_contacts: 215,
+    processed_contacts: 215,
+    successful_actions: 209,
+    failed_actions: 6,
+    automation_efficiency: 97,
+    created_by: 'Alex Morgan',
+    created_date: Date.now() - 1000 * 60 * 60 * 24 * 8,
+    updated_date: Date.now() - 1000 * 60 * 240,
+  },
+  {
+    _id: 'wf-vip-client-welcome',
+    workflow_name: 'Closed-Won Client Onboarding Cadence',
+    description:
+      'Executes when RenGrowCure deal reaches Closed-Won. Deploys welcome drip email sequence, creates workstation onboarding portfolio.',
+    status: 'Completed',
+    trigger_type: 'Trigger-RenGrowCure-Deal-Stage',
+    action_type: 'Action-Enroll-Drip-Campaign',
+    domain: 'global-crm',
+    total_contacts: 320,
+    processed_contacts: 320,
+    successful_actions: 320,
+    failed_actions: 0,
+    automation_efficiency: 100,
+    created_by: 'Super Admin',
+    created_date: Date.now() - 1000 * 60 * 60 * 24 * 14,
+    updated_date: Date.now() - 1000 * 60 * 60 * 5,
+  },
 ]
 
 const STORAGE_KEY = 'wholcure_crm_workflows_v2'
@@ -466,5 +538,138 @@ export const WorkflowsService = {
       domain: source.domain,
       graph: source.graph ? JSON.parse(JSON.stringify(source.graph)) : createDefaultCRMGraph(),
     })
+  },
+
+  async resetToSeed(): Promise<Workflow[]> {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem(STORAGE_KEY)
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MOCK_WORKFLOWS))
+        window.dispatchEvent(new Event('wholcure_workflows_updated'))
+      } catch (e) {
+        console.error(e)
+      }
+    }
+    return Promise.resolve(INITIAL_MOCK_WORKFLOWS)
+  },
+
+  async updateWorkflowStatus(id: string, newStatus: any): Promise<Workflow> {
+    return this.updateWorkflow(id, { status: newStatus })
+  },
+
+  async simulateRun(id?: string): Promise<{ success: boolean; message: string; runCount: number }> {
+    const list = getPersistedWorkflows()
+    if (!list.length) {
+      return { success: false, message: 'No workflows available to simulate run.', runCount: 0 }
+    }
+
+    const targetIndex = id ? list.findIndex((w) => w._id === id) : 0
+    if (targetIndex === -1) {
+      return { success: false, message: 'Workflow not found.', runCount: 0 }
+    }
+
+    const target = { ...list[targetIndex] }
+    const deltaContacts = Math.floor(Math.random() * 8) + 1
+    const deltaSuccess = deltaContacts - (Math.random() > 0.85 ? 1 : 0)
+    const deltaFailed = deltaContacts - deltaSuccess
+
+    target.processed_contacts = (target.processed_contacts || 0) + deltaContacts
+    target.successful_actions = (target.successful_actions || 0) + deltaSuccess
+    target.failed_actions = (target.failed_actions || 0) + deltaFailed
+    target.automation_efficiency = Math.min(
+      100,
+      Math.round((target.successful_actions / (target.processed_contacts || 1)) * 100)
+    )
+    target.updated_date = Date.now()
+
+    list[targetIndex] = target
+    persistWorkflows(list)
+
+    return {
+      success: true,
+      message: `Executed automation cycle for "${target.workflow_name}": +${deltaContacts} signals processed (${deltaSuccess} ok, ${deltaFailed} err).`,
+      runCount: deltaContacts,
+    }
+  },
+
+  async getExecutionLogs(): Promise<Array<{
+    id: string
+    workflowName: string
+    domain: string
+    triggerEvent: string
+    targetAction: string
+    status: 'SUCCESS' | 'WARNING' | 'FAILED'
+    durationMs: number
+    timestamp: number
+    entity: string
+  }>> {
+    return Promise.resolve([
+      {
+        id: 'log-1',
+        workflowName: 'Omni-CRM Lead-to-Sale Autopilot',
+        domain: 'global-crm',
+        triggerEvent: 'crm.lead.inbound_captured',
+        targetAction: 'Auto-route Distro & Create Priority Task',
+        status: 'SUCCESS',
+        durationMs: 142,
+        timestamp: Date.now() - 1000 * 45,
+        entity: 'Lead: MedNutrition Labs ($48k ARR)',
+      },
+      {
+        id: 'log-2',
+        workflowName: 'LeadIntel AI Qualification & Auto-Routing',
+        domain: 'rengrowcure',
+        triggerEvent: 'leadintel.score.evaluated (Score: 92)',
+        targetAction: 'Venture Matrix Pipeline Advance',
+        status: 'SUCCESS',
+        durationMs: 98,
+        timestamp: Date.now() - 1000 * 60 * 3,
+        entity: 'Account: MetroCare Health Systems',
+      },
+      {
+        id: 'log-3',
+        workflowName: 'Instant Consultation Booking & Meeting Lock',
+        domain: 'calendar',
+        triggerEvent: 'calendar.slot.reserved',
+        targetAction: 'Dispatch Consultation Prep Task & Zoom Link',
+        status: 'SUCCESS',
+        durationMs: 210,
+        timestamp: Date.now() - 1000 * 60 * 8,
+        entity: 'Booking: 30m Solution Demo with Dr. Miller',
+      },
+      {
+        id: 'log-4',
+        workflowName: 'Task Management & Calendar Auto-Scheduler',
+        domain: 'tasks',
+        triggerEvent: 'task.due_date.approaching_24h',
+        targetAction: 'Calendar Focus Buffer Sync',
+        status: 'SUCCESS',
+        durationMs: 84,
+        timestamp: Date.now() - 1000 * 60 * 18,
+        entity: 'Task: Finalize Clinical Nutrition Deck',
+      },
+      {
+        id: 'log-5',
+        workflowName: 'Critical Task SLA Overdue Escalation Guard',
+        domain: 'tasks',
+        triggerEvent: 'sla.breached.overdue_4h',
+        targetAction: 'Manager High-Priority Slack/App Ping',
+        status: 'WARNING',
+        durationMs: 312,
+        timestamp: Date.now() - 1000 * 60 * 35,
+        entity: 'Escalation: Distro Rep Unreachable',
+      },
+      {
+        id: 'log-6',
+        workflowName: 'Cross-Network Marketing Syndication',
+        domain: 'marketing',
+        triggerEvent: 'campaign.blast.scheduled',
+        targetAction: 'Multi-Channel Social Post Syndicate',
+        status: 'SUCCESS',
+        durationMs: 440,
+        timestamp: Date.now() - 1000 * 60 * 60,
+        entity: 'Campaign: Q4 Longevity Protocols Launch',
+      },
+    ])
   },
 }

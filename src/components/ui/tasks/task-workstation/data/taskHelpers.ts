@@ -11,8 +11,10 @@ export interface Subtask {
 export interface TaskComment {
   id: string;
   author: string;
+  authorId?: string;
   text: string;
   time: string;
+  createdAt?: string;
 }
 
 export interface Task {
@@ -31,6 +33,7 @@ export interface Task {
   estimatedHours?: number;
   loggedHours?: number;
   dueDate?: string;
+  attachments?: any[];
   createdAt?: string;
   updatedAt?: string;
 }

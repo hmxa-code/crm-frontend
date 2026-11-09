@@ -55,47 +55,47 @@ export default function UserAttendanceLedger() {
     <div className="space-y-6">
 
       {/* 1. Metric Stats Overview */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-3xs flex items-center justify-between">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+        <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200/80 shadow-3xs flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Directory Staff</span>
-            <strong className="text-xl font-extrabold text-slate-900 mt-0.5 block">{allStaffAttendance.length} Members</strong>
-            <span className="text-[10px] font-medium text-slate-500">Access control active</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Directory Staff</span>
+            <strong className="text-lg sm:text-xl font-extrabold text-slate-900 mt-0.5 block">{allStaffAttendance.length} <span className="text-xs sm:text-sm">Members</span></strong>
+            <span className="text-[9px] sm:text-[10px] font-medium text-slate-500">Access control active</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
             <FiUsers size={18} />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-emerald-200/80 shadow-3xs flex items-center justify-between bg-emerald-50/10">
+        <div className="bg-white p-3 sm:p-4 rounded-xl border border-emerald-200/80 shadow-3xs flex items-center justify-between bg-emerald-50/10">
           <div>
-            <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block">Currently Checked In</span>
-            <strong className="text-xl font-extrabold text-emerald-700 mt-0.5 block">{activeCount} At Work</strong>
-            <span className="text-[10px] font-medium text-emerald-600">Active working shift</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-emerald-600 uppercase tracking-wider block">Currently Checked In</span>
+            <strong className="text-lg sm:text-xl font-extrabold text-emerald-700 mt-0.5 block">{activeCount} <span className="text-xs sm:text-sm">At Work</span></strong>
+            <span className="text-[9px] sm:text-[10px] font-medium text-emerald-600">Active working shift</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-100/70 flex items-center justify-center text-emerald-700">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-emerald-100/70 flex items-center justify-center text-emerald-700">
             <FiCheckCircle size={18} />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-amber-200/80 shadow-3xs flex items-center justify-between bg-amber-50/10">
+        <div className="bg-white p-3 sm:p-4 rounded-xl border border-amber-200/80 shadow-3xs flex items-center justify-between bg-amber-50/10">
           <div>
-            <span className="text-[10px] font-bold text-amber-600 uppercase tracking-wider block">On Rest Break</span>
-            <strong className="text-xl font-extrabold text-amber-700 mt-0.5 block">{breakCount} Members</strong>
-            <span className="text-[10px] font-medium text-amber-600">Temporary break pause</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-amber-600 uppercase tracking-wider block">On Rest Break</span>
+            <strong className="text-lg sm:text-xl font-extrabold text-amber-700 mt-0.5 block">{breakCount} <span className="text-xs sm:text-sm">Members</span></strong>
+            <span className="text-[9px] sm:text-[10px] font-medium text-amber-600">Temporary break pause</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-amber-100/70 flex items-center justify-center text-amber-700">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-amber-100/70 flex items-center justify-center text-amber-700">
             <FiCoffee size={18} />
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-xl border border-slate-200/80 shadow-3xs flex items-center justify-between">
+        <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200/80 shadow-3xs flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Shift Completed</span>
-            <strong className="text-xl font-extrabold text-slate-800 mt-0.5 block">{outCount} Checked Out</strong>
-            <span className="text-[10px] font-medium text-slate-500">Off-duty / Logged out</span>
+            <span className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Shift Completed</span>
+            <strong className="text-lg sm:text-xl font-extrabold text-slate-800 mt-0.5 block">{outCount} <span className="text-xs sm:text-sm">Checked Out</span></strong>
+            <span className="text-[9px] sm:text-[10px] font-medium text-slate-500">Off-duty / Logged out</span>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-slate-100 flex items-center justify-center text-slate-600">
             <FiXCircle size={18} />
           </div>
         </div>

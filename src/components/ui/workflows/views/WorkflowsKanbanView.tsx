@@ -1,25 +1,60 @@
-import React from 'react'
-import { FiEye, FiEdit2, FiTrash2, FiLoader, FiTrendingUp } from 'react-icons/fi'
-import { Workflow, WorkflowStatus } from '@/src/types/workflows/workflow'
+'use client'
 
-const STATUS_COLUMNS: WorkflowStatus[] = ['Draft', 'Active', 'Paused', 'Completed']
+import React from 'react'
+import {
+  FiEye,
+  FiTrash2,
+  FiLoader,
+  FiArrowRight,
+  FiPlay,
+  FiCopy,
+  FiTrendingUp,
+  FiCheckSquare,
+  FiCalendar,
+  FiSend,
+  FiDatabase,
+} from 'react-icons/fi'
+import { Workflow, WorkflowStatus, CRMWorkflowDomain } from '@/src/types/workflows/workflow'
+
+const STATUS_COLUMNS: { key: WorkflowStatus; label: string; dot: string; countBg: string }[] = [
+  { key: 'Draft', label: 'Draft Mode', dot: 'bg-slate-400', countBg: 'bg-slate-100 text-slate-700' },
+  { key: 'Active', label: 'Active Engines', dot: 'bg-emerald-500', countBg: 'bg-emerald-100 text-emerald-800' },
+  { key: 'Paused', label: 'Paused / Staged', dot: 'bg-amber-500', countBg: 'bg-amber-100 text-amber-800' },
+  { key: 'Completed', label: 'Completed Cycles', dot: 'bg-blue-500', countBg: 'bg-blue-100 text-blue-800' },
+]
 
 interface WorkflowsKanbanViewProps {
   workflows: Workflow[]
   loading: boolean
   onView: (wf: Workflow) => void
-  onEdit: (wf: Workflow) => void
+  onEdit?: (wf: Workflow) => void
   onDelete: (id: string) => void
   onStatusChange: (id: string, newStatus: WorkflowStatus) => void
+  onDuplicate?: (id: string) => void
+}
+
+const getDomainBadge = (domain?: CRMWorkflowDomain) => {
+  switch (domain) {
+    case 'rengrowcure':
+      return { label: 'RenGrowCure', icon: FiTrendingUp, bg: 'bg-emerald-50 text-emerald-700 border-emerald-200' }
+    case 'tasks':
+      return { label: 'Tasks', icon: FiCheckSquare, bg: 'bg-violet-50 text-violet-700 border-violet-200' }
+    case 'calendar':
+      return { label: 'Calendar', icon: FiCalendar, bg: 'bg-sky-50 text-sky-700 border-sky-200' }
+    case 'marketing':
+      return { label: 'Marketing', icon: FiSend, bg: 'bg-pink-50 text-pink-700 border-pink-200' }
+    default:
+      return { label: 'Omni-CRM', icon: FiDatabase, bg: 'bg-indigo-50 text-indigo-700 border-indigo-200' }
+  }
 }
 
 export const WorkflowsKanbanView: React.FC<WorkflowsKanbanViewProps> = ({
   workflows,
   loading,
   onView,
-  onEdit,
   onDelete,
   onStatusChange,
+  onDuplicate,
 }) => {
   const getGroupedWorkflows = () => {
     const grouped: Record<WorkflowStatus, Workflow[]> = {
@@ -36,19 +71,6 @@ export const WorkflowsKanbanView: React.FC<WorkflowsKanbanViewProps> = ({
 
   const columns = getGroupedWorkflows()
 
-  const getStatusColorConfig = (status: WorkflowStatus) => {
-    switch (status) {
-      case 'Active':
-        return { dot: 'bg-emerald-500' }
-      case 'Completed':
-        return { dot: 'bg-blue-500' }
-      case 'Paused':
-        return { dot: 'bg-rose-500' }
-      default:
-        return { dot: 'bg-slate-400' }
-    }
-  }
-
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, id: string) => {
     e.dataTransfer.setData('text/plain', id)
   }
@@ -60,73 +82,96 @@ export const WorkflowsKanbanView: React.FC<WorkflowsKanbanViewProps> = ({
   }
 
   return (
-    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-      {STATUS_COLUMNS.map((status) => {
-        const conf = getStatusColorConfig(status)
-        const items = columns[status] || []
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {STATUS_COLUMNS.map((col) => {
+        const items = columns[col.key] || []
         return (
           <div
-            key={status}
+            key={col.key}
             onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => handleDrop(e, status)}
-            className="bg-white border border-slate-200 rounded-xl p-3.5 flex flex-col min-h-[240px] shadow-2xs"
+            onDrop={(e) => handleDrop(e, col.key)}
+            className="flex flex-col rounded-2xl border border-slate-200/90 bg-slate-50/50 p-3.5 shadow-xs min-h-[360px]"
           >
-            <div className="flex items-center justify-between pb-2 mb-3 border-b border-slate-100">
+            {/* Column Header */}
+            <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-200/80">
               <div className="flex items-center gap-2">
-                <span className={`w-2 h-2 rounded-full ${conf.dot}`} />
-                <span className="font-bold text-slate-800 text-xs">{status}</span>
+                <span className={`h-2.5 w-2.5 rounded-full ${col.dot}`} />
+                <h3 className="text-xs font-bold text-slate-800">{col.label}</h3>
               </div>
-              <span className="bg-slate-100 text-slate-600 text-[10px] font-bold px-1.5 py-0.5 rounded-md">
+              <span className={`rounded-md px-2 py-0.5 text-[10px] font-bold ${col.countBg}`}>
                 {items.length}
               </span>
             </div>
 
             {loading ? (
-              <div className="flex items-center justify-center py-6 text-slate-400">
-                <FiLoader className="animate-spin" size={14} />
+              <div className="flex items-center justify-center py-12 text-slate-400">
+                <FiLoader className="animate-spin h-5 w-5 text-blue-600" />
+              </div>
+            ) : items.length === 0 ? (
+              <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl p-4 text-center">
+                <span className="text-[11px] font-medium text-slate-400">Drag or drop workflows here</span>
               </div>
             ) : (
-              <div className="space-y-2.5 overflow-y-auto max-h-[380px] pr-1">
-                {items.length ? (
-                  items.map((wf) => (
+              <div className="space-y-3 overflow-y-auto max-h-[640px] pr-1">
+                {items.map((wf) => {
+                  const domainInfo = getDomainBadge(wf.domain)
+                  const DomainIcon = domainInfo.icon
+                  return (
                     <div
                       key={wf._id}
                       draggable
                       onDragStart={(e) => wf._id && handleDragStart(e, wf._id)}
-                      className="bg-slate-50/50 hover:bg-white border border-slate-200/70 rounded-lg p-3 transition-all cursor-grab active:cursor-grabbing group relative"
+                      onClick={() => onView(wf)}
+                      className="group relative rounded-xl border border-slate-200/90 bg-white p-3.5 shadow-xs transition hover:border-slate-300 hover:shadow-md cursor-grab active:cursor-grabbing"
                     >
-                      <div className="flex justify-between items-start gap-2 mb-1.5">
-                        <h4 className="font-bold text-slate-900 text-xs truncate max-w-[70%]">
-                          {wf.workflow_name}
-                        </h4>
-                        <span className="text-[9px] font-bold bg-white text-slate-500 border px-1 py-0.5 rounded">
-                          {wf.trigger_type}
+                      <div className="flex items-center justify-between gap-1 mb-2">
+                        <span className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[9px] font-bold border ${domainInfo.bg}`}>
+                          <DomainIcon className="h-2.5 w-2.5" />
+                          <span>{domainInfo.label}</span>
                         </span>
+                        <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                          {onDuplicate && wf._id && (
+                            <button
+                              type="button"
+                              onClick={() => onDuplicate(wf._id!)}
+                              title="Duplicate"
+                              className="p-1 text-slate-400 hover:text-slate-700 transition"
+                            >
+                              <FiCopy size={12} />
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => wf._id && onDelete(wf._id)}
+                            title="Delete"
+                            className="p-1 text-slate-400 hover:text-rose-600 transition"
+                          >
+                            <FiTrash2 size={12} />
+                          </button>
+                        </div>
                       </div>
 
-                      <p className="text-[11px] text-slate-400 line-clamp-1 mb-3">
-                        Action: {wf.action_type} • Queue: {wf.total_contacts}
+                      <h4 className="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition line-clamp-1">
+                        {wf.workflow_name}
+                      </h4>
+                      <p className="mt-1 text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
+                        {wf.description || 'Enterprise visual pipeline.'}
                       </p>
 
-                      <div className="flex items-center justify-between text-[10px] border-t border-slate-100 pt-2 text-slate-500">
-                        <span>Processed: {wf.processed_contacts}</span>
-                        <span className="text-slate-800 font-bold flex items-center gap-0.5">
-                          <FiTrendingUp size={10} className="text-blue-500" /> Eff: {wf.automation_efficiency}%
-                        </span>
-                      </div>
-
-                      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 flex items-center bg-white border border-slate-200 rounded shadow-2xs transition-opacity">
-                        <button type="button" onClick={() => onView(wf)} className="p-1 text-slate-400 hover:text-slate-700 cursor-pointer"><FiEye size={11} /></button>
-                        <button type="button" onClick={() => onEdit(wf)} className="p-1 text-slate-400 hover:text-amber-600 cursor-pointer"><FiEdit2 size={11} /></button>
-                        <button type="button" onClick={() => wf._id && onDelete(wf._id)} className="p-1 text-slate-400 hover:text-rose-600 cursor-pointer"><FiTrash2 size={11} /></button>
+                      <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10px]">
+                        <div>
+                          <span className="text-slate-400 font-semibold uppercase">Signals: </span>
+                          <span className="font-bold text-slate-700">
+                            {wf.processed_contacts.toLocaleString()}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1 font-bold text-emerald-600">
+                          <span>{wf.automation_efficiency}% Health</span>
+                        </div>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="py-6 flex items-center justify-center border border-dashed border-slate-200 rounded-lg text-slate-400 text-[11px]">
-                    No records active
-                  </div>
-                )}
+                  )
+                })}
               </div>
             )}
           </div>

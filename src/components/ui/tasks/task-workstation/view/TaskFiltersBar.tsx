@@ -36,7 +36,7 @@ const VIEW_TABS: { key: ViewMode; label: string; icon: React.ElementType }[] = [
 ];
 
 const selectClass =
-  'rounded-lg border border-slate-200 bg-slate-50/80 px-2.5 py-1.5 text-xs font-semibold text-slate-700 outline-none focus:border-slate-400 focus:bg-white transition cursor-pointer';
+  'rounded-lg border border-slate-200 bg-slate-50/80 px-3 py-1.5 text-xs font-semibold text-slate-700 outline-none focus:border-blue-400 focus:bg-white transition cursor-pointer min-w-[120px]';
 
 export default function TaskFiltersBar({
   search, setSearch,

@@ -54,7 +54,11 @@ export default function ChatTaskDrawer({
 
   return (
     <>
-      <aside className="w-80 md:w-96 border-l border-slate-200 bg-white flex flex-col shrink-0 z-30 shadow-2xl animate-in slide-in-from-right duration-200">
+      <div 
+        className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-30 md:hidden"
+        onClick={onClose}
+      />
+      <aside className="fixed inset-y-0 right-0 md:static w-[88vw] max-w-[380px] md:w-96 border-l border-slate-200 bg-white flex flex-col shrink-0 z-40 shadow-2xl animate-in slide-in-from-right duration-200">
         {/* Drawer Header */}
         <div className="h-14 px-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/80">
           <div className="flex items-center gap-2.5">

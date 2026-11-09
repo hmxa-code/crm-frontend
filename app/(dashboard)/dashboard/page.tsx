@@ -32,8 +32,10 @@ import {
   FiActivity
 } from 'react-icons/fi'
 import Link from 'next/link'
-import { CampaignsService, Campaign } from '@/src/services/marketing/CampaignsService'
-import { DripCampaignsService, DripCampaign } from '@/src/services/marketing/DripCampaignsService'
+import { CampaignsService } from '@/src/services/marketing/CampaignsService'
+import { DripCampaignsService } from '@/src/services/marketing/DripCampaignsService'
+import { Campaign } from '@/src/types/marketing/campaign'
+import { DripCampaign } from '@/src/types/marketing/drip-campaign'
 
 export default function MarketingDashboard() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
@@ -310,116 +312,9 @@ export default function MarketingDashboard() {
 
         </div>
 
-        {/* --- Structured Navigation Grid (Operational Nodes) --- */}
-        <div className="space-y-3">
-          <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider pl-1">Operational Nodes</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {quickActions.map((action) => {
-              const Icon = action.icon
-              return (
-                <Link key={action.title} href={action.href} className="group block">
-                  <div className="bg-white border border-slate-200 hover:border-slate-300 rounded-xl p-4 transition-all shadow-3xs flex items-start justify-between">
-                    <div className="flex gap-3">
-                      <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-lg text-slate-600 group-hover:bg-slate-900 group-hover:text-white transition-colors h-9 w-9 flex items-center justify-center shrink-0">
-                        <Icon size={14} />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-slate-800 text-xs transition-colors group-hover:text-slate-900">{action.title}</h3>
-                        <p className="text-[11px] text-slate-400 mt-0.5 font-medium leading-relaxed">{action.description}</p>
-                      </div>
-                    </div>
-                    <FiArrowRight size={12} className="text-slate-300 group-hover:text-slate-600 group-hover:translate-x-0.5 transition-all mt-0.5 shrink-0" />
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        </div>
-
         {/* --- Ledger Table & Activity Split --- */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
-          {/* Recent Campaigns Table (2 Cols) */}
-          <div className="bg-white border border-slate-200 rounded-xl shadow-3xs overflow-hidden lg:col-span-2">
-            <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100 bg-slate-50/50">
-              <h2 className="text-xs font-bold text-slate-800 tracking-wide">Recent Campaign Tracks</h2>
-              <Link href="/marketing/campaigns" className="text-slate-600 hover:text-slate-900 text-[11px] font-bold border border-slate-200 bg-white px-2.5 py-1 rounded-md transition-colors shadow-2xs">
-                Audit Index
-              </Link>
-            </div>
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="bg-slate-50/30 border-b border-slate-100">
-                    <th className="py-2.5 px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">Campaign Anchor</th>
-                    <th className="py-2.5 px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">Channel</th>
-                    <th className="py-2.5 px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">State</th>
-                    <th className="py-2.5 px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">Reach</th>
-                    <th className="py-2.5 px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">Conversions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-50">
-                  {recentCampaigns.length === 0 ? (
-                    <tr>
-                      <td colSpan={5} className="py-8 text-center text-slate-400 font-medium">No active streams monitored.</td>
-                    </tr>
-                  ) : (
-                    recentCampaigns.map((campaign) => (
-                      <tr key={campaign.id} className="hover:bg-slate-50/40 transition-colors">
-                        <td className="py-3 px-5 text-slate-900 font-bold">{campaign.name}</td>
-                        <td className="py-3 px-5">
-                          <span className="px-1.5 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 rounded text-[10px] font-semibold tracking-wide">
-                            {campaign.type}
-                          </span>
-                        </td>
-                        <td className="py-3 px-5">
-                          <span className={`px-2 py-0.5 border text-[10px] font-bold rounded-md ${getStatusStyle(campaign.status)}`}>
-                            {campaign.status}
-                          </span>
-                        </td>
-                        <td className="py-3 px-5 text-slate-500 font-medium">{campaign.recipients.toLocaleString()} profiles</td>
-                        <td className="py-3 px-5 text-slate-900 font-bold">{campaign.openRate}</td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Clean Vector Activity Feed (1 Col) */}
-          <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-3xs flex flex-col justify-between">
-            <div>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Audit Trails</span>
-              <h3 className="font-bold text-slate-900 text-xs mt-0.5 mb-3">System Events</h3>
-              
-              <div className="divide-y divide-slate-100">
-                {[
-                  { activity: 'Drip campaign sequence synchronized', time: '10 mins ago', icon: FiZap },
-                  { activity: 'Lead score matrix recalibrated', time: '1 hour ago', icon: FiActivity },
-                  { activity: 'New email broadcast dispatched', time: '3 hours ago', icon: FiMail },
-                  { activity: 'Social API integration validated', time: '5 hours ago', icon: FiCheckCircle },
-                ].map((item, i) => {
-                  const ActivityIcon = item.icon
-                  return (
-                    <div key={i} className="flex gap-3 py-2.5 first:pt-0 last:pb-0 items-center">
-                      <div className="w-7 h-7 rounded-md bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-600 shrink-0">
-                        <ActivityIcon size={13} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-xs text-slate-800 font-bold truncate">{item.activity}</p>
-                        <span className="text-[10px] text-slate-400 font-medium flex items-center gap-1 mt-0.5">
-                          <FiClock size={10} /> {item.time}
-                        </span>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
-
         </div>
 
       </div>

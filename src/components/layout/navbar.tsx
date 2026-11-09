@@ -13,8 +13,11 @@ import {
   FiChevronDown, 
   FiSearch, 
   FiCheckCircle, 
-  FiArrowRight 
+  FiArrowRight,
+  FiMenu,
+  FiX
 } from "react-icons/fi";
+import { useSidebar } from '@/src/hooks/use-sidebar';
 import { AuthService } from '@/src/services/authService';
 import { getAvatarUrl } from '@/src/utils/avatarHelper';
 import { ACCOUNT_TYPE_LABELS, resolveAccountType } from '@/src/constants/roles';
@@ -22,6 +25,7 @@ import { DEFAULT_CRM_SETTINGS, getCRMSettings, type CRMSettings } from '@/src/ut
 
 export const Navbar = () => {
   const router = useRouter();
+  const { toggleMobile, isMobileOpen } = useSidebar();
   const [profileInfo, setProfileInfo] = useState(false);
   const [isNotifyOpen, setIsNotifyOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -86,10 +90,20 @@ export const Navbar = () => {
   }
 
   return (
-    <header className="h-[65px] bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-[100]">
+    <header className="h-[65px] bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-[100]">
       
-      {/* Quick Search */}
-      <div className="flex items-center gap-3">
+      {/* Quick Search & Mobile Hamburger */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        <button
+          type="button"
+          onClick={toggleMobile}
+          className="p-2 -ml-1 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl md:hidden transition cursor-pointer"
+          title="Toggle Navigation Menu"
+          aria-label="Toggle navigation menu"
+        >
+          {isMobileOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+        </button>
+
         <div className="relative hidden md:flex items-center">
           <FiSearch className="absolute left-3 text-slate-400 text-sm pointer-events-none" />
           <input 

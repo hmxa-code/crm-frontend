@@ -15,6 +15,12 @@ export interface CalendarEvent {
   endDate: Date;
   color: 'blue' | 'purple' | 'green' | 'orange' | 'red' | 'gray';
   allDay?: boolean;
+  taskId?: string;
+  status?: string;
+  priority?: string;
+  assignee?: string;
+  category?: string;
+  estimatedHours?: number;
 }
 
 export type CalendarView = 'month' | 'week' | 'day' | 'year' | 'agenda';

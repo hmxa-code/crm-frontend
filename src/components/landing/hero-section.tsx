@@ -1,189 +1,192 @@
+// "use client"
+
+// import Link from 'next/link'
+// import { CrmPreview } from './crm-preview'
+
+// export const HeroSection = () => {
+//   return (
+//     <section className="relative overflow-hidden bg-gradient-to-br from-[#f8fafc] to-[#e0f2fe] py-10 lg:py-15">
+//       {/* Background Gradient Elements */}
+//       <div className="absolute inset-0 z-0 opacity-40">
+//         <div className="absolute -top-20 -right-20 h-[500px] w-[500px] rounded-full bg-[#00AEEF]/20 blur-[100px]" />
+//         <div className="absolute top-1/3 -left-20 h-[400px] w-[400px] rounded-full bg-[#8DC63F]/15 blur-[100px]" />
+//       </div>
+
+//       <div className="lp-wrap relative z-10">
+//         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+//           {/* Left Content */}
+//           <div className="lg:col-span-5">
+//             {/* Badge */}
+//             <div className="inline-flex items-center gap-2 rounded-full bg-[#00AEEF]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#00AEEF] border border-[#00AEEF]/20 backdrop-blur-sm">
+//               <span className="h-2 w-2 rounded-full bg-[#8DC63F] animate-pulse" />
+//               WholCure CRM Enterprise
+//             </div>
+
+//             {/* Main Heading */}
+//             <h1 className="mt-8 text-[clamp(2.8rem,7vw,4.8rem)] font-bold tracking-tight leading-[1.02] text-slate-900">
+//               The operating system for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00AEEF] via-[#8DC63F] to-[#FFC20E]">revenue.</span>
+//             </h1>
+
+//             {/* Subheading */}
+//             <p className="mt-6 text-base lg:text-lg leading-relaxed text-slate-600 max-w-lg">
+//               Pipeline, people, tasks, and follow-through in one composed workspace. Built for operators who need a CRM that behaves like a high-performance product.
+//             </p>
+
+//             {/* CTA Buttons */}
+//             <div className="mt-10 flex flex-col sm:flex-row gap-4">
+//               <Link
+//                 href="/register"
+//                 className="group inline-flex h-14 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#00AEEF] to-[#0084C7] px-8 text-sm font-bold text-white shadow-xl shadow-[#00AEEF]/20 hover:shadow-[#00AEEF]/30 hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-300"
+//               >
+//                 <span>Start Free Trial</span>
+//                 <svg className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+//                 </svg>
+//               </Link>
+
+//               <Link
+//                 href="/login"
+//                 className="inline-flex h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-8 text-sm font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-400 hover:scale-[1.02] transition-all duration-300"
+//               >
+//                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+//                 </svg>
+//                 <span>Sign in to Workspace</span>
+//               </Link>
+//             </div>
+
+//             {/* Social Proof */}
+//             <div className="mt-12 flex items-center gap-4 border-t border-slate-200 pt-8">
+//               <div className="flex -space-x-2">
+//                 {[1, 2, 3, 4].map((i) => (
+//                   <div 
+//                     key={i}
+//                     className="h-10 w-10 rounded-full border-2 border-white bg-slate-200 overflow-hidden"
+//                   >
+//                     <div className="h-full w-full flex items-center justify-center text-[10px] font-bold text-slate-600">
+//                       {i}
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//               <div className="flex flex-col">
+//                 <span className="text-sm font-bold text-slate-900">500+ Companies</span>
+//                 <span className="text-xs text-slate-500">Trust WholCure CRM</span>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Right Content - CRM Preview */}
+//           <div className="lg:col-span-7">
+//             <div className="relative">
+//               <CrmPreview />
+              
+//               {/* Floating badges */}
+//               <div className="absolute -right-4 top-1/4 hidden lg:block animate-bounce" style={{ animationDuration: '3s' }}>
+//                 <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-bold text-slate-900 shadow-xl border border-slate-200">
+//                   <span className="h-2 w-2 rounded-full bg-[#8DC63F]" />
+//                   Real-time Sync
+//                 </div>
+//               </div>
+              
+//               <div className="absolute -left-4 bottom-1/4 hidden lg:block animate-bounce" style={{ animationDuration: '4s' }}>
+//                 <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-bold text-slate-900 shadow-xl border border-slate-200">
+//                   <span className="h-2 w-2 rounded-full bg-[#00AEEF]" />
+//                   AI Insights
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   )
+// }
+
 "use client"
-import React from 'react'
+
 import Link from 'next/link'
-import { FiArrowRight, FiUsers, FiLayout, FiTrendingUp, FiShield, FiZap, FiCheckCircle } from 'react-icons/fi'
+import { CrmPreview } from './crm-preview'
 
 export const HeroSection = () => {
   return (
-    <>
-      {/* HERO */}
-      <section className="relative max-w-7xl mx-auto px-6 pt-20 pb-24 md:pt-28 md:pb-32">
-        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-          <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-r from-emerald-50/50 via-slate-50/40 to-transparent blur-3xl rounded-full" />
-        </div>
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#f8fafc] to-[#e0f2fe] py-8 sm:py-12 lg:py-16">
+      {/* Background Gradient Elements */}
+      <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
+        <div className="absolute -top-20 -right-20 h-[300px] sm:h-[500px] w-[300px] sm:w-[500px] rounded-full bg-[#00AEEF]/20 blur-[80px] sm:blur-[100px]" />
+        <div className="absolute top-1/3 -left-20 h-[250px] sm:h-[400px] w-[250px] sm:w-[400px] rounded-full bg-[#8DC63F]/15 blur-[80px] sm:blur-[100px]" />
+      </div>
 
-        <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-widest mb-8">
-            <FiCheckCircle size={14} /> WHOLCURE CRM Platform v1.0
-          </div>
-
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
-            Manage your <span className="text-emerald-500">Leads</span> &{" "}
-            <span className="text-slate-700">Opportunities</span> smarter.
-          </h1>
-
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            The all-in-one platform for modern teams. Track companies, manage contacts, automate workflows, and close deals with real-time insights.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            {/* ////////// */}
-            <Link
-            href="/register"
-            className="relative inline-flex items-center justify-center px-5 py-2.5 rounded text-sm font-semibold text-white
-                       bg-gradient-to-r from-slate-900 to-slate-700
-                       shadow-[0_2px_10px_rgba(15,23,42,0.25)]
-                       hover:shadow-[0_6px_20px_rgba(15,23,42,0.35)]
-                       hover:from-slate-800 hover:to-slate-600
-                       active:scale-95
-                       transition-all duration-200 ease-out"
-          >
-            Get Started Free
-          </Link>
-            {/* ////////// */}
-            <Link
-              href="/login"
-              className="w-full sm:w-auto px-8 py-4 bg-white text-slate-700 rounded-2xl font-semibold text-sm border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700 transition-all duration-300"
-            >
-              Sign In
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURES */}
-      <section id="features" className="max-w-7xl mx-auto px-6 pb-24">
-        <div className="text-center mb-14">
-          <h2 className="text-3xl font-bold text-slate-900 mb-3">Everything you need</h2>
-          <p className="text-slate-500 max-w-xl mx-auto">
-            Powerful tools designed to help your team work faster and close more deals.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            {
-              icon: <FiUsers />,
-              color: "emerald",
-              title: "Lead Management",
-              desc: "Track and nurture contacts from first touch to closed deal with powerful pipeline tools."
-            },
-            {
-              icon: <FiLayout />,
-              color: "sky",
-              title: "Role-Based Access",
-              desc: "Granular permissions for Admins, Managers and team members with secure views."
-            },
-            {
-              icon: <FiTrendingUp />,
-              color: "amber",
-              title: "Deal Pipeline",
-              desc: "Visual opportunity tracking, activity logs and automated follow-ups."
-            },
-            {
-              icon: <FiShield />,
-              color: "red",
-              title: "Secure & Reliable",
-              desc: "Enterprise-grade security with role-based permissions and audit logs."
-            },
-            {
-              icon: <FiZap />,
-              color: "emerald",
-              title: "Automation Engine",
-              desc: "Automate follow-ups, tasks and workflows so your team stays focused."
-            },
-            {
-              icon: <FiCheckCircle />,
-              color: "sky",
-              title: "Real-time Insights",
-              desc: "Live dashboards and reports that help you make better decisions faster."
-            }
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="group p-7 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300"
-              style={{
-                borderColor: item.color === 'emerald' ? 'rgba(16, 185, 129, 0.1)' :
-                             item.color === 'sky' ? 'rgba(71, 85, 105, 0.1)' :
-                             item.color === 'amber' ? 'rgba(245, 158, 11, 0.1)' :
-                             'rgba(239, 68, 68, 0.1)'
-              }}
-            >
-              <div className={`w-12 h-12 mb-5 rounded-xl flex items-center justify-center text-xl
-                ${item.color === "emerald" && "bg-emerald-100 text-emerald-600"}
-                ${item.color === "sky" && "bg-slate-100 text-slate-600"}
-                ${item.color === "amber" && "bg-amber-100 text-amber-600"}
-                ${item.color === "red" && "bg-red-100 text-red-600"}
-              `}>
-                {item.icon}
-              </div>
-              <h3 className="font-bold text-slate-900 text-lg mb-2 group-hover:text-emerald-600 transition-colors">
-                {item.title}
-              </h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* WHY SECTION */}
-      <section id="why" className="bg-slate-50 border-y border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-lg text-xs font-bold uppercase tracking-widest mb-4">
-                <FiCheckCircle size={14} /> For Modern Teams
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-5 leading-tight">
-                Built for teams that want <span className="text-emerald-500">clarity</span> and <span className="text-slate-700">control</span>
-              </h2>
-              <p className="text-slate-500 mb-8 leading-relaxed">
-                Wholcure gives your organization a single source of truth for leads, opportunities, and team activity — without the complexity of traditional CRMs.
-              </p>
-              <ul className="space-y-4">
-                {[
-                  "Centralized company & contact management",
-                  "Role-based dashboards for every team member",
-                  "Automated follow-ups and task sequences",
-                  "Clean, modern interface your team will actually use"
-                ].map((text, i) => (
-                  <li key={i} className="flex items-start gap-3 text-slate-700">
-                    <FiCheckCircle className="text-emerald-500 mt-0.5 shrink-0" size={18} />
-                    <span className="text-sm font-medium">{text}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-8">
-                <Link
-            href="/register"
-            className="relative inline-flex items-center justify-center px-5 py-2.5 rounded text-sm font-semibold text-white
-                       bg-gradient-to-r from-slate-900 to-slate-700
-                       shadow-[0_2px_10px_rgba(15,23,42,0.25)]
-                       hover:shadow-[0_6px_20px_rgba(15,23,42,0.35)]
-                       hover:from-slate-800 hover:to-slate-600
-                       active:scale-95
-                       transition-all duration-200 ease-out"
-          >
-            Request Access
-          </Link>
-              </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-16">
+          
+          {/* Left Content */}
+          <div className="lg:col-span-6 flex flex-col items-start text-left">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#00AEEF]/10 px-3.5 py-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#00AEEF] border border-[#00AEEF]/20 backdrop-blur-sm">
+              <span className="h-2 w-2 rounded-full bg-[#8DC63F] animate-pulse shrink-0" />
+              WholCure CRM Enterprise
             </div>
 
-            <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-lg">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-3 h-3 rounded-full bg-emerald-500" />
-                <div className="w-3 h-3 rounded-full bg-amber-400" />
-                <div className="w-3 h-3 rounded-full bg-emerald-400" />
+            {/* Main Heading */}
+            <h1 className="mt-5 sm:mt-6 text-[clamp(2.2rem,5.5vw,4.2rem)] font-bold tracking-tight leading-[1.08] text-slate-900 break-words w-full">
+              The operating system for <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00AEEF] via-[#8DC63F] to-[#FFC20E]">revenue.</span>
+            </h1>
+
+            {/* Subheading */}
+            <p className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg leading-relaxed text-slate-600 max-w-xl">
+              Pipeline, people, tasks, and follow-through in one composed workspace. Built for operators who need a CRM that behaves like a high-performance product.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3.5 w-full sm:w-auto">
+              <Link
+                href="/register"
+                className="group inline-flex h-12 sm:h-14 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#00AEEF] to-[#0084C7] px-6 sm:px-8 text-xs sm:text-sm font-bold text-white shadow-xl shadow-[#00AEEF]/20 hover:shadow-[#00AEEF]/30 hover:scale-[1.02] hover:-translate-y-0.5 transition-all duration-300"
+              >
+                <span>Start Free Trial</span>
+                <svg className="h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+
+              <Link
+                href="/login"
+                className="inline-flex h-12 sm:h-14 items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 sm:px-8 text-xs sm:text-sm font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-400 hover:scale-[1.02] transition-all duration-300 shadow-2xs"
+              >
+                <svg className="h-4 w-4 sm:h-5 sm:w-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                <span>Sign in to Workspace</span>
+              </Link>
+            </div>
+
+          </div>
+
+          {/* Right Content - CRM Preview */}
+          <div className="lg:col-span-6 w-full">
+            <div className="relative w-full max-w-xl mx-auto lg:max-w-none">
+              <CrmPreview />
+              
+              {/* Floating badges */}
+              <div className="absolute -right-2 sm:-right-4 top-1/4 hidden xl:block animate-bounce" style={{ animationDuration: '3s' }}>
+                <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-bold text-slate-900 shadow-xl border border-slate-200">
+                  <span className="h-2 w-2 rounded-full bg-[#8DC63F]" />
+                  Real-time Sync
+                </div>
               </div>
-              <h3 className="font-bold text-slate-900 mb-4 text-xl">Ready to transform your business?</h3>
-              <p className="text-slate-500 text-sm mb-6 leading-relaxed">
-                Request access today and our team will set up your workspace. We'll review your requirements and get you onboarded quickly with full onboarding support.
-              </p>
+              
+              <div className="absolute -left-2 sm:-left-4 bottom-1/4 hidden xl:block animate-bounce" style={{ animationDuration: '4s' }}>
+                <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-xs font-bold text-slate-900 shadow-xl border border-slate-200">
+                  <span className="h-2 w-2 rounded-full bg-[#00AEEF]" />
+                  AI Insights
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
 
-    </>
+        </div>
+      </div>
+    </section>
   )
 }

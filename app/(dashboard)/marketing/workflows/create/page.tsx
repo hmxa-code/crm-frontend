@@ -185,31 +185,31 @@ export default function CreateMarketingWorkflowPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 md:p-10 select-none">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-[calc(100vh-140px)] bg-slate-50/50 p-4 md:p-6 lg:p-8 select-none">
+      <div className="max-w-4xl mx-auto">
         <Link
           href="/marketing/workflows"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-800 mb-6 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 mb-4 md:mb-6 transition-colors"
         >
-          <FiArrowLeft className="w-4 h-4" />
+          <FiArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Workflows Hub</span>
         </Link>
 
-        <div className="mb-6">
-          <div className="flex items-center gap-2">
+        <div className="mb-4 md:mb-6">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-700 rounded-md">
               Visual Canvas Setup
             </span>
             <span className="text-xs text-slate-400">•</span>
             <span className="text-xs text-slate-500">n8n Orchestration Architecture</span>
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 mt-2">Create Marketing Automation Flow</h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <h1 className="text-xl md:text-2xl font-bold text-slate-900 mt-2">Create Marketing Automation Flow</h1>
+          <p className="text-xs md:text-sm text-slate-500 mt-1 leading-relaxed">
             Connect live Marketing Campaigns, Drip Sequences, Content Engine, and Social Accounts into an automated visual flow.
           </p>
         </div>
 
-        <form onSubmit={handleCreate} className="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-xs space-y-6">
+        <form onSubmit={handleCreate} className="bg-white rounded-2xl border border-slate-200 p-4 md:p-6 lg:p-8 shadow-sm space-y-4 md:space-y-6">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
               Workflow Name *
@@ -220,7 +220,7 @@ export default function CreateMarketingWorkflowPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Inbound Nutrition Lead Nurture & Multi-Channel Sync"
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+              className="w-full px-3 md:px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
             />
           </div>
 
@@ -233,7 +233,7 @@ export default function CreateMarketingWorkflowPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Explain the multi-channel marketing flow and Global CRM handoff..."
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none"
+              className="w-full px-3 md:px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none"
             />
           </div>
 
@@ -244,7 +244,7 @@ export default function CreateMarketingWorkflowPage() {
             <select
               value={triggerType}
               onChange={(e) => setTriggerType(e.target.value)}
-              className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+              className="w-full px-3 md:px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
             >
               <option value="Trigger-Lead-Captured">Inbound Lead Captured (Web form or landing page)</option>
               <option value="Trigger-Campaign-Event">Campaign Launched / Threshold Reached</option>
@@ -258,7 +258,7 @@ export default function CreateMarketingWorkflowPage() {
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
               Canvas Starter Architecture
             </label>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {[
                 {
                   id: 'omnichannel' as const,
@@ -286,7 +286,7 @@ export default function CreateMarketingWorkflowPage() {
                     key={tpl.id}
                     type="button"
                     onClick={() => setTemplatePreset(tpl.id)}
-                    className={`p-4 rounded-xl border text-left transition-all ${
+                    className={`p-3 md:p-4 rounded-xl border text-left transition-all ${
                       selected
                         ? 'border-blue-600 bg-blue-50/40 ring-1 ring-blue-500 shadow-xs'
                         : 'border-slate-200 hover:border-slate-300 bg-white'
@@ -306,17 +306,17 @@ export default function CreateMarketingWorkflowPage() {
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-end gap-3">
             <Link
               href="/marketing/workflows"
-              className="px-5 py-2.5 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl text-xs font-medium transition-colors"
+              className="w-full sm:w-auto px-5 py-2.5 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl text-xs font-medium transition-colors text-center"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-xs hover:shadow-md transition-all disabled:opacity-50"
+              className="w-full sm:w-auto px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold shadow-xs hover:shadow-md transition-all disabled:opacity-50"
             >
               {isSubmitting ? 'Opening Canvas Sheet...' : 'Launch n8n Flow Canvas'}
             </button>

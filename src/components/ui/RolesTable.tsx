@@ -1,16 +1,10 @@
 // "use client";
 
 // import React, { useState, useEffect } from 'react';
-// import { FiEdit2, FiTrash2, FiPlus, FiLock, FiSettings, FiX, FiEye, FiLoader } from 'react-icons/fi';
+// import { FiEdit2, FiTrash2, FiPlus, FiLock, FiSettings, FiX, FiEye, FiLoader, FiArrowLeft } from 'react-icons/fi';
 // import { RoleService } from '@/src/services/roleService';
 // import { PermissionPicker } from '@/src/components/ui/users/PermissionPicker';
 // import toast, { Toaster } from 'react-hot-toast';
-
-// // LeadsTable jaisi exact dynamic master config status colors ke liye
-// const STATUS_COLORS: { [key: string]: { bg: string; text: string; border: string } } = {
-//   Active: { bg: "rgba(136, 187, 64, 0.07)", text: "#88bb40", border: "rgba(136, 187, 64, 0.3)" },    // Green
-//   Disabled: { bg: "rgba(255, 0, 0, 0.05)", text: "#ff0000", border: "rgba(255, 0, 0, 0.2)" },       // Red
-// };
 
 // const RolesTable = ({ embedded = false }: { embedded?: boolean }) => {
 //   const [roles, setRoles] = useState<any[]>([]);
@@ -29,9 +23,6 @@
 //   const [editRoleName, setEditRoleName] = useState('');
 //   const [editRoleStatus, setEditRoleStatus] = useState('1');
 //   const [editRolePermissions, setEditRolePermissions] = useState<string[]>([]);
-
-//   // Focus border state styling ke liye
-//   const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
 //   useEffect(() => {
 //     fetchRoles();
@@ -60,10 +51,10 @@
 //     try {
 //       await RoleService.createRole({
 //         role_name: newRoleName,
-//         status: newRoleStatus,
+//         status: Number(newRoleStatus),
 //         permissions: newRolePermissions
 //       });
-//       toast.success('Role added successfully! 🎯', { id: loadToast });
+//       toast.success('Role added successfully!', { id: loadToast });
 //       setIsModalOpen(false);
 //       setNewRoleName('');
 //       setNewRoleStatus('1');
@@ -120,160 +111,166 @@
 //     return status === 1 || status === "1" ? "Active" : "Disabled";
 //   };
 
+//   const getStatusStyle = (status: any) => {
+//     const key = getStatusKey(status);
+//     return key === 'Active'
+//       ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+//       : 'bg-amber-50 text-amber-700 border-amber-200';
+//   };
+
 //   return (
-//     <div className={`w-full bg-[#fcfdfe] text-slate-900 font-sans relative overflow-x-hidden ${embedded ? '' : 'min-h-screen p-4 md:p-10'}`}>
+//     <div className={`w-full font-sans antialiased text-slate-900 ${embedded ? '' : 'bg-[#f8fafc] min-h-screen p-6'}`}>
 //       <Toaster position="top-right" reverseOrder={false} />
       
-//       <div className={`max-w-7xl mx-auto ${embedded ? 'px-4 md:px-10 pb-10' : ''}`}>
-//         {/* --- Header Section --- */}
-//         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
-//           <div>
-//             {!embedded && (
-//               <>
-//                 <h1 className="text-3xl font-bold tracking-tight text-slate-900">Access Control & Roles</h1>
-//                 <p className="text-slate-500 font-medium mt-1 text-sm">
-//                   Configure security credentials and platform permissions.
-//                 </p>
-//               </>
-//             )}
-//             {embedded && (
-//               <p className="text-slate-500 font-medium text-sm">
-//                 Create custom roles and define module-level permissions for your team.
+//       <div className={`max-w-7xl mx-auto space-y-6 ${embedded ? '' : ''}`}>
+        
+//         {/* --- Header / Top Bar --- */}
+//         {!embedded && (
+//           <div className="bg-white border border-slate-200/80 rounded-xl px-5 py-4 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+//             <div>
+//               <h1 className="text-base font-bold text-slate-900 tracking-tight">Access Control & Roles</h1>
+//               <p className="text-xs text-slate-500 font-medium mt-0.5">
+//                 Configure platform security tiers, system policies, and module permissions.
 //               </p>
-//             )}
-//             <span 
-//               style={{ color: "#00aaff", backgroundColor: "rgba(0, 170, 255, 0.08)" }}
-//               className={`${embedded ? 'mt-2 ' : 'ml-0 '}inline-block px-2 py-0.5 rounded text-xs font-bold`}
+//             </div>
+//             <button
+//               onClick={() => setIsModalOpen(true)}
+//               className="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-2 rounded-lg text-xs font-bold transition-all shadow-3xs flex items-center gap-2 shrink-0"
 //             >
-//               {roles.length} Profiles
-//             </span>
+//               <FiPlus size={14} /> Add Role
+//             </button>
 //           </div>
-//           <button
-//             onClick={() => setIsModalOpen(true)}
-//             style={{ backgroundColor: "#00aaff" }}
-//             className="flex items-center gap-2 text-white px-5 py-3 rounded font-bold transition-all shadow-lg hover:opacity-90 active:scale-95 text-sm"
-//           >
-//             <FiPlus size={18} /> Add Role
-//           </button>
-//         </div>
+//         )}
 
-//         {/* --- Error Info --- */}
+//         {embedded && (
+//           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+//             <div>
+//               <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider pl-1">
+//                 Roles Registry ({roles.length} Active Profiles)
+//               </h2>
+//             </div>
+//             <button
+//               onClick={() => setIsModalOpen(true)}
+//               className="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-2 rounded-lg text-xs font-bold transition-all shadow-3xs flex items-center gap-2"
+//             >
+//               <FiPlus size={14} /> Add Role
+//             </button>
+//           </div>
+//         )}
+
+//         {/* --- Error Display --- */}
 //         {error && (
-//           <div className="p-4 mb-6 bg-red-50 border border-red-100 rounded text-red-700 font-medium text-xs">
+//           <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-lg font-semibold text-xs">
 //             Error: {error}
 //           </div>
 //         )}
 
-//         {/* --- Clean Minimalist Table Container --- */}
-//         <div className="bg-white rounded border border-slate-200 shadow-xl shadow-slate-100/40 overflow-hidden">
-//           <div className="overflow-x-auto">
-//             <table className="w-full text-left border-collapse">
-//               <thead>
-//                 <tr className="bg-slate-50/50 border-b border-slate-100">
-//                   <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Role Name</th>
-//                   <th className="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Default Features</th>
-//                   <th className="px-6 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Status</th>
-//                   <th className="px-8 py-5 text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] text-right">Actions</th>
-//                 </tr>
-//               </thead>
+//         {/* --- Roles Table Card --- */}
+//         <div className="bg-white border border-slate-200 rounded-xl shadow-3xs overflow-hidden">
+//           <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+//             <div className="min-w-[600px] sm:min-w-full">
+//               <table className="w-full text-left text-xs border-collapse">
+//                 <thead>
+//                   <tr className="bg-slate-50/50 border-b border-slate-100">
+//                     <th className="py-2.5 px-3 sm:px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider whitespace-nowrap">
+//                       Role Title
+//                     </th>
+//                     <th className="py-2.5 px-3 sm:px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider whitespace-nowrap">
+//                       Default Access Scopes
+//                     </th>
+//                     <th className="py-2.5 px-3 sm:px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider whitespace-nowrap">
+//                       Status
+//                     </th>
+//                     <th className="py-2.5 px-3 sm:px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider text-right whitespace-nowrap">
+//                       Actions
+//                     </th>
+//                   </tr>
+//                 </thead>
 //               <tbody className="divide-y divide-slate-50">
 //                 {loading ? (
 //                   <tr>
-//                     <td colSpan={4} className="px-8 py-24 text-center">
-//                       <div className="flex flex-col items-center">
-//                         <FiLoader style={{ color: "#00aaff" }} className="animate-spin w-8 h-8 mb-3" />
-//                         <p className="text-slate-400 text-xs font-bold tracking-tight">Syncing Security Levels...</p>
+//                     <td colSpan={4} className="py-8 text-center text-slate-400 font-medium">
+//                       <div className="flex items-center justify-center gap-2">
+//                         <FiLoader className="animate-spin" size={14} />
+//                         <span>Syncing security roles...</span>
 //                       </div>
 //                     </td>
 //                   </tr>
 //                 ) : roles.length === 0 ? (
 //                   <tr>
-//                     <td colSpan={4} className="px-8 py-24 text-center">
-//                       <div className="flex flex-col items-center opacity-40">
-//                         <FiLock size={48} className="text-slate-300 mb-3" />
-//                         <p className="text-base font-bold text-slate-900">No custom roles yet</p>
-//                       </div>
+//                     <td colSpan={4} className="py-8 text-center text-slate-400 font-medium">
+//                       No security roles configured.
 //                     </td>
 //                   </tr>
 //                 ) : (
-//                   roles.map((role) => {
-//                     const statusKey = getStatusKey(role.status);
-//                     const styles = STATUS_COLORS[statusKey];
-//                     return (
-//                       <tr key={role._id} className="hover:bg-slate-50/60 transition-colors group">
-//                         <td className="px-8 py-4.5">
-//                           <div className="flex items-center gap-3.5">
-//                             {/* Avatar Badge with Custom Blue subtle background */}
-//                             <div 
-//                               style={{ color: "#00aaff", backgroundColor: "rgba(0, 170, 255, 0.08)" }}
-//                               className="w-10 h-10 rounded flex items-center justify-center border border-slate-100 shadow-sm"
-//                             >
-//                               <FiSettings size={16} />
-//                             </div>
-//                             <div>
-//                               <p className="font-bold text-slate-900 text-sm">{role.role_name}</p>
-//                               <p className="text-[10px] font-bold text-slate-400 mt-0.5 tracking-wide">
-//                                 ID: {role._id?.substring?.(0, 8) || role._id}
-//                               </p>
-//                             </div>
+//                   roles.map((role) => (
+//                     <tr key={role._id} className="hover:bg-slate-50/40 transition-colors">
+//                       <td className="py-3 px-5">
+//                         <div className="flex items-center gap-3">
+//                           <div className="p-2 bg-slate-50 border border-slate-100 rounded-lg text-slate-600 shrink-0">
+//                             <FiSettings size={14} />
 //                           </div>
-//                         </td>
-//                         <td className="px-6 py-4.5 max-w-md">
-//                           <div className="flex flex-wrap gap-1.5">
-//                             {role.permissions && role.permissions.length > 0 ? (
-//                               role.permissions.slice(0, 4).map((perm: string, index: number) => (
-//                                 <span key={index} className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-bold tracking-wide uppercase border border-slate-200/40">
-//                                   {perm}
-//                                 </span>
-//                               ))
-//                             ) : (
-//                               <span className="text-xs font-medium text-slate-400 italic">No direct scope</span>
-//                             )}
-//                             {role.permissions && role.permissions.length > 4 && (
-//                               <span className="text-[10px] font-bold text-slate-400 self-center pl-1">
-//                                 +{role.permissions.length - 4} more
+//                           <div>
+//                             <p className="font-bold text-slate-900">{role.role_name}</p>
+//                             <p className="text-[10px] font-semibold text-slate-400 tracking-wide uppercase">
+//                               ID: {role._id?.substring?.(0, 8) || role._id}
+//                             </p>
+//                           </div>
+//                         </div>
+//                       </td>
+//                       <td className="py-3 px-5 max-w-md">
+//                         <div className="flex flex-wrap gap-1">
+//                           {role.permissions && role.permissions.length > 0 ? (
+//                             role.permissions.slice(0, 4).map((perm: string, index: number) => (
+//                               <span
+//                                 key={index}
+//                                 className="px-2 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 rounded text-[10px] font-semibold tracking-wide"
+//                               >
+//                                 {perm}
 //                               </span>
-//                             )}
-//                           </div>
-//                         </td>
-//                         <td className="px-6 py-4.5">
-//                           <span 
-//                             style={{ backgroundColor: styles.bg, color: styles.text, borderColor: styles.border }}
-//                             className="px-2.5 py-1 rounded text-[9px] font-black uppercase tracking-wider border"
+//                             ))
+//                           ) : (
+//                             <span className="text-slate-400 italic">No scope assigned</span>
+//                           )}
+//                           {role.permissions && role.permissions.length > 4 && (
+//                             <span className="text-[10px] font-bold text-slate-400 self-center pl-1">
+//                               +{role.permissions.length - 4} more
+//                             </span>
+//                           )}
+//                         </div>
+//                       </td>
+//                       <td className="py-3 px-5">
+//                         <span className={`px-2 py-0.5 border text-[10px] font-bold rounded-md ${getStatusStyle(role.status)}`}>
+//                           {getStatusKey(role.status)}
+//                         </span>
+//                       </td>
+//                       <td className="py-3 px-5 text-right">
+//                         <div className="flex justify-end items-center gap-1">
+//                           <button
+//                             onClick={() => setSelectedRole(role)}
+//                             className="p-1.5 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-all"
+//                             title="View Scope"
 //                           >
-//                             {statusKey}
-//                           </span>
-//                         </td>
-//                         <td className="px-8 py-4.5 text-right">
-//                           <div className="flex justify-end items-center gap-1.5">
-//                             <button
-//                               onClick={() => setSelectedRole(role)}
-//                               className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded transition-all"
-//                               title="View Details"
-//                             >
-//                               <FiEye size={16} />
-//                             </button>
-//                             <button
-//                               onClick={() => openEditModal(role)}
-//                               style={{ "--hover-color": "#fdb614" } as React.CSSProperties}
-//                               className="p-2 text-slate-400 hover:text-[var(--hover-color)] hover:bg-slate-100 rounded transition-all"
-//                               title="Edit Role"
-//                             >
-//                               <FiEdit2 size={16} />
-//                             </button>
-//                             <button
-//                               onClick={() => handleDeleteRole(role._id)}
-//                               style={{ "--hover-color": "#ff0000" } as React.CSSProperties}
-//                               className="p-2 text-slate-400 hover:text-[var(--hover-color)] hover:bg-slate-100 rounded transition-all"
-//                               title="Delete Role"
-//                             >
-//                               <FiTrash2 size={16} />
-//                             </button>
-//                           </div>
-//                         </td>
-//                       </tr>
-//                     );
-//                   })
+//                             <FiEye size={14} />
+//                           </button>
+//                           <button
+//                             onClick={() => openEditModal(role)}
+//                             className="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-slate-100 rounded-md transition-all"
+//                             title="Edit Role"
+//                           >
+//                             <FiEdit2 size={14} />
+//                           </button>
+//                           <button
+//                             onClick={() => handleDeleteRole(role._id)}
+//                             className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded-md transition-all"
+//                             title="Delete Role"
+//                           >
+//                             <FiTrash2 size={14} />
+//                           </button>
+//                         </div>
+//                       </td>
+//                     </tr>
+//                   ))
 //                 )}
 //               </tbody>
 //             </table>
@@ -281,117 +278,130 @@
 //         </div>
 //       </div>
 
-//       {/* --- View Role Sidebar Card --- */}
+//       {/* --- View Role Specification Drawer --- */}
 //       {selectedRole && (
-//         <div className="fixed inset-0 z-[9999] overflow-hidden">
-//           <div className="absolute inset-0 bg-slate-950/30 backdrop-blur-sm transition-opacity" onClick={() => setSelectedRole(null)} />
-//           <div className="absolute top-0 right-0 h-full w-full sm:w-[420px] bg-white border-l border-slate-200 shadow-2xl flex flex-col text-xs font-medium">
-            
-//             <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-//               <h2 className="text-base font-bold text-slate-900">Role Specification</h2>
-//               <button onClick={() => setSelectedRole(null)} className="p-1.5 hover:bg-slate-200/60 rounded text-slate-400 transition-colors">
-//                 <FiX size={18} />
+//         <div className="fixed inset-0 z-[70] overflow-hidden">
+//           <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs" onClick={() => setSelectedRole(null)} />
+//           <div className="absolute top-0 right-0 h-full w-full sm:w-[420px] md:w-[460px] bg-white border-l border-slate-200 shadow-2xl flex flex-col text-xs font-medium animate-in slide-in-from-right duration-200">
+//             <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70 gap-2 shrink-0">
+//               <button
+//                 type="button"
+//                 onClick={() => setSelectedRole(null)}
+//                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs transition cursor-pointer shadow-3xs"
+//               >
+//                 <FiArrowLeft size={14} className="text-slate-600" />
+//                 <span>Back to User Management</span>
+//               </button>
+//               <button onClick={() => setSelectedRole(null)} className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition">
+//                 <FiX size={16} />
 //               </button>
 //             </div>
 
-//             <div className="flex-1 overflow-y-auto p-6 space-y-5 text-slate-700">
-//               <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-//                 <div 
-//                   style={{ color: "#00aaff", backgroundColor: "rgba(0, 170, 255, 0.08)" }}
-//                   className="w-12 h-12 rounded flex items-center justify-center border border-slate-100 shadow-sm"
-//                 >
-//                   <FiLock size={20} />
+//             <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+//               <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
+//                 <div className="p-2.5 bg-white border border-slate-200 rounded-lg text-slate-700 shadow-3xs">
+//                   <FiLock size={18} />
 //                 </div>
 //                 <div>
-//                   <p className="font-bold text-slate-900 text-base">{selectedRole.role_name}</p>
-//                   <p className="text-[10px] font-bold text-slate-400 mt-0.5 tracking-wide">Full ID: {selectedRole._id}</p>
+//                   <h3 className="font-bold text-slate-900 text-sm">{selectedRole.role_name}</h3>
+//                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+//                     Full ID: {selectedRole._id}
+//                   </p>
 //                 </div>
 //               </div>
 
-//               <div>
-//                 <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-1">Policy Status</span>
+//               <div className="space-y-3 pt-2">
 //                 <div>
-//                   <span 
-//                     style={{ 
-//                       backgroundColor: STATUS_COLORS[getStatusKey(selectedRole.status)].bg, 
-//                       color: STATUS_COLORS[getStatusKey(selectedRole.status)].text, 
-//                       borderColor: STATUS_COLORS[getStatusKey(selectedRole.status)].border 
-//                     }}
-//                     className="px-2.5 py-1 rounded text-[9px] font-black uppercase tracking-wider border inline-block"
-//                   >
+//                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Status</span>
+//                   <span className={`px-2 py-0.5 border text-[10px] font-bold rounded-md ${getStatusStyle(selectedRole.status)}`}>
 //                     {getStatusKey(selectedRole.status)}
 //                   </span>
 //                 </div>
-//               </div>
 
-//               <div>
-//                 <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-2">Assigned Scope & Permissions</span>
-//                 <div className="flex flex-wrap gap-1.5">
-//                   {selectedRole.permissions && selectedRole.permissions.length > 0 ? (
-//                     selectedRole.permissions.map((perm: string, index: number) => (
-//                       <span key={index} className="px-2.5 py-1 bg-slate-100 text-slate-700 rounded text-[11px] font-bold border border-slate-200/60 uppercase tracking-wide">
-//                         {perm}
-//                       </span>
-//                     ))
-//                   ) : (
-//                     <p className="text-sm font-medium text-slate-400 italic">No custom scopes defined for this configuration.</p>
-//                   )}
+//                 <div>
+//                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Granted System Scopes</span>
+//                   <div className="flex flex-wrap gap-1">
+//                     {selectedRole.permissions && selectedRole.permissions.length > 0 ? (
+//                       selectedRole.permissions.map((perm: string, index: number) => (
+//                         <span key={index} className="px-2 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 rounded text-[10px] font-semibold">
+//                           {perm}
+//                         </span>
+//                       ))
+//                     ) : (
+//                       <p className="text-slate-400 italic">No explicit permissions attached.</p>
+//                     )}
+//                   </div>
 //                 </div>
 //               </div>
 //             </div>
-            
+
+//             <div className="p-3 border-t border-slate-100 bg-slate-50 shrink-0">
+//               <button
+//                 type="button"
+//                 onClick={() => setSelectedRole(null)}
+//                 className="w-full py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-slate-800 transition cursor-pointer"
+//               >
+//                 <FiArrowLeft size={14} />
+//                 <span>Back to User Management</span>
+//               </button>
+//             </div>
 //           </div>
 //         </div>
 //       )}
 
-//       {/* --- Add & Edit Sidebar Sheet Form --- */}
+//       {/* --- Create / Edit Role Drawer --- */}
 //       {(isModalOpen || isEditModalOpen) && (
-//         <div className="fixed inset-0 z-[9999] overflow-hidden">
-//           <div 
-//             className="absolute inset-0 bg-slate-950/30 backdrop-blur-sm transition-opacity" 
-//             onClick={() => { setIsModalOpen(false); setIsEditModalOpen(false); }} 
+//         <div className="fixed inset-0 z-[70] overflow-hidden">
+//           <div
+//             className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs"
+//             onClick={() => { setIsModalOpen(false); setIsEditModalOpen(false); }}
 //           />
-//           <div className="absolute top-0 right-0 h-full w-full sm:w-[420px] bg-white border-l border-slate-200 shadow-2xl flex flex-col text-xs font-medium">
-            
-//             <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-//               <h2 className="text-base font-bold text-slate-900">
-//                 {isModalOpen ? "Initialize Role" : "Modify Record Data"}
-//               </h2>
-//               <button 
-//                 onClick={() => { setIsModalOpen(false); setIsEditModalOpen(false); }} 
-//                 className="p-1.5 hover:bg-slate-200/60 rounded text-slate-400 transition-colors"
+//           <div className="absolute top-0 right-0 h-full w-full sm:w-[460px] md:w-[500px] bg-white border-l border-slate-200 shadow-2xl flex flex-col text-xs font-medium animate-in slide-in-from-right duration-200">
+//             <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70 gap-2 shrink-0">
+//               <button
+//                 type="button"
+//                 onClick={() => { setIsModalOpen(false); setIsEditModalOpen(false); }}
+//                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs transition cursor-pointer shadow-3xs"
 //               >
-//                 <FiX size={18} />
+//                 <FiArrowLeft size={14} className="text-slate-600" />
+//                 <span>Back to User Management</span>
+//               </button>
+//               <h2 className="font-bold text-slate-900 text-xs tracking-wide hidden sm:block truncate">
+//                 {isModalOpen ? 'Orchestrate Security Role' : 'Modify Policy'}
+//               </h2>
+//               <button
+//                 type="button"
+//                 onClick={() => { setIsModalOpen(false); setIsEditModalOpen(false); }}
+//                 className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition"
+//               >
+//                 <FiX size={16} />
 //               </button>
 //             </div>
 
 //             <form onSubmit={isModalOpen ? handleCreateRole : handleUpdateRole} className="flex-1 flex flex-col overflow-hidden">
-//               <div className="flex-1 overflow-y-auto p-5 space-y-4">
-                
+//               <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
 //                 <div>
-//                   <label className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5 ml-0.5">Role Designation Name *</label>
+//                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+//                     Role Title *
+//                   </label>
 //                   <input
 //                     type="text"
 //                     required
-//                     placeholder="e.g. System Administrator"
+//                     placeholder="e.g. Platform Administrator"
 //                     value={isModalOpen ? newRoleName : editRoleName}
 //                     onChange={(e) => isModalOpen ? setNewRoleName(e.target.value) : setEditRoleName(e.target.value)}
-//                     onFocus={() => setFocusedInput("roleName")}
-//                     onBlur={() => setFocusedInput(null)}
-//                     style={{ borderColor: focusedInput === "roleName" ? "#00aaff" : "#e2e8f0" }}
-//                     className="w-full px-3.5 py-2.5 bg-slate-50/50 border rounded outline-none font-semibold transition-all focus:bg-white text-sm text-slate-800"
+//                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none font-semibold focus:bg-white focus:border-slate-400 text-xs"
 //                   />
 //                 </div>
 
 //                 <div>
-//                   <label className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5 ml-0.5">Security Policy Status</label>
+//                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+//                     Policy Status
+//                   </label>
 //                   <select
 //                     value={isModalOpen ? newRoleStatus : editRoleStatus}
 //                     onChange={(e) => isModalOpen ? setNewRoleStatus(e.target.value) : setEditRoleStatus(e.target.value)}
-//                     onFocus={() => setFocusedInput("status")}
-//                     onBlur={() => setFocusedInput(null)}
-//                     style={{ borderColor: focusedInput === "status" ? "#00aaff" : "#e2e8f0" }}
-//                     className="w-full px-3.5 py-2.5 bg-slate-50/50 border rounded outline-none font-semibold transition-all focus:bg-white text-sm cursor-pointer text-slate-700"
+//                     className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg outline-none font-semibold focus:bg-white focus:border-slate-400 text-xs cursor-pointer"
 //                   >
 //                     <option value="1">Active</option>
 //                     <option value="0">Disabled</option>
@@ -399,33 +409,33 @@
 //                 </div>
 
 //                 <div>
-//                   <label className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5 ml-0.5">Default CRM Features</label>
+//                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">
+//                     Default Scope Matrix
+//                   </label>
 //                   <PermissionPicker
 //                     selected={isModalOpen ? newRolePermissions : editRolePermissions}
 //                     onChange={(perms) => (isModalOpen ? setNewRolePermissions(perms) : setEditRolePermissions(perms))}
 //                   />
 //                 </div>
-
 //               </div>
 
-//               <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex gap-3">
+//               <div className="p-4 border-t border-slate-100 bg-slate-50/80 flex flex-col sm:flex-row gap-2 shrink-0">
 //                 <button
 //                   type="button"
 //                   onClick={() => { setIsModalOpen(false); setIsEditModalOpen(false); }}
-//                   className="flex-1 py-2.5 bg-white border border-slate-200 text-slate-700 rounded font-bold transition-colors"
+//                   className="flex-1 py-2.5 bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 rounded-xl font-bold transition-colors shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
 //                 >
-//                   Cancel
+//                   <FiArrowLeft size={13} />
+//                   <span>Back to User Management</span>
 //                 </button>
 //                 <button
 //                   type="submit"
-//                   style={{ backgroundColor: "#00aaff" }}
-//                   className="flex-1 text-white font-bold py-2.5 rounded transition-all shadow-md hover:opacity-95"
+//                   className="flex-1 bg-slate-900 text-white font-bold py-2.5 rounded-xl transition-all shadow-3xs hover:bg-slate-800 cursor-pointer"
 //                 >
-//                   {isModalOpen ? "Add Role" : "Apply Changes"}
+//                   {isModalOpen ? 'Save Role' : 'Commit Changes'}
 //                 </button>
 //               </div>
 //             </form>
-
 //           </div>
 //         </div>
 //       )}
@@ -438,7 +448,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { FiEdit2, FiTrash2, FiPlus, FiLock, FiSettings, FiX, FiEye, FiLoader } from 'react-icons/fi';
+import { FiEdit2, FiTrash2, FiPlus, FiLock, FiSettings, FiX, FiEye, FiLoader, FiArrowLeft } from 'react-icons/fi';
 import { RoleService } from '@/src/services/roleService';
 import { PermissionPicker } from '@/src/components/ui/users/PermissionPicker';
 import toast, { Toaster } from 'react-hot-toast';
@@ -604,129 +614,139 @@ const RolesTable = ({ embedded = false }: { embedded?: boolean }) => {
 
         {/* --- Roles Table Card --- */}
         <div className="bg-white border border-slate-200 rounded-xl shadow-3xs overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="bg-slate-50/50 border-b border-slate-100">
-                  <th className="py-2.5 px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">
-                    Role Title
-                  </th>
-                  <th className="py-2.5 px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">
-                    Default Access Scopes
-                  </th>
-                  <th className="py-2.5 px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="py-2.5 px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider text-right">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
-                {loading ? (
-                  <tr>
-                    <td colSpan={4} className="py-8 text-center text-slate-400 font-medium">
-                      <div className="flex items-center justify-center gap-2">
-                        <FiLoader className="animate-spin" size={14} />
-                        <span>Syncing security roles...</span>
-                      </div>
-                    </td>
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="min-w-[600px] sm:min-w-full">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="bg-slate-50/50 border-b border-slate-100">
+                    <th className="py-2.5 px-3 sm:px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider whitespace-nowrap">
+                      Role Title
+                    </th>
+                    <th className="py-2.5 px-3 sm:px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider whitespace-nowrap">
+                      Default Access Scopes
+                    </th>
+                    <th className="py-2.5 px-3 sm:px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider whitespace-nowrap">
+                      Status
+                    </th>
+                    <th className="py-2.5 px-3 sm:px-5 font-semibold text-slate-400 text-[10px] uppercase tracking-wider text-right whitespace-nowrap">
+                      Actions
+                    </th>
                   </tr>
-                ) : roles.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="py-8 text-center text-slate-400 font-medium">
-                      No security roles configured.
-                    </td>
-                  </tr>
-                ) : (
-                  roles.map((role) => (
-                    <tr key={role._id} className="hover:bg-slate-50/40 transition-colors">
-                      <td className="py-3 px-5">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-slate-50 border border-slate-100 rounded-lg text-slate-600 shrink-0">
-                            <FiSettings size={14} />
-                          </div>
-                          <div>
-                            <p className="font-bold text-slate-900">{role.role_name}</p>
-                            <p className="text-[10px] font-semibold text-slate-400 tracking-wide uppercase">
-                              ID: {role._id?.substring?.(0, 8) || role._id}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-3 px-5 max-w-md">
-                        <div className="flex flex-wrap gap-1">
-                          {role.permissions && role.permissions.length > 0 ? (
-                            role.permissions.slice(0, 4).map((perm: string, index: number) => (
-                              <span
-                                key={index}
-                                className="px-2 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 rounded text-[10px] font-semibold tracking-wide"
-                              >
-                                {perm}
-                              </span>
-                            ))
-                          ) : (
-                            <span className="text-slate-400 italic">No scope assigned</span>
-                          )}
-                          {role.permissions && role.permissions.length > 4 && (
-                            <span className="text-[10px] font-bold text-slate-400 self-center pl-1">
-                              +{role.permissions.length - 4} more
-                            </span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-3 px-5">
-                        <span className={`px-2 py-0.5 border text-[10px] font-bold rounded-md ${getStatusStyle(role.status)}`}>
-                          {getStatusKey(role.status)}
-                        </span>
-                      </td>
-                      <td className="py-3 px-5 text-right">
-                        <div className="flex justify-end items-center gap-1">
-                          <button
-                            onClick={() => setSelectedRole(role)}
-                            className="p-1.5 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-all"
-                            title="View Scope"
-                          >
-                            <FiEye size={14} />
-                          </button>
-                          <button
-                            onClick={() => openEditModal(role)}
-                            className="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-slate-100 rounded-md transition-all"
-                            title="Edit Role"
-                          >
-                            <FiEdit2 size={14} />
-                          </button>
-                          <button
-                            onClick={() => handleDeleteRole(role._id)}
-                            className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded-md transition-all"
-                            title="Delete Role"
-                          >
-                            <FiTrash2 size={14} />
-                          </button>
+                </thead>
+                <tbody className="divide-y divide-slate-50">
+                  {loading ? (
+                    <tr>
+                      <td colSpan={4} className="py-8 text-center text-slate-400 font-medium">
+                        <div className="flex items-center justify-center gap-2">
+                          <FiLoader className="animate-spin" size={14} />
+                          <span>Syncing security roles...</span>
                         </div>
                       </td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+                  ) : roles.length === 0 ? (
+                    <tr>
+                      <td colSpan={4} className="py-8 text-center text-slate-400 font-medium">
+                        No security roles configured.
+                      </td>
+                    </tr>
+                  ) : (
+                    roles.map((role) => (
+                      <tr key={role._id} className="hover:bg-slate-50/40 transition-colors">
+                        <td className="py-3 px-5">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-slate-50 border border-slate-100 rounded-lg text-slate-600 shrink-0">
+                              <FiSettings size={14} />
+                            </div>
+                            <div>
+                              <p className="font-bold text-slate-900">{role.role_name}</p>
+                              <p className="text-[10px] font-semibold text-slate-400 tracking-wide uppercase">
+                                ID: {role._id?.substring?.(0, 8) || role._id}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-3 px-5 max-w-md">
+                          <div className="flex flex-wrap gap-1">
+                            {role.permissions && role.permissions.length > 0 ? (
+                              role.permissions.slice(0, 4).map((perm: string, index: number) => (
+                                <span
+                                  key={index}
+                                  className="px-2 py-0.5 bg-slate-100 text-slate-600 border border-slate-200 rounded text-[10px] font-semibold tracking-wide"
+                                >
+                                  {perm}
+                                </span>
+                              ))
+                            ) : (
+                              <span className="text-slate-400 italic">No scope assigned</span>
+                            )}
+                            {role.permissions && role.permissions.length > 4 && (
+                              <span className="text-[10px] font-bold text-slate-400 self-center pl-1">
+                                +{role.permissions.length - 4} more
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="py-3 px-5">
+                          <span className={`px-2 py-0.5 border text-[10px] font-bold rounded-md ${getStatusStyle(role.status)}`}>
+                            {getStatusKey(role.status)}
+                          </span>
+                        </td>
+                        <td className="py-3 px-5 text-right">
+                          <div className="flex justify-end items-center gap-1">
+                            <button
+                              onClick={() => setSelectedRole(role)}
+                              className="p-1.5 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-md transition-all"
+                              title="View Scope"
+                            >
+                              <FiEye size={14} />
+                            </button>
+                            <button
+                              onClick={() => openEditModal(role)}
+                              className="p-1.5 text-slate-400 hover:text-amber-600 hover:bg-slate-100 rounded-md transition-all"
+                              title="Edit Role"
+                            >
+                              <FiEdit2 size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteRole(role._id)}
+                              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded-md transition-all"
+                              title="Delete Role"
+                            >
+                              <FiTrash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+
       </div>
 
       {/* --- View Role Specification Drawer --- */}
       {selectedRole && (
-        <div className="fixed inset-0 z-50 overflow-hidden">
-          <div className="absolute inset-0 bg-slate-900/20 backdrop-blur-xs" onClick={() => setSelectedRole(null)} />
-          <div className="absolute top-0 right-0 h-full w-full sm:w-[400px] bg-white border-l border-slate-200 shadow-xl flex flex-col text-xs font-medium">
-            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-              <h2 className="font-bold text-slate-900 text-xs tracking-wide">Role Specifications</h2>
-              <button onClick={() => setSelectedRole(null)} className="p-1 text-slate-400 hover:text-slate-700">
+        <div className="fixed inset-0 z-[70] overflow-hidden">
+          <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs" onClick={() => setSelectedRole(null)} />
+          <div className="absolute top-0 right-0 h-full w-full sm:w-[420px] md:w-[460px] bg-white border-l border-slate-200 shadow-2xl flex flex-col text-xs font-medium animate-in slide-in-from-right duration-200">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70 gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setSelectedRole(null)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs transition cursor-pointer shadow-3xs"
+              >
+                <FiArrowLeft size={14} className="text-slate-600" />
+                <span>Back to User Management</span>
+              </button>
+              <button onClick={() => setSelectedRole(null)} className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition">
                 <FiX size={16} />
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-5 space-y-4">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
               <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
                 <div className="p-2.5 bg-white border border-slate-200 rounded-lg text-slate-700 shadow-3xs">
                   <FiLock size={18} />
@@ -763,32 +783,52 @@ const RolesTable = ({ embedded = false }: { embedded?: boolean }) => {
                 </div>
               </div>
             </div>
+
+            <div className="p-3 border-t border-slate-100 bg-slate-50 shrink-0">
+              <button
+                type="button"
+                onClick={() => setSelectedRole(null)}
+                className="w-full py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-slate-800 transition cursor-pointer"
+              >
+                <FiArrowLeft size={14} />
+                <span>Back to User Management</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* --- Create / Edit Role Drawer --- */}
       {(isModalOpen || isEditModalOpen) && (
-        <div className="fixed inset-0 z-[9999] overflow-hidden">
+        <div className="fixed inset-0 z-[70] overflow-hidden">
           <div
-            className="absolute inset-0 bg-slate-900/20 backdrop-blur-xs"
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs"
             onClick={() => { setIsModalOpen(false); setIsEditModalOpen(false); }}
           />
-          <div className="absolute top-0 right-0 h-full w-full sm:w-[420px] bg-white border-l border-slate-200 shadow-xl flex flex-col text-xs font-medium">
-            <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-              <h2 className="font-bold text-slate-900 text-xs tracking-wide">
-                {isModalOpen ? 'Orchestrate Security Role' : 'Modify Policy Configuration'}
+          <div className="absolute top-0 right-0 h-full w-full sm:w-[460px] md:w-[500px] bg-white border-l border-slate-200 shadow-2xl flex flex-col text-xs font-medium animate-in slide-in-from-right duration-200">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70 gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => { setIsModalOpen(false); setIsEditModalOpen(false); }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs transition cursor-pointer shadow-3xs"
+              >
+                <FiArrowLeft size={14} className="text-slate-600" />
+                <span>Back to User Management</span>
+              </button>
+              <h2 className="font-bold text-slate-900 text-xs tracking-wide hidden sm:block truncate">
+                {isModalOpen ? 'Orchestrate Security Role' : 'Modify Policy'}
               </h2>
               <button
+                type="button"
                 onClick={() => { setIsModalOpen(false); setIsEditModalOpen(false); }}
-                className="p-1 text-slate-400 hover:text-slate-700"
+                className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition"
               >
                 <FiX size={16} />
               </button>
             </div>
 
             <form onSubmit={isModalOpen ? handleCreateRole : handleUpdateRole} className="flex-1 flex flex-col overflow-hidden">
-              <div className="flex-1 overflow-y-auto p-5 space-y-4">
+              <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
                 <div>
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
                     Role Title *
@@ -828,17 +868,18 @@ const RolesTable = ({ embedded = false }: { embedded?: boolean }) => {
                 </div>
               </div>
 
-              <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex gap-2">
+              <div className="p-4 border-t border-slate-100 bg-slate-50/80 flex flex-col sm:flex-row gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => { setIsModalOpen(false); setIsEditModalOpen(false); }}
-                  className="flex-1 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg font-bold transition-colors shadow-2xs"
+                  className="flex-1 py-2.5 bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 rounded-xl font-bold transition-colors shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  Cancel
+                  <FiArrowLeft size={13} />
+                  <span>Back to User Management</span>
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-slate-900 text-white font-bold py-2 rounded-lg transition-all shadow-3xs hover:bg-slate-800"
+                  className="flex-1 bg-slate-900 text-white font-bold py-2.5 rounded-xl transition-all shadow-3xs hover:bg-slate-800 cursor-pointer"
                 >
                   {isModalOpen ? 'Save Role' : 'Commit Changes'}
                 </button>

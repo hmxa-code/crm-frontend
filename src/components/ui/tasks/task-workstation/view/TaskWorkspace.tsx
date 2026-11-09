@@ -90,12 +90,24 @@ export default function TaskWorkspace() {
   };
 
   return (
-    <div className="space-y-5 p-2 md:p-4 bg-slate-50/30 min-h-screen">
+    <div className="space-y-6 p-4 bg-slate-50/50 min-h-[calc(100vh-140px)]">
       <TaskFiltersBar
         search={search}
         setSearch={setSearch}
         viewMode={viewMode}
         setViewMode={setViewMode}
+        filterStatus={filterStatus}
+        setFilterStatus={setFilterStatus}
+        filterPriority={filterPriority}
+        setFilterPriority={setFilterPriority}
+        filterModule={filterModule}
+        setFilterModule={setFilterModule}
+        filterAssignee={filterAssignee}
+        setFilterAssignee={setFilterAssignee}
+        sortKey={sortKey}
+        setSortKey={setSortKey}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder}
         onOpenCreateModal={handleOpenCreate}
         totalCards={filteredTasks.length}
       />

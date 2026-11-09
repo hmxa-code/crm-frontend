@@ -23,8 +23,8 @@ export default function Home() {
 
   if (checking) {
     return (
-      <div className="min-h-screen bg-[#fcfdfe] flex items-center justify-center">
-        <div className="w-7 h-7 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
+      <div className="min-h-screen bg-[#05060a] flex items-center justify-center">
+        <div className="w-7 h-7 rounded-full border-2 border-[#d7b07a] border-t-transparent animate-spin" />
       </div>
     );
   }

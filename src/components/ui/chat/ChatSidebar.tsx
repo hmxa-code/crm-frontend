@@ -13,7 +13,6 @@ import {
 } from 'react-icons/fi';
 import { getDiceBearAvatar } from '@/src/utils/avatarHelper';
 
-
 const STATUS_DOT: Record<string, string> = {
   online: 'bg-emerald-500',
   busy: 'bg-rose-500',
@@ -24,7 +23,7 @@ const STATUS_DOT: Record<string, string> = {
 interface ChatSidebarProps {
   primaryColor: string;
   channels: Array<{ id: string; name: string; isPrivate: boolean; unreadCount?: number }>;
-  users: Array<{ id: string; name: string; avatarBg: string; status: string; title: string; role: string }>;
+  users: Array<{ id: string; name: string; avatarBg: string; status: string; title: string; role: string; email?: string }>;
   activeSessions: Array<{ id: string; targetId: string; type: string }>;
   activeSessionId: string;
   searchQuery: string;
@@ -36,6 +35,7 @@ interface ChatSidebarProps {
   taskCount: number;
   calendarCount?: number;
   onOpenCalendar?: () => void;
+  onCloseMobileDrawer?: () => void;
 }
 
 export default function ChatSidebar({
@@ -53,6 +53,7 @@ export default function ChatSidebar({
   taskCount,
   calendarCount,
   onOpenCalendar,
+  onCloseMobileDrawer,
 }: ChatSidebarProps) {
   const q = searchQuery.trim().toLowerCase();
   const filteredChannels = q ? channels.filter((c) => c.name.toLowerCase().includes(q)) : channels;
@@ -74,13 +75,13 @@ export default function ChatSidebar({
             <span className="text-[10px] text-slate-400 font-medium">Chat Workspace</span>
           </div>
         </div>
-        <button
+        {/* <button
           onClick={() => setIsCreateChannelOpen(true)}
           title="Create New Channel"
-          className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all shrink-0"
+          className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-all shrink-0 cursor-pointer"
         >
           <FiPlus size={14} />
-        </button>
+        </button> */}
       </div>
 
       {/* Quick Search */}
@@ -101,15 +102,15 @@ export default function ChatSidebar({
       <div className="flex-1 overflow-y-auto px-2 py-3 space-y-4 scrollbar-thin">
         <div className="space-y-0.5">
           <button
-            onClick={() => openTarget('channel', 'c-general')}
-            className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition"
+            onClick={() => { openTarget('channel', 'c-general'); onCloseMobileDrawer?.(); }}
+            className="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer"
           >
             <FiMessageSquare size={14} className="text-slate-400" />
             <span>All Threads</span>
           </button>
           <button
-            onClick={() => setShowTaskPanel(true)}
-            className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition"
+            onClick={() => { setShowTaskPanel(true); onCloseMobileDrawer?.(); }}
+            className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer"
           >
             <div className="flex items-center gap-2.5">
               <FiCheckSquare size={14} className="text-emerald-600" />
@@ -120,8 +121,8 @@ export default function ChatSidebar({
             </span>
           </button>
           <button
-            onClick={() => onOpenCalendar ? onOpenCalendar() : null}
-            className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition"
+            onClick={() => { onOpenCalendar ? onOpenCalendar() : null; onCloseMobileDrawer?.(); }}
+            className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition cursor-pointer"
           >
             <div className="flex items-center gap-2.5">
               <FiCalendar size={14} className="text-blue-600" />
@@ -144,7 +145,7 @@ export default function ChatSidebar({
             <button
               onClick={() => setIsCreateChannelOpen(true)}
               style={{ color: primaryColor }}
-              className="hover:opacity-80 transition"
+              className="hover:opacity-80 transition cursor-pointer"
             >
               <FiPlus size={13} />
             </button>
@@ -158,7 +159,7 @@ export default function ChatSidebar({
               return (
                 <button
                   key={channel.id}
-                  onClick={() => openTarget('channel', channel.id)}
+                  onClick={() => { openTarget('channel', channel.id); onCloseMobileDrawer?.(); }}
                   style={
                     isActive
                       ? { backgroundColor: primaryColor, color: '#fff' }
@@ -166,7 +167,7 @@ export default function ChatSidebar({
                       ? { backgroundColor: `${primaryColor}12`, color: primaryColor }
                       : undefined
                   }
-                  className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                  className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                     isActive ? 'shadow-2xs' : 'text-slate-600 hover:bg-slate-100'
                   }`}
                 >
@@ -220,10 +221,17 @@ export default function ChatSidebar({
                   }`}
                 >
                   <button
-                    onClick={() => openTarget('dm', user.id)}
-                    className="flex items-center gap-2.5 truncate flex-1 text-left min-w-0"
+                    onClick={() => { openTarget('dm', user.id); onCloseMobileDrawer?.(); }}
+                    className="flex items-center gap-2.5 truncate flex-1 text-left min-w-0 cursor-pointer"
                   >
-                    <div className="relative shrink-0">
+                    <div 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setProfileUser(user);
+                      }}
+                      className="relative shrink-0 cursor-pointer"
+                      title="Click avatar to view profile"
+                    >
                       <div className="w-6 h-6 rounded-lg bg-slate-100 overflow-hidden flex items-center justify-center border border-slate-200/50">
                         <img
                           src={getDiceBearAvatar(user.name)}
@@ -240,7 +248,7 @@ export default function ChatSidebar({
                       e.stopPropagation();
                       setProfileUser(user);
                     }}
-                    className={`p-1 rounded-md opacity-0 group-hover/user:opacity-100 hover:bg-black/10 transition shrink-0 ${
+                    className={`p-1 rounded-md opacity-0 group-hover/user:opacity-100 hover:bg-black/10 transition shrink-0 cursor-pointer ${
                       isActive ? 'text-white' : 'text-slate-400'
                     }`}
                     title="View profile"

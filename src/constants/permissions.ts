@@ -14,6 +14,7 @@ export const CRM_FEATURES: CrmFeature[] = [
   { key: 'chat', label: 'Chat Workspace', module: 'Core' },
   { key: 'crm-settings', label: 'CRM Settings', module: 'Admin' },
   { key: 'workspace', label: 'Unified Workspace', module: 'Core' },
+  { key: 'dealflow_opportunity', label: 'Deal Flow', module: 'Core' },
 ];
 
 export const FEATURES_BY_MODULE = CRM_FEATURES.reduce<Record<string, CrmFeature[]>>((acc, feature) => {
@@ -40,6 +41,8 @@ export const MENU_FEATURE_MAP: Record<string, string> = {
   '/chat': 'chat',
   '/crm-settings': 'crm-settings',
   '/workspace': 'workspace',
+  '/dealflow': 'dealflow_opportunity',
+  '/dealflow/*': 'dealflow_opportunity',
 };
 
 export const AVAILABLE_PERMISSIONS = CRM_FEATURES;

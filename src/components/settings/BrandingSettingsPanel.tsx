@@ -36,14 +36,13 @@ export function BrandingSettingsPanel({
   const faviconInputRef = useRef<HTMLInputElement>(null);
   const [activeTab, setActiveTab] = useState<"colors" | "sidebar_suits" | "logo" | "preview">("colors");
 
-  // Local state for debounced color sliders so dragging doesn't lag the browser
+  // Local state for debounced color sliders
   const [localPrimary, setLocalPrimary] = useState(settings.primaryColor);
   const [localAccent, setLocalAccent] = useState(settings.accentColor);
   const [localSidebarBg, setLocalSidebarBg] = useState(settings.sidebarBg);
   const [localSidebarText, setLocalSidebarText] = useState(settings.sidebarText);
   const [localCardBorder, setLocalCardBorder] = useState(settings.cardBorder);
 
-  // Sync when settings change from preset or external save
   useEffect(() => {
     setLocalPrimary(settings.primaryColor);
     setLocalAccent(settings.accentColor);
@@ -52,11 +51,9 @@ export function BrandingSettingsPanel({
     setLocalCardBorder(settings.cardBorder);
   }, [settings.primaryColor, settings.accentColor, settings.sidebarBg, settings.sidebarText, settings.cardBorder]);
 
-  // Debounced updater helper
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleColorChange = (field: keyof CRMSettings, value: string) => {
-    // 1. Instant local DOM CSS variable update for 60fps responsiveness without React lag
     if (typeof document !== "undefined") {
       const root = document.documentElement;
       if (field === "primaryColor") {
@@ -75,7 +72,6 @@ export function BrandingSettingsPanel({
       }
     }
 
-    // 2. Debounce parent state & localStorage writes
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
@@ -201,10 +197,9 @@ export function BrandingSettingsPanel({
       </div>
 
       <div className="p-6">
-        {/* TAB 1: COLOR SYSTEM WITH SMOOTH DEBOUNCING */}
+        {/* TAB 1: COLOR SYSTEM */}
         {activeTab === "colors" && (
           <div className="space-y-6">
-            {/* Theme Presets */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
@@ -266,7 +261,6 @@ export function BrandingSettingsPanel({
               </div>
             </div>
 
-            {/* Custom Granular Color Token Controls */}
             <div className="pt-4 border-t border-slate-100">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
@@ -279,7 +273,6 @@ export function BrandingSettingsPanel({
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* Primary Color */}
                 <div className="p-4 rounded-xl border border-slate-200/70 bg-slate-50/50">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-xs font-bold text-slate-800">Primary Brand Color</span>
@@ -310,7 +303,6 @@ export function BrandingSettingsPanel({
                   </div>
                 </div>
 
-                {/* Accent Color */}
                 <div className="p-4 rounded-xl border border-slate-200/70 bg-slate-50/50">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-xs font-bold text-slate-800">Accent Color</span>
@@ -341,7 +333,6 @@ export function BrandingSettingsPanel({
                   </div>
                 </div>
 
-                {/* Sidebar Background */}
                 <div className="p-4 rounded-xl border border-slate-200/70 bg-slate-50/50">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-xs font-bold text-slate-800">Sidebar Background</span>
@@ -372,7 +363,6 @@ export function BrandingSettingsPanel({
                   </div>
                 </div>
 
-                {/* Sidebar Text / Active State */}
                 <div className="p-4 rounded-xl border border-slate-200/70 bg-slate-50/50">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-xs font-bold text-slate-800">Sidebar Text & Icons</span>
@@ -403,7 +393,6 @@ export function BrandingSettingsPanel({
                   </div>
                 </div>
 
-                {/* Card & Panel Border Token */}
                 <div className="p-4 rounded-xl border border-slate-200/70 bg-slate-50/50">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-xs font-bold text-slate-800">Card & Panel Borders</span>
@@ -438,7 +427,7 @@ export function BrandingSettingsPanel({
           </div>
         )}
 
-        {/* TAB 2: SIDEBAR THEME SUITS & ARCHITECTURE */}
+        {/* TAB 2: SIDEBAR THEME SUITS */}
         {activeTab === "sidebar_suits" && (
           <div className="space-y-6">
             <div>
@@ -450,7 +439,6 @@ export function BrandingSettingsPanel({
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Suit 1: Enterprise Clean Slate */}
                 <div
                   onClick={() => {
                     onUpdate("sidebarThemeSuit", "enterprise_slate");
@@ -480,7 +468,6 @@ export function BrandingSettingsPanel({
                       HubSpot & Salesforce style high-contrast light background with subtle slate borders and crisp category typography.
                     </p>
 
-                    {/* Mini Visual Preview */}
                     <div className="mt-4 p-2.5 rounded-xl border border-slate-200 bg-white shadow-2xs space-y-1.5">
                       <div className="h-3 w-16 bg-blue-600 rounded" />
                       <div className="h-2 w-28 bg-slate-100 rounded" />
@@ -493,7 +480,6 @@ export function BrandingSettingsPanel({
                   </div>
                 </div>
 
-                {/* Suit 2: Executive Dark Obsidian */}
                 <div
                   onClick={() => {
                     onUpdate("sidebarThemeSuit", "executive_dark");
@@ -525,7 +511,6 @@ export function BrandingSettingsPanel({
                       Deep graphite `#0b1329` navigation bar designed for high-focus trading desks, dark-mode workflows, and SaaS command centers.
                     </p>
 
-                    {/* Mini Visual Preview */}
                     <div className="mt-4 p-2.5 rounded-xl border border-slate-800 bg-[#070d1e] shadow-2xs space-y-1.5">
                       <div className="h-3 w-16 bg-cyan-400 rounded" />
                       <div className="h-2 w-28 bg-slate-800 rounded" />
@@ -538,7 +523,6 @@ export function BrandingSettingsPanel({
                   </div>
                 </div>
 
-                {/* Suit 3: Modern Glass Frosted */}
                 <div
                   onClick={() => {
                     onUpdate("sidebarThemeSuit", "glass_modern");
@@ -568,7 +552,6 @@ export function BrandingSettingsPanel({
                       Sleek semi-translucent backdrop-blur acrylic feel with subtle border highlights for hyper-modern workspace experiences.
                     </p>
 
-                    {/* Mini Visual Preview */}
                     <div className="mt-4 p-2.5 rounded-xl border border-indigo-200/60 bg-gradient-to-r from-indigo-50/50 to-white/50 backdrop-blur-sm shadow-2xs space-y-1.5">
                       <div className="h-3 w-16 bg-indigo-600 rounded" />
                       <div className="h-2 w-28 bg-indigo-100/60 rounded" />
@@ -583,14 +566,12 @@ export function BrandingSettingsPanel({
               </div>
             </div>
 
-            {/* Fine-grained Customization Options */}
             <div className="pt-4 border-t border-slate-100">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-3">
                 Granular Sidebar UX Customization
               </span>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* Density selector */}
                 <div className="p-4 rounded-xl border border-slate-200/70 bg-slate-50/50">
                   <span className="text-xs font-bold text-slate-800 block mb-1">Navigation Density</span>
                   <p className="text-[11px] text-slate-500 mb-3">Item row height and padding.</p>
@@ -611,7 +592,6 @@ export function BrandingSettingsPanel({
                   </div>
                 </div>
 
-                {/* Status pulse toggle */}
                 <div className="p-4 rounded-xl border border-slate-200/70 bg-slate-50/50 flex flex-col justify-between">
                   <div>
                     <span className="text-xs font-bold text-slate-800 block mb-1">Live Online Pulse</span>
@@ -628,7 +608,6 @@ export function BrandingSettingsPanel({
                   </div>
                 </div>
 
-                {/* Section Badges toggle */}
                 <div className="p-4 rounded-xl border border-slate-200/70 bg-slate-50/50 flex flex-col justify-between">
                   <div>
                     <span className="text-xs font-bold text-slate-800 block mb-1">Feature Tag Badges</span>
@@ -645,7 +624,6 @@ export function BrandingSettingsPanel({
                   </div>
                 </div>
 
-                {/* Quick Schedule Telemetry Widget toggle */}
                 <div className="p-4 rounded-xl border border-slate-200/70 bg-slate-50/50 flex flex-col justify-between">
                   <div>
                     <span className="text-xs font-bold text-slate-800 block mb-1">Footer Schedule Widget</span>
@@ -670,7 +648,6 @@ export function BrandingSettingsPanel({
         {activeTab === "logo" && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Upload & URL input column */}
               <div className="space-y-4">
                 <div>
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
@@ -727,7 +704,6 @@ export function BrandingSettingsPanel({
                   </div>
                 </div>
 
-                {/* Favicon support */}
                 <div className="pt-2">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
                     Browser Tab Favicon
@@ -763,7 +739,6 @@ export function BrandingSettingsPanel({
                 </div>
               </div>
 
-              {/* Live scaling & preview column */}
               <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-5 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 mb-4">
@@ -774,7 +749,6 @@ export function BrandingSettingsPanel({
                     <span className="text-[10px] text-slate-400">Dynamic Scaling</span>
                   </div>
 
-                  {/* Simulated Navbar / Sidebar Preview Box */}
                   <div
                     className="p-4 rounded-xl border shadow-inner flex flex-col items-center justify-center min-h-[140px] transition-colors"
                     style={{
@@ -808,7 +782,6 @@ export function BrandingSettingsPanel({
                     </p>
                   </div>
 
-                  {/* Scaling Sliders */}
                   <div className="mt-5 space-y-3">
                     <div>
                       <div className="flex items-center justify-between text-xs font-semibold text-slate-700 mb-1">
@@ -869,7 +842,6 @@ export function BrandingSettingsPanel({
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Button & Badges preview card */}
               <div
                 className="p-4 rounded-xl border bg-white shadow-xs space-y-3"
                 style={{ borderColor: settings.cardBorder }}
@@ -911,7 +883,6 @@ export function BrandingSettingsPanel({
                 </div>
               </div>
 
-              {/* Sidebar item simulation card */}
               <div
                 className="p-4 rounded-xl border shadow-xs"
                 style={{
@@ -939,7 +910,6 @@ export function BrandingSettingsPanel({
                 </div>
               </div>
 
-              {/* Input focus state simulation */}
               <div
                 className="p-4 rounded-xl border bg-white shadow-xs space-y-2"
                 style={{ borderColor: settings.cardBorder }}

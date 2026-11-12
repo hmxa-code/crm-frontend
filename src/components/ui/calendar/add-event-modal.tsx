@@ -33,6 +33,7 @@ export function AddEventModal({ isOpen, onClose, preselectedDate, onSaveEvent }:
   const [priority, setPriority] = useState<'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'>('HIGH');
   const [assigneeId, setAssigneeId] = useState('u1');
   const [syncToTasks, setSyncToTasks] = useState(true);
+  const [errors, setErrors] = useState<{title?: string; date?: string}>({});
 
   useEffect(() => {
     if (isOpen) {
@@ -43,6 +44,7 @@ export function AddEventModal({ isOpen, onClose, preselectedDate, onSaveEvent }:
       setPriority('HIGH');
       setAssigneeId('u1');
       setSyncToTasks(true);
+      setErrors({});
       const targetDate = preselectedDate ? preselectedDate : new Date();
       setStartDate(targetDate.toISOString().split('T')[0]);
     }
@@ -52,13 +54,35 @@ export function AddEventModal({ isOpen, onClose, preselectedDate, onSaveEvent }:
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate required fields
+    const newErrors: {title?: string; date?: string} = {};
+    if (!title.trim()) {
+      newErrors.title = 'Event / Task title is required';
+    }
+    if (!startDate) {
+      newErrors.date = 'Date is required';
+    }
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+    
+    setErrors({});
+    
     const startDateTime = new Date(`${startDate}T${startTime}`);
     const endDateTime = new Date(startDateTime.getTime() + parseFloat(durationHours) * 60 * 60 * 1000);
     const assignedMember = TEAM_MEMBERS.find((m) => m.id === assigneeId);
 
+    const nowTimestamp = Date.now();
+    const eventId = `evt-${nowTimestamp}`;
+    const generatedTaskId = `task-${nowTimestamp}`;
+
     const newEvent: CalendarEvent = {
-      id: `evt-${Date.now()}`,
-      title: title.trim() || `[${category}] Scheduled Task`,
+      id: eventId,
+      taskId: generatedTaskId,
+      title: title.trim(),
       description: description.trim() || `Scheduled in CRM Calendar • Module: ${category} • Priority: ${priority}`,
       startDate: isNaN(startDateTime.getTime()) ? new Date() : startDateTime,
       endDate: isNaN(endDateTime.getTime()) ? new Date(Date.now() + 3600000) : endDateTime,
@@ -90,7 +114,7 @@ export function AddEventModal({ isOpen, onClose, preselectedDate, onSaveEvent }:
   ];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
+    <div className="fixed inset-0 z-[9999] overflow-hidden flex justify-end">
       {/* Backdrop overlay */}
       <div 
         className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
@@ -131,7 +155,7 @@ export function AddEventModal({ isOpen, onClose, preselectedDate, onSaveEvent }:
         </div>
 
         {/* Drawer Scrollable Body Form */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-5">
+        <form id="add-event-schedule-form" onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-5">
           
           {/* Quick Preset Buttons */}
           <div>
@@ -169,8 +193,11 @@ export function AddEventModal({ isOpen, onClose, preselectedDate, onSaveEvent }:
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Corporate Client Product Demo — Zeta Corp"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-900 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
+              className={`w-full px-3.5 py-2.5 rounded-xl border ${errors.title ? 'border-rose-400 focus:border-rose-400 focus:ring-rose-400/20' : 'border-slate-200 focus:border-sky-500 focus:ring-sky-500/20'} text-xs font-semibold text-slate-900 bg-white placeholder-slate-400 focus:outline-none transition`}
             />
+            {errors.title && (
+              <p className="text-[10px] text-rose-500 mt-1 font-medium">{errors.title}</p>
+            )}
           </div>
 
           {/* Module & Priority Selection */}
@@ -241,8 +268,11 @@ export function AddEventModal({ isOpen, onClose, preselectedDate, onSaveEvent }:
                 required
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 bg-slate-50/70 focus:outline-none focus:border-slate-400"
+                className={`w-full px-3 py-2 rounded-xl border ${errors.date ? 'border-rose-400 focus:border-rose-400' : 'border-slate-200 focus:border-slate-400'} text-xs font-semibold text-slate-800 bg-slate-50/70 focus:outline-none transition`}
               />
+              {errors.date && (
+                <p className="text-[10px] text-rose-500 mt-1 font-medium">{errors.date}</p>
+              )}
             </div>
 
             <div>
@@ -346,7 +376,8 @@ export function AddEventModal({ isOpen, onClose, preselectedDate, onSaveEvent }:
             Cancel
           </button>
           <button
-            type="button"
+            type="submit"
+            form="add-event-schedule-form"
             onClick={handleSubmit}
             className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-bold text-white shadow-xs transition cursor-pointer active:scale-95"
           >

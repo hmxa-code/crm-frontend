@@ -1,6 +1,20 @@
-import { apiRequest } from '@/src/api/client';
+import { apiRequest, API_BASE_URL, FALLBACK_API_URL } from '@/src/api/client';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
+const API_BASE = API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'https://crm-backend-nine-theta.vercel.app/api' || 'http://localhost:5000/api';
+
+const fetchUserWithFallback = async (endpoint: string, options: RequestInit = {}): Promise<Response> => {
+  const primaryUrl = `${API_BASE}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+  try {
+    return await fetch(primaryUrl, options);
+  } catch (err: any) {
+    if (API_BASE !== FALLBACK_API_URL) {
+      console.warn(`[UserService] Primary ${primaryUrl} failed. Trying fallback ${FALLBACK_API_URL}...`);
+      const fallbackUrl = `${FALLBACK_API_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+      return await fetch(fallbackUrl, options);
+    }
+    throw err;
+  }
+};
 
 export const UserService = {
   /**
@@ -16,7 +30,7 @@ export const UserService = {
       if (filters?.status) query.append('status', filters.status);
 
       const token = this._getToken();
-      const response = await fetch(`${API_BASE}/users?${query}`, {
+      const response = await fetchUserWithFallback(`/users?${query}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
@@ -37,7 +51,7 @@ export const UserService = {
   async getUserById(id: string) {
     try {
       const token = this._getToken();
-      const response = await fetch(`${API_BASE}/users/${id}`, {
+      const response = await fetchUserWithFallback(`/users/${id}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
@@ -65,7 +79,7 @@ export const UserService = {
   }) {
     try {
       const token = this._getToken();
-      const response = await fetch(`${API_BASE}/users`, {
+      const response = await fetchUserWithFallback('/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +105,7 @@ export const UserService = {
   async updateUser(id: string, userData: any) {
     try {
       const token = this._getToken();
-      const response = await fetch(`${API_BASE}/users/${id}`, {
+      const response = await fetchUserWithFallback(`/users/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -117,7 +131,7 @@ export const UserService = {
   async deleteUser(id: string) {
     try {
       const token = this._getToken();
-      const response = await fetch(`${API_BASE}/users/${id}`, {
+      const response = await fetchUserWithFallback(`/users/${id}`, {
         method: 'DELETE',
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });

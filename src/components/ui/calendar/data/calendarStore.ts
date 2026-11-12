@@ -203,7 +203,7 @@ export const useCalendarStore = create<CalendarStoreState>((set, get) => ({
             priority: (newEvent.priority as any) || 'HIGH',
             moduleType: (newEvent.category as any) || 'SALES',
             assigneeId: 'u1',
-            dueDate: newEvent.startDate.toISOString(),
+            dueDate: (newEvent.startDate instanceof Date ? newEvent.startDate : new Date(newEvent.startDate)).toISOString(),
           });
         }
       } catch (err) {

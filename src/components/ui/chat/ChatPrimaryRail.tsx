@@ -69,10 +69,10 @@ export default function ChatPrimaryRail({
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                style={isActive ? { backgroundColor: primaryColor, color: '#fff' } : undefined}
+                style={isActive ? { backgroundColor: '#0f172a', color: '#fff' } : undefined}
                 className={`group relative w-full py-2.5 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all ${
                   isActive
-                    ? 'shadow-sm font-bold'
+                    ? 'shadow-sm font-bold bg-slate-900 text-white'
                     : 'text-slate-600 hover:bg-white hover:text-slate-900 border border-transparent hover:border-slate-200/60'
                 }`}
               >
@@ -89,7 +89,7 @@ export default function ChatPrimaryRail({
         <button
           onClick={() => setShowTaskPanel(true)}
           title="ClickUp Task Workstation"
-          className="w-11 h-11 rounded-2xl bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200/80 flex items-center justify-center transition-all shadow-2xs"
+          className="w-11 h-11 rounded-2xl bg-white hover:bg-slate-900 hover:text-white text-slate-700 border border-slate-200/80 flex items-center justify-center transition-all shadow-2xs"
         >
           <FiCheckSquare size={18} />
         </button>

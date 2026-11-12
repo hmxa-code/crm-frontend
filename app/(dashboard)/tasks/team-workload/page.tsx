@@ -29,15 +29,12 @@ export default function TeamWorkloadPage() {
   const avgUtilization = Math.round((totalAssignedHours / totalMaxCapacity) * 100);
 
   return (
-    <div className="p-4 md:p-6 bg-slate-50/30 min-h-screen space-y-6">
+    <div className="p-3 sm:p-5 lg:p-6 bg-slate-50/40 min-h-screen space-y-4 sm:space-y-6 overflow-x-hidden">
       {/* Header */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-50 text-violet-600 border border-violet-100">
-            <FiUsers className="h-6 w-6" />
-          </span>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
               Team Workload & Capacity Planning
             </h1>
             <p className="text-xs text-slate-500 font-medium">
@@ -46,75 +43,73 @@ export default function TeamWorkloadPage() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           <Link
             href="/tasks/my-tasks"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs"
           >
-            <FiCheckCircle className="h-4 w-4 text-emerald-600" />
-            My Assigned Queue
+            <span className="truncate">My Assigned Queue</span>
           </Link>
           <Link
             href="/tasks/time-tracker"
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-xs"
           >
-            <FiClock className="h-4 w-4 text-sky-400" />
-            Time Tracker
+            <span className="truncate text-white">Time Tracker</span>
           </Link>
         </div>
       </div>
 
       {/* Capacity Overview Bar */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Staff</span>
-            <span className="rounded-xl bg-slate-50 p-2 text-slate-600 border border-slate-100">
+            <span className="rounded-xl bg-slate-50 p-1.5 sm:p-2 text-slate-600 border border-slate-100">
               <FiUsers className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">{membersWithLoad.length} Engineers</div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">Core delivery staff</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">{membersWithLoad.length} Engineers</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">Core delivery staff</div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-sky-600">Committed Hours</span>
-            <span className="rounded-xl bg-sky-50 p-2 text-sky-600 border border-sky-100">
+            <span className="rounded-xl bg-sky-50 p-1.5 sm:p-2 text-sky-600 border border-sky-100">
               <FiClock className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">
-            {totalAssignedHours}h <span className="text-sm font-normal text-slate-400">/ {totalMaxCapacity}h max</span>
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">
+            {totalAssignedHours}h <span className="text-xs sm:text-sm font-normal text-slate-400">/ {totalMaxCapacity}h max</span>
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">40h per member threshold</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">40h per member threshold</div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Team Utilization</span>
-            <span className="rounded-xl bg-emerald-50 p-2 text-emerald-600 border border-emerald-100">
+            <span className="rounded-xl bg-emerald-50 p-1.5 sm:p-2 text-emerald-600 border border-emerald-100">
               <FiActivity className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-emerald-600">{avgUtilization}%</div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">Healthy capacity range</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-emerald-600 truncate">{avgUtilization}%</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">Healthy capacity range</div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-violet-600">Active Work Items</span>
-            <span className="rounded-xl bg-violet-50 p-2 text-violet-600 border border-violet-100">
+            <span className="rounded-xl bg-violet-50 p-1.5 sm:p-2 text-violet-600 border border-violet-100">
               <FiLayers className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">{tasks.length} Tickets</div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">Distributed across projects</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">{tasks.length} Tickets</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">Distributed across projects</div>
         </div>
       </div>
 
       {/* Team Cards Grid */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
         {membersWithLoad.map((member) => {
           const isOverloaded = member.utilization > 100;
           const isOptimal = member.utilization >= 60 && member.utilization <= 90;
@@ -122,27 +117,27 @@ export default function TeamWorkloadPage() {
           return (
             <div
               key={member.id}
-              className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs flex flex-col justify-between transition hover:border-slate-300"
+              className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-xs flex flex-col justify-between transition hover:border-slate-300"
             >
               <div>
                 {/* Member Header */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-3 min-w-0">
                     <div
-                      className={`flex h-11 w-11 items-center justify-center rounded-2xl text-xs font-bold text-white shadow-xs ${member.color}`}
+                      className={`flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl text-xs font-bold text-white shadow-xs ${member.color}`}
                     >
                       {member.initials}
                     </div>
-                    <div>
-                      <h3 className="text-sm font-bold text-slate-900">{member.name}</h3>
-                      <div className="text-[11px] text-slate-400 font-medium">
+                    <div className="min-w-0">
+                      <h3 className="text-sm font-bold text-slate-900 truncate">{member.name}</h3>
+                      <div className="text-[11px] text-slate-400 font-medium truncate">
                         {member.assignedTasks.length} active assignments
                       </div>
                     </div>
                   </div>
 
                   <span
-                    className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                    className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold whitespace-nowrap shrink-0 ${
                       isOverloaded
                         ? 'bg-red-50 text-red-600 border border-red-200'
                         : isOptimal
@@ -185,12 +180,12 @@ export default function TeamWorkloadPage() {
                     {member.assignedTasks.slice(0, 3).map((task) => (
                       <div
                         key={task._id}
-                        className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/60 p-2 text-xs"
+                        className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/60 p-2 text-xs gap-2"
                       >
-                        <span className="font-medium text-slate-800 truncate max-w-[200px]">
+                        <span className="font-medium text-slate-800 truncate">
                           {task.title}
                         </span>
-                        <span className="rounded bg-white border border-slate-200 px-1.5 py-0.5 text-[9px] font-bold text-slate-600">
+                        <span className="rounded bg-white border border-slate-200 px-1.5 py-0.5 text-[9px] font-bold text-slate-600 whitespace-nowrap shrink-0">
                           {task.status}
                         </span>
                       </div>
@@ -205,11 +200,11 @@ export default function TeamWorkloadPage() {
               </div>
 
               {/* Card Footer */}
-              <div className="mt-5 border-t border-slate-100 pt-3 flex items-center justify-between text-[11px] text-slate-500">
-                <span className="font-medium">
+              <div className="mt-5 border-t border-slate-100 pt-3 flex items-center justify-between text-[11px] text-slate-500 gap-2">
+                <span className="font-medium truncate">
                   Available: {Math.max(0, member.maxCapacityHours - member.assignedHours)} hrs
                 </span>
-                <span className="font-bold text-sky-600">Active Duty</span>
+                <span className="font-bold text-sky-600 whitespace-nowrap">Active Duty</span>
               </div>
             </div>
           );

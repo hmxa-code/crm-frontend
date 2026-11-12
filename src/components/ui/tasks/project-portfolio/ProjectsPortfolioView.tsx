@@ -162,16 +162,13 @@ export default function ProjectsPortfolioView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Top Banner & Header */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-50 text-violet-600 border border-violet-100">
-              <FiFolder className="h-6 w-6" />
-            </span>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-slate-900">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
                 Projects Portfolio
               </h1>
               <p className="text-xs text-slate-500 font-medium">
@@ -181,17 +178,17 @@ export default function ProjectsPortfolioView() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           <Link
             href="/tasks/task-workstation"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs"
           >
             <FiLayers className="h-4 w-4" />
             Task Workstation
           </Link>
           <button
             onClick={() => setIsCreateOpen(true)}
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-xs"
           >
             <FiPlus className="h-4 w-4" />
             New Enterprise Project
@@ -200,87 +197,87 @@ export default function ProjectsPortfolioView() {
       </div>
 
       {/* Executive Portfolio KPIs */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Portfolio</span>
-            <span className="rounded-xl bg-slate-50 p-2 text-slate-600 border border-slate-100">
+            <span className="rounded-xl bg-slate-50 p-1.5 sm:p-2 text-slate-600 border border-slate-100">
               <FiFolder className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">{projects.length} Active</div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">{onTrackCount} projects on track</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900">{projects.length} Active</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">{onTrackCount} projects on track</div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Capital Budget</span>
-            <span className="rounded-xl bg-emerald-50 p-2 text-emerald-600 border border-emerald-100">
+            <span className="rounded-xl bg-emerald-50 p-1.5 sm:p-2 text-emerald-600 border border-emerald-100">
               <FiDollarSign className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900">
             ${(totalBudget / 1000).toFixed(0)}k
           </div>
-          <div className="mt-1 flex items-center justify-between text-[11px] text-slate-500 font-medium">
-            <span>Burned: ${(totalSpent / 1000).toFixed(1)}k</span>
-            <span className="font-bold text-slate-700">{budgetUtilization}%</span>
+          <div className="mt-1 flex items-center justify-between text-[11px] text-slate-500 font-medium gap-1">
+            <span className="truncate">Burned: ${(totalSpent / 1000).toFixed(1)}k</span>
+            <span className="font-bold text-slate-700 shrink-0">{budgetUtilization}%</span>
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-sky-600">Capacity Logged</span>
-            <span className="rounded-xl bg-sky-50 p-2 text-sky-600 border border-sky-100">
+            <span className="rounded-xl bg-sky-50 p-1.5 sm:p-2 text-sky-600 border border-sky-100">
               <FiClock className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">
-            {totalHoursLogged}h <span className="text-sm font-normal text-slate-400">/ {totalHoursEst}h</span>
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">
+            {totalHoursLogged}h <span className="text-xs sm:text-sm font-normal text-slate-400">/ {totalHoursEst}h</span>
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">
             {Math.round((totalHoursLogged / totalHoursEst) * 100)}% capacity executed
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-violet-600">Milestones Cleared</span>
-            <span className="rounded-xl bg-violet-50 p-2 text-violet-600 border border-violet-100">
+            <span className="rounded-xl bg-violet-50 p-1.5 sm:p-2 text-violet-600 border border-violet-100">
               <FiCheckCircle className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">
             {projects.flatMap((p) => p.milestones).filter((m) => m.completed).length}
-            <span className="text-sm font-normal text-slate-400">
+            <span className="text-xs sm:text-sm font-normal text-slate-400">
               {' '}
               / {projects.flatMap((p) => p.milestones).length}
             </span>
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">Contractual deliverables cleared</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">Contractual deliverables cleared</div>
         </div>
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-1 flex-wrap items-center gap-3">
-          <div className="relative min-w-[240px] flex-1">
+      <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-3.5 sm:p-4 shadow-xs lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-1 items-center gap-2.5 overflow-x-auto no-scrollbar pb-1 lg:pb-0">
+          <div className="relative min-w-[200px] sm:min-w-[240px] flex-1">
             <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search projects, client names, codes..."
-              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 py-2.5 pl-10 pr-3 text-xs text-slate-800 placeholder-slate-400 outline-none transition focus:border-sky-500 focus:bg-white"
+              placeholder="Search projects, client names..."
+              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 py-2 pl-10 pr-3 text-xs text-slate-800 placeholder-slate-400 outline-none transition focus:border-sky-500 focus:bg-white"
             />
           </div>
 
-          <div className="flex items-center gap-2">
-            <FiFilter className="text-slate-400" size={14} />
+          <div className="flex items-center gap-2 shrink-0">
+            <FiFilter className="text-slate-400 hidden sm:inline" size={14} />
             <select
               value={filterHealth}
               onChange={(e) => setFilterHealth(e.target.value as any)}
-              className="rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-xs font-semibold text-slate-700 outline-none transition focus:border-sky-500"
+              className="rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-xs font-semibold text-slate-700 outline-none transition focus:border-sky-500 cursor-pointer"
             >
               <option value="ALL">All Health States</option>
               <option value="ON_TRACK">On Track</option>
@@ -292,7 +289,7 @@ export default function ProjectsPortfolioView() {
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-xs font-semibold text-slate-700 outline-none transition focus:border-sky-500"
+              className="rounded-xl border border-slate-200 bg-slate-50/60 px-3 py-2 text-xs font-semibold text-slate-700 outline-none transition focus:border-sky-500 cursor-pointer"
             >
               <option value="ALL">All Modules</option>
               <option value="SALES">Sales & CRM</option>
@@ -304,7 +301,7 @@ export default function ProjectsPortfolioView() {
         </div>
 
         {/* View Switcher */}
-        <div className="flex rounded-xl border border-slate-200 bg-slate-50/70 p-1">
+        <div className="flex rounded-xl border border-slate-200 bg-slate-50/70 p-1 shrink-0">
           <button
             onClick={() => setViewMode('cards')}
             className={`flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
@@ -328,11 +325,9 @@ export default function ProjectsPortfolioView() {
         </div>
       </div>
 
-      {/* ------------------------------------------------------------- */}
       {/* 1. CARDS VIEW */}
-      {/* ------------------------------------------------------------- */}
       {viewMode === 'cards' && (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => {
             const healthCfg = getHealthBadge(project.health);
             const budgetPercent = Math.round((project.budgetSpent / project.budgetTotal) * 100);
@@ -342,10 +337,9 @@ export default function ProjectsPortfolioView() {
             return (
               <div
                 key={project.id}
-                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs transition hover:border-slate-300 hover:shadow-md"
+                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-xs transition hover:border-slate-300 hover:shadow-md"
               >
                 <div>
-                  {/* Top Bar: Code, Category, Health */}
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <span className="font-mono text-[10px] font-black uppercase text-slate-400">
@@ -357,14 +351,13 @@ export default function ProjectsPortfolioView() {
                     </div>
 
                     <span
-                      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${healthCfg.bg}`}
+                      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold shrink-0 ${healthCfg.bg}`}
                     >
                       <span className={`h-1.5 w-1.5 rounded-full ${healthCfg.dot}`} />
                       {healthCfg.label}
                     </span>
                   </div>
 
-                  {/* Project Title & Client */}
                   <h3
                     onClick={() => handleOpenDetail(project)}
                     className="mt-3 cursor-pointer text-base font-bold text-slate-900 hover:text-sky-600 transition leading-snug"
@@ -376,7 +369,6 @@ export default function ProjectsPortfolioView() {
                     {project.description}
                   </p>
 
-                  {/* Overall Delivery Progress Bar */}
                   <div className="mt-4 space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -392,13 +384,12 @@ export default function ProjectsPortfolioView() {
                     </div>
                   </div>
 
-                  {/* Financial & Hours Burn Breakdown */}
                   <div className="mt-4 grid grid-cols-2 gap-3 rounded-xl border border-slate-100 bg-slate-50/60 p-3 text-xs">
                     <div>
                       <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         Budget Burn
                       </div>
-                      <div className="mt-1 font-bold text-slate-800">
+                      <div className="mt-1 font-bold text-slate-800 truncate">
                         ${(project.budgetSpent / 1000).toFixed(1)}k{' '}
                         <span className="text-[10px] font-normal text-slate-400">
                           / ${(project.budgetTotal / 1000).toFixed(0)}k
@@ -413,7 +404,7 @@ export default function ProjectsPortfolioView() {
                       <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                         Logged Hours
                       </div>
-                      <div className="mt-1 font-bold text-slate-800">
+                      <div className="mt-1 font-bold text-slate-800 truncate">
                         {project.loggedHours}h{' '}
                         <span className="text-[10px] font-normal text-slate-400">
                           / {project.totalEstimatedHours}h
@@ -425,7 +416,6 @@ export default function ProjectsPortfolioView() {
                     </div>
                   </div>
 
-                  {/* Milestones Preview */}
                   <div className="mt-3.5 flex items-center justify-between text-xs text-slate-500">
                     <span className="flex items-center gap-1.5 font-medium">
                       <FiCheckCircle className="text-emerald-500" size={13} />
@@ -436,7 +426,6 @@ export default function ProjectsPortfolioView() {
                     </span>
                   </div>
 
-                  {/* Tech Stack Pills */}
                   <div className="mt-3 flex flex-wrap gap-1">
                     {project.techStack.slice(0, 4).map((tech) => (
                       <span
@@ -454,10 +443,8 @@ export default function ProjectsPortfolioView() {
                   </div>
                 </div>
 
-                {/* Card Footer: Team Avatars & Actions */}
                 <div className="mt-5 border-t border-slate-100 pt-3">
                   <div className="flex items-center justify-between">
-                    {/* Team Stack */}
                     <div className="flex -space-x-2">
                       {project.team.map((alloc) => {
                         const member = getMember(alloc.userId);
@@ -496,23 +483,21 @@ export default function ProjectsPortfolioView() {
         </div>
       )}
 
-      {/* ------------------------------------------------------------- */}
       {/* 2. MATRIX VIEW */}
-      {/* ------------------------------------------------------------- */}
       {viewMode === 'matrix' && (
         <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[800px]">
               <thead className="border-b border-slate-200 bg-slate-50/70 font-bold uppercase tracking-wider text-slate-500">
                 <tr>
-                  <th className="px-5 py-3">Project & Code</th>
-                  <th className="px-5 py-3">Client</th>
-                  <th className="px-5 py-3">Health Status</th>
-                  <th className="px-5 py-3">Delivery Progress</th>
-                  <th className="px-5 py-3">Budget Burn</th>
-                  <th className="px-5 py-3">Logged Hours</th>
-                  <th className="px-5 py-3">Deadline</th>
-                  <th className="px-5 py-3 text-right">Action</th>
+                  <th className="px-4 sm:px-5 py-3">Project & Code</th>
+                  <th className="px-4 sm:px-5 py-3">Client</th>
+                  <th className="px-4 sm:px-5 py-3">Health Status</th>
+                  <th className="px-4 sm:px-5 py-3">Delivery Progress</th>
+                  <th className="px-4 sm:px-5 py-3">Budget Burn</th>
+                  <th className="px-4 sm:px-5 py-3">Logged Hours</th>
+                  <th className="px-4 sm:px-5 py-3">Deadline</th>
+                  <th className="px-4 sm:px-5 py-3 text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -520,7 +505,7 @@ export default function ProjectsPortfolioView() {
                   const healthCfg = getHealthBadge(proj.health);
                   return (
                     <tr key={proj.id} className="transition hover:bg-slate-50/70">
-                      <td className="px-5 py-3.5">
+                      <td className="px-4 sm:px-5 py-3.5">
                         <div
                           className="font-bold text-slate-900 hover:text-sky-600 cursor-pointer"
                           onClick={() => handleOpenDetail(proj)}
@@ -529,8 +514,8 @@ export default function ProjectsPortfolioView() {
                         </div>
                         <div className="font-mono text-[10px] text-slate-400">{proj.code}</div>
                       </td>
-                      <td className="px-5 py-3.5 font-medium text-slate-600">{proj.client}</td>
-                      <td className="px-5 py-3.5">
+                      <td className="px-4 sm:px-5 py-3.5 font-medium text-slate-600">{proj.client}</td>
+                      <td className="px-4 sm:px-5 py-3.5">
                         <span
                           className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${healthCfg.bg}`}
                         >
@@ -538,9 +523,9 @@ export default function ProjectsPortfolioView() {
                           {healthCfg.label}
                         </span>
                       </td>
-                      <td className="px-5 py-3.5">
+                      <td className="px-4 sm:px-5 py-3.5">
                         <div className="flex items-center gap-2">
-                          <div className="h-1.5 w-24 overflow-hidden rounded-full bg-slate-100">
+                          <div className="h-1.5 w-20 sm:w-24 overflow-hidden rounded-full bg-slate-100">
                             <div
                               className="h-full rounded-full bg-slate-900"
                               style={{ width: `${proj.progress}%` }}
@@ -549,14 +534,14 @@ export default function ProjectsPortfolioView() {
                           <span className="font-bold text-slate-700">{proj.progress}%</span>
                         </div>
                       </td>
-                      <td className="px-5 py-3.5 font-semibold text-slate-800">
+                      <td className="px-4 sm:px-5 py-3.5 font-semibold text-slate-800">
                         ${(proj.budgetSpent / 1000).toFixed(1)}k / ${(proj.budgetTotal / 1000).toFixed(0)}k
                       </td>
-                      <td className="px-5 py-3.5 font-semibold text-slate-700">
+                      <td className="px-4 sm:px-5 py-3.5 font-semibold text-slate-700">
                         {proj.loggedHours}h / {proj.totalEstimatedHours}h
                       </td>
-                      <td className="px-5 py-3.5 font-mono text-slate-600">{proj.dueDate}</td>
-                      <td className="px-5 py-3.5 text-right">
+                      <td className="px-4 sm:px-5 py-3.5 font-mono text-slate-600">{proj.dueDate}</td>
+                      <td className="px-4 sm:px-5 py-3.5 text-right">
                         <button
                           onClick={() => handleOpenDetail(proj)}
                           className="rounded-lg border border-slate-200 bg-white px-3 py-1 text-[11px] font-bold text-slate-700 hover:bg-slate-50"
@@ -573,14 +558,11 @@ export default function ProjectsPortfolioView() {
         </div>
       )}
 
-      {/* ------------------------------------------------------------- */}
       {/* PROJECT DRILLDOWN DRAWER */}
-      {/* ------------------------------------------------------------- */}
       {isDetailOpen && selectedProject && (
         <div className="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-xs transition">
           <div className="h-full w-full max-w-2xl bg-white shadow-2xl flex flex-col justify-between overflow-y-auto">
-            {/* Header */}
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white p-6">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white p-4 sm:p-6">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-xs font-black text-slate-400">
@@ -594,7 +576,7 @@ export default function ProjectsPortfolioView() {
                     {getHealthBadge(selectedProject.health).label}
                   </span>
                 </div>
-                <h2 className="mt-1 text-xl font-bold text-slate-900">{selectedProject.name}</h2>
+                <h2 className="mt-1 text-lg sm:text-xl font-bold text-slate-900">{selectedProject.name}</h2>
                 <p className="text-xs text-slate-500 font-medium">Client: {selectedProject.client}</p>
               </div>
 
@@ -606,9 +588,7 @@ export default function ProjectsPortfolioView() {
               </button>
             </div>
 
-            {/* Content Body */}
-            <div className="space-y-6 p-6">
-              {/* Description */}
+            <div className="space-y-6 p-4 sm:p-6">
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   Project Scope & Abstract
@@ -618,8 +598,7 @@ export default function ProjectsPortfolioView() {
                 </p>
               </div>
 
-              {/* Financial & Time Metrics Matrix */}
-              <div className="grid grid-cols-2 gap-4 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
                 <div>
                   <span className="text-[10px] font-bold uppercase text-slate-400">Contract Total Budget</span>
                   <div className="mt-1 text-xl font-black text-slate-900">
@@ -642,7 +621,6 @@ export default function ProjectsPortfolioView() {
                 </div>
               </div>
 
-              {/* Milestones Delivery Roadmap */}
               <div>
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
@@ -664,19 +642,18 @@ export default function ProjectsPortfolioView() {
                         {m.completed ? (
                           <FiCheckCircle className="h-4 w-4 text-emerald-500 shrink-0" />
                         ) : (
-                          <div className="h-4 w-4 rounded-full border-2 border-slate-300" />
+                          <div className="h-4 w-4 rounded-full border-2 border-slate-300 shrink-0" />
                         )}
                         <span className={`font-semibold ${m.completed ? 'line-through text-slate-400' : 'text-slate-800'}`}>
                           {m.title}
                         </span>
                       </div>
-                      <span className="font-mono text-[11px] text-slate-400">Target: {m.dueDate}</span>
+                      <span className="font-mono text-[11px] text-slate-400 shrink-0">Target: {m.dueDate}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Team Allocation */}
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   Allocated Engineering & Product Staff
@@ -688,7 +665,7 @@ export default function ProjectsPortfolioView() {
                       <div key={alloc.userId} className="flex items-center justify-between p-3 text-xs">
                         <div className="flex items-center gap-3">
                           <div
-                            className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white ${
+                            className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white shrink-0 ${
                               member?.color || 'bg-slate-500'
                             }`}
                           >
@@ -709,7 +686,6 @@ export default function ProjectsPortfolioView() {
                 </div>
               </div>
 
-              {/* Linked Active Tasks */}
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   Active Project Tickets ({tasks.filter((t) => t.projectId === selectedProject.id).length})
@@ -721,12 +697,12 @@ export default function ProjectsPortfolioView() {
                     .map((t) => (
                       <div
                         key={t._id}
-                        className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/70 p-2.5 text-xs"
+                        className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/70 p-2.5 text-xs gap-2"
                       >
-                        <span className="font-bold text-slate-800 truncate max-w-[280px]">
+                        <span className="font-bold text-slate-800 truncate">
                           {t.title}
                         </span>
-                        <span className="rounded bg-white border border-slate-200 px-2 py-0.5 text-[10px] font-bold text-slate-600">
+                        <span className="rounded bg-white border border-slate-200 px-2 py-0.5 text-[10px] font-bold text-slate-600 shrink-0">
                           {t.status}
                         </span>
                       </div>
@@ -735,12 +711,11 @@ export default function ProjectsPortfolioView() {
               </div>
             </div>
 
-            {/* Footer */}
-            <div className="border-t border-slate-200 bg-slate-50 p-6 flex items-center justify-between">
+            <div className="border-t border-slate-200 bg-slate-50 p-4 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-3">
               <Link
                 href="/tasks/task-workstation"
                 onClick={() => setIsDetailOpen(false)}
-                className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-slate-800 transition shadow-xs"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-5 py-2.5 text-xs font-bold text-white hover:bg-slate-800 transition shadow-xs"
               >
                 <FiLayers size={13} />
                 Open In Workstation
@@ -748,7 +723,7 @@ export default function ProjectsPortfolioView() {
 
               <button
                 onClick={() => setIsDetailOpen(false)}
-                className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition"
+                className="w-full sm:w-auto rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition"
               >
                 Close Drilldown
               </button>
@@ -757,12 +732,10 @@ export default function ProjectsPortfolioView() {
         </div>
       )}
 
-      {/* ------------------------------------------------------------- */}
       {/* CREATE NEW PROJECT MODAL */}
-      {/* ------------------------------------------------------------- */}
       {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-          <div className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4 overflow-y-auto">
+          <div className="w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-2xl my-auto">
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <div>
                 <h3 className="text-base font-bold text-slate-900">Create Enterprise Project</h3>
@@ -791,7 +764,7 @@ export default function ProjectsPortfolioView() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-[11px] font-bold uppercase text-slate-500">Project Code</label>
                   <input
@@ -825,13 +798,13 @@ export default function ProjectsPortfolioView() {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="text-[11px] font-bold uppercase text-slate-500">Category</label>
                   <select
                     value={newProject.category}
                     onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50/50 p-2 text-xs font-medium text-slate-700 outline-none"
+                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50/50 p-2 text-xs font-medium text-slate-700 outline-none cursor-pointer"
                   >
                     <option value="SALES">Sales & CRM</option>
                     <option value="MARKETING">Marketing</option>
@@ -845,7 +818,7 @@ export default function ProjectsPortfolioView() {
                   <select
                     value={newProject.health}
                     onChange={(e) => setNewProject({ ...newProject, health: e.target.value as any })}
-                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50/50 p-2 text-xs font-medium text-slate-700 outline-none"
+                    className="mt-1 w-full rounded-xl border border-slate-200 bg-slate-50/50 p-2 text-xs font-medium text-slate-700 outline-none cursor-pointer"
                   >
                     <option value="ON_TRACK">On Track</option>
                     <option value="AT_RISK">At Risk</option>
@@ -864,7 +837,7 @@ export default function ProjectsPortfolioView() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-[11px] font-bold uppercase text-slate-500">Budget ($)</label>
                   <input

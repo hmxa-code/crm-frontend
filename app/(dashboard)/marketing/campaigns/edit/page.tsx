@@ -70,7 +70,7 @@ export default function CreateCampaignPage() {
         ? new Date(`${formData.scheduledDate}T${formData.scheduledTime || '00:00'}`).getTime()
         : Date.now()
 
-      const campaignPayload: Campaign = {
+      const campaignPayload: Omit<Campaign, '_id'> = {
         campaign_name: formData.campaign_name?.trim() || '',
         campaign_type: (formData.campaign_type as Campaign['campaign_type']) || mapCampaignType(campaignType ?? 'email'),
         status: (formData.status as Campaign['status']) ?? 'Draft',
@@ -86,7 +86,7 @@ export default function CreateCampaignPage() {
         notes: formData.notes || '',
       }
 
-      await CampaignsService.createCampaign(campaignPayload)
+      await CampaignsService.createCampaign(campaignPayload as Campaign)
 
       setSuccessMessage('Campaign saved to the backend successfully.')
       window.setTimeout(() => router.push('/marketing/campaigns'), 800)

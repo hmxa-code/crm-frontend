@@ -7,7 +7,6 @@ import {
   FiX, 
   FiClock, 
   FiUser, 
-  FiCalendar, 
   FiCheckCircle, 
   FiTrash2, 
   FiMessageSquare, 
@@ -59,7 +58,7 @@ export function EventSidebar({
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden flex justify-end">
+    <div className="fixed inset-0 z-[9999] overflow-hidden flex justify-end">
       {/* 1. Backdrop Overlay */}
       <div 
         className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity animate-in fade-in duration-200" 
@@ -83,9 +82,6 @@ export function EventSidebar({
           </button>
           
           <div className="flex items-center gap-2.5">
-            <span className="p-2 rounded-xl bg-slate-900 text-white shadow-xs shrink-0">
-              <FiCalendar size={16} className="text-sky-400" />
-            </span>
             <div className="min-w-0">
               <h2 className="text-sm font-bold text-slate-900 tracking-tight truncate">Schedule Details</h2>
               <p className="text-[11px] text-slate-400 font-medium">Task & Event Metrics</p>
@@ -213,7 +209,7 @@ export function EventSidebar({
               href="/tasks/workspace"
               className="inline-flex items-center gap-1.5 text-xs font-bold text-sky-600 hover:text-sky-700 hover:underline"
             >
-              <span>View In ClickUp Task Workstation</span>
+              <span>View In Task Workstation</span>
               <FiExternalLink size={12} />
             </Link>
           </div>

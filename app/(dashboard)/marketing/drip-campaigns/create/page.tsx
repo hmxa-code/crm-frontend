@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { CreateDripCampaignForm } from '@/src/components/marketing/drip-campaigns/forms/CreateDripCampaignForm';
+import { CreateDripCampaignForm } from '@/src/components/ui/marketing/drip-campaigns/forms/CreateDripCampaignForm';
 
 export default function CreateDripCampaignPage() {
   return (

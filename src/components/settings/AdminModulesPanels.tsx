@@ -77,7 +77,6 @@ export function AdminModulesPanels({ settings, onUpdate }: AdminModulesPanelsPro
         </div>
 
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Toggle for Auto-scheduling appointment reminders */}
           <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 flex items-start justify-between">
             <div className="pr-4">
               <span className="text-xs font-bold text-slate-900 block">
@@ -98,7 +97,6 @@ export function AdminModulesPanels({ settings, onUpdate }: AdminModulesPanelsPro
             </label>
           </div>
 
-          {/* Meeting duration defaults */}
           <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-slate-900">
@@ -128,7 +126,6 @@ export function AdminModulesPanels({ settings, onUpdate }: AdminModulesPanelsPro
             </div>
           </div>
 
-          {/* Buffer time between calls */}
           <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-slate-900">
@@ -158,7 +155,6 @@ export function AdminModulesPanels({ settings, onUpdate }: AdminModulesPanelsPro
             </div>
           </div>
 
-          {/* Buffer lookahead windows */}
           <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-slate-900">
@@ -215,7 +211,6 @@ export function AdminModulesPanels({ settings, onUpdate }: AdminModulesPanelsPro
         </div>
 
         <div className="mt-5 space-y-4">
-          {/* Granular Scope Assignment Toggles */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 flex flex-col justify-between">
               <div>
@@ -278,7 +273,6 @@ export function AdminModulesPanels({ settings, onUpdate }: AdminModulesPanelsPro
             </div>
           </div>
 
-          {/* API Secret Key & Token Management */}
           <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/70">
             <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
               <div className="flex items-center gap-2">
@@ -333,7 +327,6 @@ export function AdminModulesPanels({ settings, onUpdate }: AdminModulesPanelsPro
             </div>
           </div>
 
-          {/* Audit Logs Table */}
           <div className="pt-2">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
@@ -412,7 +405,6 @@ export function AdminModulesPanels({ settings, onUpdate }: AdminModulesPanelsPro
         </div>
 
         <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Editable CRM Purpose / Tagline */}
           <div className="space-y-4">
             <div>
               <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
@@ -443,7 +435,6 @@ export function AdminModulesPanels({ settings, onUpdate }: AdminModulesPanelsPro
             </div>
           </div>
 
-          {/* Custom Domain (CNAME) Mapping Section */}
           <div className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/60 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-2">

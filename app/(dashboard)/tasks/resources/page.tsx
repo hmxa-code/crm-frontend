@@ -41,18 +41,18 @@ export default function ResourcesPage() {
   ];
 
   return (
-    <div className="p-4 md:p-6 bg-slate-50/30 min-h-screen space-y-6">
+    <div className="p-3 sm:p-5 lg:p-6 bg-slate-50/40 min-h-screen space-y-4 sm:space-y-6 overflow-x-hidden">
       {/* Header */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
-            <FiPaperclip className="h-5 w-5" />
+      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex items-center gap-3">
+          <span className="flex h-10 w-10 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-700">
+            <FiPaperclip className="h-5 w-5 sm:h-6 sm:w-6" />
           </span>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
               Task Resources & Vault
             </h1>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 font-medium">
               Encrypted project assets, API specifications, compliance contracts, and documentation vault
             </p>
           </div>
@@ -60,51 +60,53 @@ export default function ResourcesPage() {
 
         <Link
           href="/tasks/project-portfolio"
-          className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-xs font-semibold text-white hover:bg-slate-800 transition"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold hover:bg-slate-800 transition shadow-xs self-start sm:self-auto" style={{color:'white'}}
         >
           View Projects
         </Link>
       </div>
 
-      {/* Resources Table */}
+      {/* Resources Table Container */}
       <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
-        <table className="w-full text-left text-xs">
-          <thead className="border-b border-slate-200 bg-slate-50/70 font-bold uppercase tracking-wider text-slate-500">
-            <tr>
-              <th className="px-5 py-3">Asset Name</th>
-              <th className="px-5 py-3">Associated Project</th>
-              <th className="px-5 py-3">Type</th>
-              <th className="px-5 py-3">File Size</th>
-              <th className="px-5 py-3">Last Uploaded</th>
-              <th className="px-5 py-3 text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {resources.map((res) => (
-              <tr key={res.id} className="transition hover:bg-slate-50/60">
-                <td className="px-5 py-3 font-bold text-slate-900">
-                  <div className="flex items-center gap-2">
-                    <FiFile className="text-slate-400" size={14} />
-                    {res.name}
-                  </div>
-                </td>
-                <td className="px-5 py-3">
-                  <span className="rounded bg-sky-50 px-2 py-0.5 text-[10px] font-bold text-sky-700 border border-sky-100">
-                    {res.project}
-                  </span>
-                </td>
-                <td className="px-5 py-3 text-slate-600">{res.type}</td>
-                <td className="px-5 py-3 font-mono text-slate-600">{res.size}</td>
-                <td className="px-5 py-3 font-mono text-slate-500">{res.date}</td>
-                <td className="px-5 py-3 text-right">
-                  <button className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 hover:bg-slate-50">
-                    <FiDownload size={11} /> Download
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs min-w-[750px]">
+            <thead className="border-b border-slate-200 bg-slate-50/70 font-bold uppercase tracking-wider text-slate-500">
+              <tr>
+                <th className="px-4 sm:px-5 py-3">Asset Name</th>
+                <th className="px-4 sm:px-5 py-3">Associated Project</th>
+                <th className="px-4 sm:px-5 py-3">Type</th>
+                <th className="px-4 sm:px-5 py-3">File Size</th>
+                <th className="px-4 sm:px-5 py-3">Last Uploaded</th>
+                <th className="px-4 sm:px-5 py-3 text-right">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {resources.map((res) => (
+                <tr key={res.id} className="transition hover:bg-slate-50/60">
+                  <td className="px-4 sm:px-5 py-3.5 font-bold text-slate-900">
+                    <div className="flex items-center gap-2">
+                      <FiFile className="text-slate-400 shrink-0" size={14} />
+                      <span className="truncate max-w-[220px] sm:max-w-xs">{res.name}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 sm:px-5 py-3.5">
+                    <span className="rounded bg-sky-50 px-2 py-0.5 text-[10px] font-bold text-sky-700 border border-sky-100 whitespace-nowrap">
+                      {res.project}
+                    </span>
+                  </td>
+                  <td className="px-4 sm:px-5 py-3.5 text-slate-600 whitespace-nowrap">{res.type}</td>
+                  <td className="px-4 sm:px-5 py-3.5 font-mono text-slate-600 whitespace-nowrap">{res.size}</td>
+                  <td className="px-4 sm:px-5 py-3.5 font-mono text-slate-500 whitespace-nowrap">{res.date}</td>
+                  <td className="px-4 sm:px-5 py-3.5 text-right">
+                    <button className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-semibold text-slate-700 hover:bg-slate-50 whitespace-nowrap shadow-xs">
+                      <FiDownload size={11} /> Download
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

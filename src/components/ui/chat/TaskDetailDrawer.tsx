@@ -105,7 +105,7 @@ export default function TaskDetailDrawer({
     <>
       {/* Mobile Backdrop */}
       <div 
-        className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 md:hidden transition-opacity"
+        className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-50 md:hidden transition-opacity"
         onClick={onClose}
       />
 
@@ -115,22 +115,22 @@ export default function TaskDetailDrawer({
           <div className="flex items-center gap-2">
             <button
               onClick={onClose}
-              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg md:hidden transition cursor-pointer"
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl md:hidden transition cursor-pointer"
             >
               <FiArrowLeft size={13} />
               <span>Back</span>
             </button>
-            <div className="p-1.5 rounded-lg bg-slate-900 text-white shadow-xs hidden sm:flex">
+            <div className="p-1.5 rounded-xl bg-slate-900 text-white shadow-xs hidden sm:flex">
               <FiEdit2 size={14} />
             </div>
             <div>
-              <h3 className="font-bold text-xs text-slate-800 tracking-tight">Ticket Details & Editor</h3>
-              <p className="text-[10px] text-slate-400 font-medium">Workstation Drawer Mode</p>
+              <h3 className="font-bold text-xs text-slate-900 tracking-tight">Ticket Details & Editor</h3>
+              <p className="text-[10px] text-slate-500 font-medium">Workstation Drawer Mode</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-slate-50 rounded-lg transition-all cursor-pointer"
+            className="p-1.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all cursor-pointer"
             title="Close Drawer"
           >
             <FiX size={16} />
@@ -143,7 +143,7 @@ export default function TaskDetailDrawer({
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === tab
                   ? 'bg-slate-900 text-white shadow-xs'
                   : 'text-slate-600 hover:bg-slate-200/60'
@@ -167,7 +167,7 @@ export default function TaskDetailDrawer({
                   type="text"
                   value={task.title}
                   onChange={(e) => handleTitleChange(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-800 bg-slate-50/50 focus:outline-none focus:border-slate-400 focus:bg-white"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-900 bg-slate-50/50 focus:outline-none focus:border-slate-400 focus:bg-white"
                   placeholder="Ticket title..."
                 />
               </div>
@@ -180,7 +180,7 @@ export default function TaskDetailDrawer({
                   rows={3}
                   value={task.description || ''}
                   onChange={(e) => handleDescriptionChange(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs text-slate-700 bg-slate-50/50 focus:outline-none focus:border-slate-400 focus:bg-white resize-none"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-700 bg-slate-50/50 focus:outline-none focus:border-slate-400 focus:bg-white resize-none"
                   placeholder="Add detailed description..."
                 />
               </div>
@@ -196,7 +196,7 @@ export default function TaskDetailDrawer({
                       onClick={() => handleStatusChange(opt.key)}
                       className={`px-3 py-2 rounded-xl border transition-all text-left cursor-pointer ${
                         task.status === opt.key
-                          ? 'border-slate-800 bg-slate-50 text-slate-900 font-bold shadow-xs'
+                          ? 'border-slate-900 bg-slate-50 text-slate-900 font-bold shadow-xs'
                           : 'border-slate-200 bg-white hover:border-slate-300 text-slate-600'
                       }`}
                     >
@@ -220,11 +220,11 @@ export default function TaskDetailDrawer({
                       onClick={() => handlePriorityChange(opt.key)}
                       className={`px-3 py-2 rounded-xl border transition-all text-left cursor-pointer ${
                         task.priority === opt.key
-                          ? 'border-slate-800 bg-slate-50 text-slate-900 font-bold shadow-xs'
+                          ? 'border-slate-900 bg-slate-50 text-slate-900 font-bold shadow-xs'
                           : 'border-slate-200 bg-white hover:border-slate-300 text-slate-600'
                       }`}
                     >
-                      <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase border ${opt.className}`}>
+                      <span className={`inline-block px-2 py-0.5 rounded-md text-[10px] font-bold uppercase border ${opt.className}`}>
                         {opt.label}
                       </span>
                     </button>
@@ -241,7 +241,7 @@ export default function TaskDetailDrawer({
                   <select
                     value={task.assigneeId || 'u1'}
                     onChange={(e) => handleAssigneeChange(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 bg-slate-50/50 focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-slate-50/50 focus:outline-none"
                   >
                     {team.map((m) => (
                       <option key={m.id} value={m.id}>{m.name}</option>
@@ -255,7 +255,7 @@ export default function TaskDetailDrawer({
                   <select
                     value={task.listId || 'l1'}
                     onChange={(e) => handleListChange(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 bg-slate-50/50 focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-slate-50/50 focus:outline-none"
                   >
                     {lists.map((l) => (
                       <option key={l.id} value={l.id}>{l.space} / {l.name}</option>
@@ -273,13 +273,13 @@ export default function TaskDetailDrawer({
                   type="date"
                   value={task.dueDate ? new Date(task.dueDate).toISOString().slice(0, 10) : ''}
                   onChange={(e) => handleDueDateChange(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 bg-slate-50/50 focus:outline-none"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-slate-50/50 focus:outline-none"
                 />
               </div>
             </div>
           ) : (
             <div className="p-4 sm:p-5">
-              <h4 className="text-xs font-bold text-slate-800 mb-4">Activity Timeline</h4>
+              <h4 className="text-xs font-bold text-slate-900 mb-4">Activity Timeline</h4>
               <div className="space-y-4">
                 {activityHistory.map((item, idx) => (
                   <div key={idx} className="flex gap-3 relative pb-3 border-b border-slate-100 last:border-none">
@@ -287,8 +287,8 @@ export default function TaskDetailDrawer({
                       {idx + 1}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-slate-800">{item.action}</p>
-                      <p className="text-[10px] text-slate-400 mt-0.5">{item.time}</p>
+                      <p className="text-xs font-semibold text-slate-900">{item.action}</p>
+                      <p className="text-[10px] text-slate-500 mt-0.5">{item.time}</p>
                     </div>
                   </div>
                 ))}
@@ -300,24 +300,24 @@ export default function TaskDetailDrawer({
           <div className="px-4 sm:px-5 pb-5 pt-3 border-t border-slate-100 mt-4">
             <div className="flex items-center gap-2 mb-3">
               <FiMessageSquare size={13} className="text-slate-500" />
-              <h4 className="text-xs font-bold text-slate-800">Comments ({comments.length})</h4>
+              <h4 className="text-xs font-bold text-slate-900">Comments ({comments.length})</h4>
             </div>
             
             <div className="space-y-2.5 mb-3 max-h-36 overflow-y-auto">
               {comments.length === 0 ? (
-                <p className="text-xs text-slate-400 italic">No comments yet.</p>
+                <p className="text-xs text-slate-500 italic">No comments yet.</p>
               ) : (
                 comments.map((comment: any, idx: number) => (
                   <div key={comment.id || idx} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-[11px] font-bold text-slate-700">
+                      <span className="text-[11px] font-bold text-slate-900">
                         {getMember(comment.authorId)?.name || comment.author || 'User'}
                       </span>
-                      <span className="text-[9px] text-slate-400">
+                      <span className="text-[9px] text-slate-500">
                         {comment.createdAt ? new Date(comment.createdAt).toLocaleString() : comment.time || 'Recent'}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-600 leading-relaxed">{comment.text}</p>
+                    <p className="text-xs text-slate-700 leading-relaxed">{comment.text}</p>
                   </div>
                 ))
               )}
@@ -334,12 +334,12 @@ export default function TaskDetailDrawer({
                   }
                 }}
                 placeholder="Write a comment..."
-                className="flex-1 px-3 py-2 rounded-lg border border-slate-200 text-xs bg-slate-50/50 focus:outline-none focus:border-slate-400"
+                className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-xs bg-slate-50/50 focus:outline-none focus:border-slate-400"
               />
               <button
                 onClick={addComment}
                 disabled={!commentText.trim()}
-                className="px-3.5 py-2 rounded-lg bg-slate-900 text-white text-xs font-bold disabled:opacity-50 hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
+                className="px-3.5 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold disabled:opacity-50 hover:bg-slate-800 transition-colors cursor-pointer shrink-0"
               >
                 Send
               </button>

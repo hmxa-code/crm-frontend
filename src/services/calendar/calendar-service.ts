@@ -60,7 +60,7 @@ const TASK_EVENTS: CalendarEvent[] = SEED_TASKS.map(convertTaskToCalendarEvent);
 const MILESTONE_EVENTS: CalendarEvent[] = [
   {
     id: 'evt-m1',
-    title: '🎯 [Milestone] HIPAA & Compliance Architecture Signoff',
+    title: '[Milestone] HIPAA & Compliance Architecture Signoff',
     description: 'Final security compliance signoff and architectural documentation audit for Wholcure CRM Enterprise.',
     startDate: new Date(currentYear, currentMonth, 4, 14, 0),
     endDate: new Date(currentYear, currentMonth, 4, 16, 0),
@@ -72,7 +72,7 @@ const MILESTONE_EVENTS: CalendarEvent[] = [
   },
   {
     id: 'evt-m2',
-    title: '🎯 [Milestone] Custom Leads & Patient Pipeline Delivery',
+    title: '[Milestone] Custom Leads & Patient Pipeline Delivery',
     description: 'Production release of custom pipeline stages, lead scoring triggers, and field mapping schemas.',
     startDate: new Date(currentYear, currentMonth, 12, 11, 0),
     endDate: new Date(currentYear, currentMonth, 12, 13, 0),
@@ -84,7 +84,7 @@ const MILESTONE_EVENTS: CalendarEvent[] = [
   },
   {
     id: 'evt-m3',
-    title: '🎯 [Milestone] Automated Billing & Invoice Webhooks Integration',
+    title: '[Milestone] Automated Billing & Invoice Webhooks Integration',
     description: 'Payment gateway webhooks, automated subscription renewals, and invoice PDF generation test.',
     startDate: new Date(currentYear, currentMonth, 18, 15, 0),
     endDate: new Date(currentYear, currentMonth, 18, 17, 0),
@@ -100,7 +100,7 @@ const MILESTONE_EVENTS: CalendarEvent[] = [
 const OPERATIONAL_MEETINGS: CalendarEvent[] = [
   {
     id: 'evt-call-1',
-    title: '📞 Lead Follow-up Call (Hot Inbound Leads)',
+    title: 'Lead Follow-up Call (Hot Inbound Leads)',
     startDate: new Date(currentYear, currentMonth, currentDay, 10, 0),
     endDate: new Date(currentYear, currentMonth, currentDay, 11, 0),
     color: 'blue',
@@ -112,7 +112,7 @@ const OPERATIONAL_MEETINGS: CalendarEvent[] = [
   },
   {
     id: 'evt-call-2',
-    title: '💼 Corporate Client Product Demo (Zeta Corp)',
+    title: 'Corporate Client Product Demo (Zeta Corp)',
     startDate: new Date(currentYear, currentMonth, currentDay + 1, 11, 0),
     endDate: new Date(currentYear, currentMonth, currentDay + 1, 12, 30),
     color: 'green',
@@ -124,7 +124,7 @@ const OPERATIONAL_MEETINGS: CalendarEvent[] = [
   },
   {
     id: 'evt-call-3',
-    title: '📊 Q4 Marketing Velocity & ROAS Strategy Review',
+    title: 'Q4 Marketing Velocity & ROAS Strategy Review',
     startDate: new Date(currentYear, currentMonth, currentDay + 3, 16, 0),
     endDate: new Date(currentYear, currentMonth, currentDay + 3, 17, 0),
     color: 'orange',
@@ -136,7 +136,7 @@ const OPERATIONAL_MEETINGS: CalendarEvent[] = [
   },
   {
     id: 'evt-call-4',
-    title: '🛡️ Executive Security & User Permissions Huddle',
+    title: ' Executive Security & User Permissions Huddle',
     startDate: new Date(currentYear, currentMonth, currentDay + 5, 9, 30),
     endDate: new Date(currentYear, currentMonth, currentDay + 5, 10, 30),
     color: 'red',

@@ -124,25 +124,25 @@ export default function TaskFormDrawer({ isOpen, onClose, taskToEdit }: TaskForm
   const progressPct = subtasks.length > 0 ? Math.round((completedCount / subtasks.length) * 100) : 0;
 
   const labelClass = 'block text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1';
-  const inputClass = 'w-full rounded-lg border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs font-medium text-slate-800 outline-none focus:border-slate-400 focus:bg-white transition';
+  const inputClass = 'w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-900 outline-none focus:border-black focus:ring-1 focus:ring-black transition shadow-2xs';
 
   return (
-    <div className="fixed inset-0 z-[9999] flex justify-end bg-slate-900/30 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-[9999] flex justify-end bg-slate-900/30 backdrop-blur-xs" onClick={onClose}>
       <div
-        className="h-full w-full max-w-lg bg-white shadow-2xl border-l border-slate-200 flex flex-col animate-in slide-in-from-right duration-200"
+        className="h-full w-full max-w-lg bg-white shadow-2xl border-l border-slate-300 flex flex-col animate-in slide-in-from-right duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4 shrink-0">
+        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 shrink-0 bg-white">
           <div>
-            <h3 className="text-sm font-bold text-slate-800">
+            <h3 className="text-sm font-bold text-slate-900">
               {taskToEdit ? 'Edit Task' : 'Create New Task'}
             </h3>
-            <p className="text-[11px] text-slate-400 mt-0.5">
+            <p className="text-[11px] text-slate-500 mt-0.5">
               {taskToEdit ? 'Update task details' : 'Fill in the details to create a task'}
             </p>
           </div>
-          <button onClick={onClose} className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition">
+          <button onClick={onClose} className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-black transition">
             <FiX size={18} />
           </button>
         </div>
@@ -230,14 +230,14 @@ export default function TaskFormDrawer({ isOpen, onClose, taskToEdit }: TaskForm
                 placeholder="Type tag & press Enter"
                 className={`${inputClass} flex-1`}
               />
-              <button type="button" onClick={handleAddTag} className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">Add</button>
+              <button type="button" onClick={handleAddTag} className="rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-100 transition shadow-2xs">Add</button>
             </div>
             {tags.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {tags.map((t) => (
-                  <span key={t} className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-slate-100 px-2 py-0.5 text-[11px] font-semibold text-slate-600">
+                  <span key={t} className="inline-flex items-center gap-1 rounded-lg border border-slate-300 bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-800 shadow-2xs">
                     #{t}
-                    <button type="button" onClick={() => setTags(tags.filter((x) => x !== t))} className="text-slate-400 hover:text-red-500 transition">
+                    <button type="button" onClick={() => setTags(tags.filter((x) => x !== t))} className="text-slate-500 hover:text-black transition">
                       <FiX size={10} />
                     </button>
                   </span>
@@ -250,11 +250,11 @@ export default function TaskFormDrawer({ isOpen, onClose, taskToEdit }: TaskForm
           <div>
             <div className="mb-1 flex items-center justify-between">
               <label className={`${labelClass} flex items-center gap-1 mb-0`}><FiCheckSquare size={10} /> Subtasks</label>
-              {subtasks.length > 0 && <span className="text-[10px] font-bold text-slate-400">{completedCount}/{subtasks.length} ({progressPct}%)</span>}
+              {subtasks.length > 0 && <span className="text-[10px] font-bold text-slate-500">{completedCount}/{subtasks.length} ({progressPct}%)</span>}
             </div>
             {subtasks.length > 0 && (
-              <div className="mb-2 h-1.5 overflow-hidden rounded-full bg-slate-100">
-                <div className="h-full rounded-full bg-slate-800 transition-all" style={{ width: `${progressPct}%` }} />
+              <div className="mb-2 h-2 overflow-hidden rounded-full bg-slate-100 border border-slate-200">
+                <div className="h-full rounded-full bg-black transition-all" style={{ width: `${progressPct}%` }} />
               </div>
             )}
             <div className="flex gap-2 mb-2">
@@ -266,23 +266,23 @@ export default function TaskFormDrawer({ isOpen, onClose, taskToEdit }: TaskForm
                 placeholder="Add subtask step..."
                 className={`${inputClass} flex-1`}
               />
-              <button type="button" onClick={handleAddSubtask} className="rounded-lg border border-slate-200 px-3 py-1.5 text-slate-600 hover:bg-slate-50 transition">
+              <button type="button" onClick={handleAddSubtask} className="rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-slate-800 hover:bg-slate-100 transition shadow-2xs flex items-center justify-center">
                 <FiPlus size={14} />
               </button>
             </div>
             <div className="space-y-1.5 max-h-32 overflow-y-auto">
               {subtasks.map((st) => (
-                <div key={st.id} className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3 py-1.5">
+                <div key={st.id} className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 shadow-2xs">
                   <label className="flex items-center gap-2 text-xs cursor-pointer">
                     <input
                       type="checkbox"
                       checked={st.completed}
                       onChange={() => setSubtasks(subtasks.map((s) => s.id === st.id ? { ...s, completed: !s.completed } : s))}
-                      className="rounded border-slate-300"
+                      className="rounded border-slate-300 text-black focus:ring-black"
                     />
-                    <span className={st.completed ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}>{st.title}</span>
+                    <span className={st.completed ? 'line-through text-slate-400' : 'text-slate-900 font-medium'}>{st.title}</span>
                   </label>
-                  <button type="button" onClick={() => setSubtasks(subtasks.filter((s) => s.id !== st.id))} className="text-slate-300 hover:text-red-500 transition">
+                  <button type="button" onClick={() => setSubtasks(subtasks.filter((s) => s.id !== st.id))} className="text-slate-400 hover:text-black transition">
                     <FiTrash2 size={12} />
                   </button>
                 </div>
@@ -302,17 +302,17 @@ export default function TaskFormDrawer({ isOpen, onClose, taskToEdit }: TaskForm
                 placeholder="Paste URL or document link..."
                 className={`${inputClass} flex-1`}
               />
-              <button type="button" onClick={handleAddLink} className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">Attach</button>
+              <button type="button" onClick={handleAddLink} className="rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-100 transition shadow-2xs">Attach</button>
             </div>
             {attachments.length > 0 && (
               <div className="mt-2 space-y-1">
                 {attachments.map((att, idx) => (
-                  <div key={idx} className="flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-3 py-1.5 text-xs">
-                    <span className="flex items-center gap-1.5 text-blue-600 font-medium truncate flex-1">
-                      <FiPaperclip size={11} />
+                  <div key={idx} className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs shadow-2xs">
+                    <span className="flex items-center gap-1.5 text-slate-900 font-medium truncate flex-1">
+                      <FiPaperclip size={11} className="text-slate-500" />
                       <a href={att} target="_blank" rel="noreferrer" className="hover:underline truncate">{att}</a>
                     </span>
-                    <button type="button" onClick={() => setAttachments(attachments.filter((_, i) => i !== idx))} className="text-slate-300 hover:text-red-500 transition ml-2">
+                    <button type="button" onClick={() => setAttachments(attachments.filter((_, i) => i !== idx))} className="text-slate-400 hover:text-black transition ml-2">
                       <FiTrash2 size={12} />
                     </button>
                   </div>
@@ -323,11 +323,11 @@ export default function TaskFormDrawer({ isOpen, onClose, taskToEdit }: TaskForm
         </form>
 
         {/* Footer */}
-        <div className="shrink-0 border-t border-slate-100 px-6 py-4 flex items-center justify-end gap-2">
-          <button type="button" onClick={onClose} className="rounded-lg border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">
+        <div className="shrink-0 border-t border-slate-200 px-6 py-4 flex items-center justify-end gap-2 bg-white">
+          <button type="button" onClick={onClose} className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-800 hover:bg-slate-100 transition shadow-2xs">
             Cancel
           </button>
-          <button type="submit" form="task-form" className="rounded-lg bg-slate-900 px-5 py-2 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm">
+          <button type="submit" form="task-form" className="rounded-xl bg-black px-5 py-2 text-xs font-bold text-white hover:bg-slate-800 transition shadow-xs">
             {taskToEdit ? 'Save Changes' : 'Create Task'}
           </button>
         </div>

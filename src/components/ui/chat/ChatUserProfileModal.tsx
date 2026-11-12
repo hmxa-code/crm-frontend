@@ -3,7 +3,6 @@
 import { FiX } from 'react-icons/fi';
 import { getDiceBearAvatar } from '@/src/utils/avatarHelper';
 
-
 interface ChatUserProfileModalProps {
   profileUser: any;
   primaryColor: string;
@@ -25,7 +24,7 @@ export default function ChatUserProfileModal({
         {/* Header Cover */}
         <div
           style={{
-            background: `linear-gradient(135deg, ${primaryColor}, #0f172a)`,
+            background: `linear-gradient(135deg, #0f172a, #334155)`,
           }}
           className="h-20 p-4 flex justify-end items-start"
         >
@@ -52,7 +51,7 @@ export default function ChatUserProfileModal({
             <span
               className={`px-3 py-1 rounded-full text-xs font-bold border capitalize ${
                 profileUser.status === 'online'
-                  ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                  ? 'bg-slate-100 border-slate-300 text-slate-800'
                   : profileUser.status === 'busy'
                   ? 'bg-rose-50 border-rose-200 text-rose-700'
                   : 'bg-slate-100 border-slate-200 text-slate-600'
@@ -63,11 +62,11 @@ export default function ChatUserProfileModal({
           </div>
 
           <h3 className="font-bold text-lg text-slate-900">{profileUser.name}</h3>
-          <p style={{ color: primaryColor }} className="text-xs font-semibold">
+          <p className="text-xs font-semibold text-slate-700">
             {profileUser.title || profileUser.role}
           </p>
           <p className="text-xs text-slate-500 mt-1 italic">
-            "{profileUser.statusText || 'Active on CRM Workspace'}"
+            &quot;{profileUser.statusText || 'Active on CRM Workspace'}&quot;
           </p>
 
           <div className="mt-4 pt-4 border-t border-slate-100 space-y-2.5 text-xs">
@@ -89,7 +88,7 @@ export default function ChatUserProfileModal({
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-400 font-medium">Pipeline</span>
-              <span className="font-semibold text-emerald-600">{profileUser.activeDeals || 'Active'}</span>
+              <span className="font-semibold text-slate-900">{profileUser.activeDeals || 'Active'}</span>
             </div>
           </div>
 
@@ -99,8 +98,8 @@ export default function ChatUserProfileModal({
                 onOpenDM(profileUser.id);
                 onClose();
               }}
-              style={{ backgroundColor: primaryColor }}
-              className="flex-1 py-2 rounded-xl text-white font-semibold text-xs shadow-xs transition text-center hover:opacity-90"
+              style={{ backgroundColor: '#0f172a' }}
+              className="flex-1 py-2 rounded-xl text-white font-semibold text-xs shadow-xs transition text-center hover:opacity-90 bg-slate-900"
             >
               Send Message
             </button>

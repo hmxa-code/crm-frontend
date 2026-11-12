@@ -96,7 +96,10 @@ export default function CustomReportsPage() {
     }
 
     const threshold = getRangeStart(dateRange)
-    return campaigns.filter((campaign) => campaign.start_date >= threshold)
+    return campaigns.filter((campaign) => {
+      const startTime = new Date(campaign.start_date).getTime()
+      return Number.isFinite(startTime) && startTime >= threshold
+    })
   }, [campaigns, selectedCampaign, selectedCampaignData, dateRange])
 
   const reportMetrics = useMemo(() => {

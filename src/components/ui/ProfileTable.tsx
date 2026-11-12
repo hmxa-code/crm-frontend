@@ -106,7 +106,7 @@ export const ProfileTable = () => {
     if (loading) {
         return (
             <div className="w-full bg-white min-h-[calc(100vh-65px)] flex flex-col items-center justify-center">
-                <FiLoader style={{ color: "#00aaff" }} className="animate-spin w-6 h-6 mb-2.5" />
+                <FiLoader style={{ color: "#000" }} className="animate-spin w-6 h-6 mb-2.5" />
                 <p className="text-slate-400 text-xs font-semibold tracking-tight">Synchronizing records...</p>
             </div>
         );
@@ -115,8 +115,8 @@ export const ProfileTable = () => {
     const profileImageUrl = userData?.avatar ? getAvatarUrl(userData.avatar, userData.name) : undefined;
 
     return (
-        <div className="w-full bg-white min-h-[calc(100vh-65px)] p-6 md:p-8 text-slate-900 relative overflow-x-hidden">
-            <div className="max-w-5xl mx-auto space-y-6">
+        <div className="w-full bg-white min-h-[calc(100vh-65px)] p-3 sm:p-6 md:p-8 text-slate-900 relative overflow-x-hidden">
+            <div className="max-w-5xl mx-auto space-y-4 sm:space-y-6">
                 
                 {/* --- Action Notification Toast --- */}
                 {successMessage && (
@@ -127,9 +127,9 @@ export const ProfileTable = () => {
                 )}
 
                 {/* --- Header Profile Control Panel --- */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/40 p-5 rounded-2xl border border-slate-200/60 shadow-3xs">
-                    <div className="flex items-center gap-4">
-                        <div className="relative w-16 h-16 rounded-xl border border-slate-200/80 shadow-3xs bg-white overflow-hidden flex items-center justify-center shrink-0">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-slate-50/40 p-3.5 sm:p-5 rounded-2xl border border-slate-200/60 shadow-3xs">
+                    <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                        <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl border border-slate-200/80 shadow-3xs bg-white overflow-hidden flex items-center justify-center shrink-0">
                             {userData?.avatar ? (
                                 <Image
                                     key={userData?.avatar}
@@ -145,25 +145,25 @@ export const ProfileTable = () => {
                                 />
                             ) : (
                                 <div 
-                                    style={{ color: "#00aaff", backgroundColor: "rgba(0, 170, 255, 0.06)" }}
+                                    style={{ color: "#000", backgroundColor: "rgba(0, 170, 255, 0.06)" }}
                                     className="w-full h-full flex items-center justify-center font-bold text-base uppercase tracking-tight"
                                 >
                                     {userData?.name?.substring(0, 2) || 'JD'}
                                 </div>
                             )}
                         </div>
-                        <div className="space-y-1">
-                            <h1 className="text-xl font-bold tracking-tight text-slate-800 capitalize leading-tight">{userData?.name || 'User Name'}</h1>
+                        <div className="space-y-1 min-w-0">
+                            <h1 className="text-base sm:text-xl font-bold tracking-tight text-slate-800 capitalize leading-tight truncate">{userData?.name || 'User Name'}</h1>
                             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium text-slate-400">
                                 <span 
-                                    style={{ color: "#00aaff", backgroundColor: "rgba(0, 170, 255, 0.06)", borderColor: "rgba(0, 170, 255, 0.15)" }}
-                                    className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border"
+                                    style={{ color: "#000", backgroundColor: "rgba(0, 170, 255, 0.06)", borderColor: "rgba(0, 170, 255, 0.15)" }}
+                                    className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border truncate"
                                 >
                                     {getRoleName(userData)}
                                 </span>
-                                <span className="text-slate-200">|</span>
-                                <span className="flex items-center gap-1 text-slate-500 font-semibold text-[11px]">
-                                    <FiMapPin size={12} className="text-slate-400" /> {userData?.location || 'Location Not Set'}
+                                <span className="text-slate-200 hidden sm:inline">|</span>
+                                <span className="flex items-center gap-1 text-slate-500 font-semibold text-[11px] truncate">
+                                    <FiMapPin size={12} className="text-slate-400 shrink-0" /> <span className="truncate">{userData?.location || 'Location Not Set'}</span>
                                 </span>
                             </div>
                         </div>
@@ -171,8 +171,8 @@ export const ProfileTable = () => {
 
                     <button
                         onClick={() => setEditingUser({...userData})}
-                        style={{ backgroundColor: "#00aaff" }}
-                        className="flex items-center justify-center gap-2 text-white px-4 py-2.5 rounded-xl font-bold transition-all shadow-sm hover:opacity-90 active:scale-[0.98] text-xs cursor-pointer"
+                        style={{ backgroundColor: "#000" }}
+                        className="w-full sm:w-auto flex items-center justify-center gap-2 text-white px-4 py-2.5 rounded-xl font-bold transition-all shadow-sm hover:opacity-90 active:scale-[0.98] text-xs cursor-pointer shrink-0"
                     >
                         <FiEdit2 size={13} /> Update Profile
                     </button>
@@ -180,22 +180,22 @@ export const ProfileTable = () => {
 
                 {/* --- Clean Minimalist Information Container --- */}
                 <div className="bg-white rounded-2xl border border-slate-200/80 shadow-3xs overflow-hidden">
-                    <div className="px-5 py-3.5 border-b border-slate-100 flex items-center gap-2 bg-slate-50/30">
-                        <FiUser style={{ color: "#00aaff" }} size={13} />
+                    <div className="px-4 sm:px-5 py-3 border-b border-slate-100 flex items-center gap-2 bg-slate-50/30">
+                        <FiUser style={{ color: "#000" }} size={13} />
                         <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Account Metadata</h3>
                     </div>
                     
-                    <div className="p-2 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
+                    <div className="p-3 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
                         <InfoField label="Full Name" value={userData?.name} />
-                        <InfoField label="Email Address" value={userData?.email} icon={<FiMail size={12} className="text-slate-400" />} />
+                        <InfoField label="Email Address" value={userData?.email} icon={<FiMail size={12} className="text-slate-400 shrink-0" />} />
                         <InfoField 
                             label="Role / Designation" 
                             value={getRoleName(userData)} 
                             isHighlight 
                             icon={<FiShield size={12} />}
                         />
-                        <InfoField label="Current Location" value={userData?.location} icon={<FiMapPin size={12} className="text-slate-400" />} />
-                        <InfoField label="Contact Number" value={userData?.phone || userData?.number} icon={<FiPhone size={12} className="text-slate-400" />} />
+                        <InfoField label="Current Location" value={userData?.location} icon={<FiMapPin size={12} className="text-slate-400 shrink-0" />} />
+                        <InfoField label="Contact Number" value={userData?.phone || userData?.number} icon={<FiPhone size={12} className="text-slate-400 shrink-0" />} />
                     </div>
                 </div>
 
@@ -207,7 +207,7 @@ export const ProfileTable = () => {
                     <div className="absolute inset-0 bg-slate-900/20 backdrop-blur-xs transition-opacity animate-in fade-in duration-200" onClick={() => !uploading && setEditingUser(null)} />
                     <div className="absolute top-0 right-0 h-full w-full sm:w-[380px] bg-white border-l border-slate-200 shadow-xl flex flex-col text-xs font-semibold animate-in slide-in-from-right duration-200">
                         
-                        <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                        <div className="p-3.5 sm:p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                             <h2 className="text-sm font-bold text-slate-800">Modify Identity Settings</h2>
                             <button type="button" onClick={() => !uploading && setEditingUser(null)} className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-600 transition-colors cursor-pointer">
                                 <FiX size={16} />
@@ -215,10 +215,10 @@ export const ProfileTable = () => {
                         </div>
 
                         <form onSubmit={updateUser} className="flex-1 flex flex-col overflow-hidden">
-                            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                            <div className="flex-1 overflow-y-auto p-3.5 sm:p-4 space-y-4">
                                 
                                 {/* Photo Uploader Section */}
-                                <div className="flex flex-col items-center py-4 bg-slate-50/40 rounded-xl border border-slate-200/50 mb-1">
+                                <div className="flex flex-col items-center py-3 sm:py-4 bg-slate-50/40 rounded-xl border border-slate-200/50 mb-1">
                                     <div className="relative group w-16 h-16 rounded-xl border border-slate-200 shadow-3xs bg-white overflow-hidden flex items-center justify-center">
                                         {editingUser.avatar ? (
                                             <img 
@@ -228,7 +228,7 @@ export const ProfileTable = () => {
                                                 className="w-full h-full object-cover" 
                                             />
                                         ) : (
-                                            <span style={{ color: "#00aaff" }} className="font-bold uppercase text-xs">
+                                            <span style={{ color: "#000" }} className="font-bold uppercase text-xs">
                                                 {editingUser.name?.substring(0, 2)}
                                             </span>
                                         )}
@@ -294,7 +294,7 @@ export const ProfileTable = () => {
                                 <button
                                     type="submit"
                                     disabled={uploading}
-                                    style={{ backgroundColor: "#00aaff" }}
+                                    style={{ backgroundColor: "#000" }}
                                     className="flex-1 text-white font-bold py-2 rounded-lg transition-all shadow-3xs hover:opacity-95 disabled:opacity-60 cursor-pointer flex items-center justify-center gap-2"
                                 >
                                     {uploading && <FiLoader className="animate-spin text-xs" />}
@@ -312,19 +312,19 @@ export const ProfileTable = () => {
 
 // UI Field Viewer Component
 const InfoField = ({ label, value, isHighlight = false, icon = null }: { label: string, value: string, isHighlight?: boolean, icon?: React.ReactNode }) => (
-    <div className="space-y-1">
+    <div className="space-y-1 min-w-0">
         <label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.08em] block">{label}</label>
         {isHighlight ? (
             <div className="pt-0.5">
                 <span 
-                    style={{ color: "#00aaff", backgroundColor: "rgba(0, 170, 255, 0.05)", borderColor: "rgba(0, 170, 255, 0.15)" }}
-                    className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border"
+                    style={{ color: "#000", backgroundColor: "rgba(0, 170, 255, 0.05)", borderColor: "rgba(0, 170, 255, 0.15)" }}
+                    className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border truncate max-w-full"
                 >
-                    {icon} {value || 'Member'}
+                    {icon} <span className="truncate">{value || 'Member'}</span>
                 </span>
             </div>
         ) : (
-            <p className="text-xs font-bold text-slate-700 flex items-center gap-2 h-6">
+            <p className="text-xs font-bold text-slate-700 flex items-center gap-2 h-6 min-w-0">
                 {icon} <span className="truncate">{value || '—'}</span>
             </p>
         )}
@@ -342,7 +342,7 @@ const EditInput = ({ label, value, onChange, placeholder = "", focusedInput, set
             placeholder={placeholder}
             onFocus={() => setFocusedInput(id)}
             onBlur={() => setFocusedInput(null)}
-            style={{ borderColor: focusedInput === id ? "#00aaff" : undefined }}
+            style={{ borderColor: focusedInput === id ? "#000" : undefined }}
             onChange={(e) => onChange(e.target.value)} 
         />
     </div>

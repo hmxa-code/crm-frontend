@@ -73,15 +73,12 @@ export default function SprintsPage() {
   const avgVelocity = Math.round((totalCompleted / sprints.length) * 10) / 10;
 
   return (
-    <div className="p-4 md:p-6 bg-slate-50/30 min-h-screen space-y-6">
+    <div className="p-3 sm:p-5 lg:p-6 bg-slate-50/40 min-h-screen space-y-4 sm:space-y-6 overflow-x-hidden">
       {/* Header */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 border border-amber-100">
-            <FiTarget className="h-6 w-6" />
-          </span>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
               Sprints & Milestones
             </h1>
             <p className="text-xs text-slate-500 font-medium">
@@ -90,92 +87,90 @@ export default function SprintsPage() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           <Link
             href="/tasks/project-portfolio"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs"
           >
-            <FiFolder className="h-4 w-4 text-violet-600" />
-            Projects Portfolio
+            <span className="truncate">Projects Portfolio</span>
           </Link>
           <Link
             href="/tasks/task-workstation"
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-xs"
           >
-            <FiLayers className="h-4 w-4" />
-            Open Workstation
+            <span className="truncate text-white">Open Workstation</span>
           </Link>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Sprints</span>
-            <span className="rounded-xl bg-slate-50 p-2 text-slate-600 border border-slate-100">
+            <span className="rounded-xl bg-slate-50 p-1.5 sm:p-2 text-slate-600 border border-slate-100">
               <FiTarget className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">{sprints.length} Cycles</div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">{sprints.length} Cycles</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">
             {sprints.filter((s) => s.status === 'ACTIVE').length} active in progress
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Points Cleared</span>
-            <span className="rounded-xl bg-emerald-50 p-2 text-emerald-600 border border-emerald-100">
+            <span className="rounded-xl bg-emerald-50 p-1.5 sm:p-2 text-emerald-600 border border-emerald-100">
               <FiCheckCircle className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-emerald-600">
-            {totalCompleted} <span className="text-sm font-normal text-slate-400">/ {totalCommitted} pts</span>
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-emerald-600 truncate">
+            {totalCompleted} <span className="text-xs sm:text-sm font-normal text-slate-400">/ {totalCommitted} pts</span>
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">
             {Math.round((totalCompleted / totalCommitted) * 100)}% execution rate
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-sky-600">Team Velocity</span>
-            <span className="rounded-xl bg-sky-50 p-2 text-sky-600 border border-sky-100">
+            <span className="rounded-xl bg-sky-50 p-1.5 sm:p-2 text-sky-600 border border-sky-100">
               <FiTrendingUp className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">{avgVelocity} pts</div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">Average points per sprint</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">{avgVelocity} pts</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">Average points per sprint</div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-violet-600">Milestones Delivery</span>
-            <span className="rounded-xl bg-violet-50 p-2 text-violet-600 border border-violet-100">
+            <span className="rounded-xl bg-violet-50 p-1.5 sm:p-2 text-violet-600 border border-violet-100">
               <FiClock className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">
             {projects.flatMap((p) => p.milestones).filter((m) => m.completed).length}{' '}
-            <span className="text-sm font-normal text-slate-400">
+            <span className="text-xs sm:text-sm font-normal text-slate-400">
               / {projects.flatMap((p) => p.milestones).length}
             </span>
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">All deliverables on track</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">All deliverables on track</div>
         </div>
       </div>
 
       {/* Sprints List */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <h2 className="text-sm font-bold text-slate-900">Active & Historical Sprints</h2>
-          <div className="flex rounded-xl border border-slate-200 bg-white p-1">
+          <div className="flex rounded-xl border border-slate-200 bg-white p-1 overflow-x-auto no-scrollbar self-start sm:self-auto">
             {(['ALL', 'ACTIVE', 'COMPLETED'] as const).map((filter) => (
               <button
                 key={filter}
                 onClick={() => setSelectedSprintFilter(filter)}
-                className={`rounded-lg px-3 py-1 text-xs font-semibold uppercase transition ${
+                className={`rounded-lg px-3 py-1 text-xs font-semibold uppercase transition whitespace-nowrap ${
                   selectedSprintFilter === filter
                     ? 'bg-slate-900 text-white shadow-xs'
                     : 'text-slate-500 hover:text-slate-900'
@@ -187,22 +182,22 @@ export default function SprintsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
           {filteredSprints.map((sprint) => {
             const progress = Math.round((sprint.completedPoints / sprint.committedPoints) * 100);
 
             return (
               <div
                 key={sprint.id}
-                className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs flex flex-col justify-between transition hover:border-slate-300"
+                className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-xs flex flex-col justify-between transition hover:border-slate-300"
               >
                 <div>
-                  <div className="flex items-center justify-between">
-                    <span className="rounded bg-sky-50 px-2 py-0.5 text-[10px] font-bold text-sky-700 border border-sky-100">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="rounded bg-sky-50 px-2 py-0.5 text-[10px] font-bold text-sky-700 border border-sky-100 truncate max-w-[150px]">
                       {sprint.projectName}
                     </span>
                     <span
-                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
+                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold whitespace-nowrap ${
                         sprint.status === 'COMPLETED'
                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                           : 'bg-amber-50 text-amber-700 border border-amber-200'
@@ -212,7 +207,7 @@ export default function SprintsPage() {
                     </span>
                   </div>
 
-                  <h3 className="mt-3 text-sm font-bold text-slate-900 leading-snug">
+                  <h3 className="mt-3 text-xs sm:text-sm font-bold text-slate-900 leading-snug line-clamp-2">
                     {sprint.name}
                   </h3>
                   <p className="mt-1.5 text-xs text-slate-500 line-clamp-2 leading-relaxed">
@@ -238,7 +233,7 @@ export default function SprintsPage() {
                 </div>
 
                 <div className="mt-5 border-t border-slate-100 pt-3">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     {/* Team Avatars */}
                     <div className="flex -space-x-1.5">
                       {sprint.teamMembers.map((userId) => {
@@ -247,7 +242,7 @@ export default function SprintsPage() {
                           <div
                             key={userId}
                             title={member?.name}
-                            className={`flex h-6 w-6 items-center justify-center rounded-full text-[9px] font-bold text-white ring-2 ring-white ${
+                            className={`flex h-6 w-6 items-center justify-center rounded-full text-[9px] font-bold text-white ring-2 ring-white shrink-0 ${
                               member?.color || 'bg-slate-500'
                             }`}
                           >
@@ -257,7 +252,7 @@ export default function SprintsPage() {
                       })}
                     </div>
 
-                    <div className="flex items-center gap-1 font-mono text-[11px] text-slate-400">
+                    <div className="flex items-center gap-1 font-mono text-[11px] text-slate-400 whitespace-nowrap">
                       <FiCalendar size={11} />
                       {sprint.startDate.split('-').slice(1).join('/')} → {sprint.endDate.split('-').slice(1).join('/')}
                     </div>
@@ -270,7 +265,7 @@ export default function SprintsPage() {
       </div>
 
       {/* Contractual Milestones Matrix */}
-      <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs space-y-4">
+      <div className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-6 shadow-xs space-y-4">
         <div>
           <h3 className="text-sm font-bold text-slate-900">Contractual Milestones Roadmap</h3>
           <p className="text-xs text-slate-500">
@@ -284,24 +279,24 @@ export default function SprintsPage() {
             .map((m) => (
               <div
                 key={m.id}
-                className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/60 p-3.5 text-xs transition hover:bg-white hover:border-slate-200"
+                className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/60 p-3.5 text-xs transition hover:bg-white hover:border-slate-200 gap-3"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0">
                   {m.completed ? (
                     <FiCheckCircle className="text-emerald-500 h-5 w-5 shrink-0" />
                   ) : (
                     <div className="h-5 w-5 rounded-full border-2 border-slate-300 shrink-0" />
                   )}
-                  <div>
-                    <div className={`font-semibold ${m.completed ? 'line-through text-slate-400' : 'text-slate-900'}`}>
+                  <div className="min-w-0">
+                    <div className={`font-semibold truncate ${m.completed ? 'line-through text-slate-400' : 'text-slate-900'}`}>
                       {m.title}
                     </div>
-                    <div className="text-[10px] text-slate-500 font-medium">
+                    <div className="text-[10px] text-slate-500 font-medium truncate">
                       {m.projectName} ({m.projectCode})
                     </div>
                   </div>
                 </div>
-                <span className="font-mono text-[11px] text-slate-500 font-semibold bg-white border border-slate-200 px-2 py-0.5 rounded">
+                <span className="font-mono text-[11px] text-slate-500 font-semibold bg-white border border-slate-200 px-2 py-0.5 rounded whitespace-nowrap shrink-0">
                   {m.dueDate}
                 </span>
               </div>

@@ -1,0 +1,95 @@
+import { VentureDeal, StagnationRiskMetric } from '@/src/types/dealflow/opportunity';
+
+export const mockVentureDeals: VentureDeal[] = [
+  {
+    id: 'vd-1',
+    dealCode: 'OPP-ENT-4872',
+    accountName: 'Global Logistics Corp',
+    dealTitle: 'Global Fleet Telemetry & Routing Expansion',
+    ownerName: 'Marcus Vance',
+    ownerAvatar: 'MV',
+    stage: 'Discovery',
+    amount: 120000,
+    mrr: 10000,
+    arr: 120000,
+    closeProbability: 40,
+    expectedCloseDate: '2026-12-15',
+    stagnationDays: 9,
+    slaBreachRisk: 'High',
+    healthScore: 62,
+    lastTouchpoint: 'Initial discovery call completed with VP of Supply Chain.',
+    primaryContact: 'Sarah Jenkins',
+    industry: 'Logistics & Supply Chain',
+    notes: 'Client evaluating competitor pricing against our API performance SLA.'
+  },
+  {
+    id: 'vd-2',
+    dealCode: 'OPP-WHC-4988',
+    accountName: 'Apex Cloud Systems',
+    dealTitle: 'Omnichannel Customer Messaging Infrastructure',
+    ownerName: 'Elena Rostova',
+    ownerAvatar: 'ER',
+    stage: 'Value Prop',
+    amount: 62000,
+    mrr: 5166,
+    arr: 62000,
+    closeProbability: 65,
+    expectedCloseDate: '2026-11-30',
+    stagnationDays: 4,
+    slaBreachRisk: 'Medium',
+    healthScore: 78,
+    lastTouchpoint: 'Custom architectural demo presented to engineering leads.',
+    primaryContact: 'Marcus Sterling',
+    industry: 'Cloud Infrastructure',
+    notes: 'Security compliance review pending with their internal infosec team.'
+  },
+  {
+    id: 'vd-3',
+    dealCode: 'OPP-WHC-4991',
+    accountName: 'St. Jude Health Network', // Agar generic rakhna hai toh 'Stellar Enterprise Networks' kar lo
+    dealTitle: 'Enterprise Cloud Migration & Analytics Suite',
+    ownerName: 'Marcus Vance',
+    ownerAvatar: 'MV',
+    stage: 'Proposal',
+    amount: 185000,
+    mrr: 15416,
+    arr: 185000,
+    closeProbability: 75,
+    expectedCloseDate: '2026-11-20',
+    stagnationDays: 2,
+    slaBreachRisk: 'Low',
+    healthScore: 91,
+    lastTouchpoint: 'Submitted final commercial proposal with volume discount tier.',
+    primaryContact: 'David Kim',
+    industry: 'Enterprise Software',
+    notes: 'Strong executive sponsorship from the CTO.'
+  },
+  {
+    id: 'vd-4',
+    dealCode: 'OPP-WHC-4805',
+    accountName: 'Vanguard Financial Group',
+    dealTitle: 'High-Throughput Payment Gateway Orchestration',
+    ownerName: 'Elena Rostova',
+    ownerAvatar: 'ER',
+    stage: 'Contract',
+    amount: 94000,
+    mrr: 7833,
+    arr: 94000,
+    closeProbability: 90,
+    expectedCloseDate: '2026-11-15',
+    stagnationDays: 1,
+    slaBreachRisk: 'Low',
+    healthScore: 96,
+    lastTouchpoint: 'Redline contract shared with legal counsel.',
+    primaryContact: 'Rachel Adams',
+    industry: 'FinTech & Banking',
+    notes: 'Expected signature by end of current sprint.'
+  }
+];
+
+export const mockStagnationMetrics: StagnationRiskMetric[] = [
+  { stage: 'Discovery', avgDaysInStage: 6.2, maxSlaAllowedDays: 7, atRiskDealsCount: 2, totalValueAtRisk: 145000 },
+  { stage: 'Value Prop', avgDaysInStage: 4.8, maxSlaAllowedDays: 5, atRiskDealsCount: 1, totalValueAtRisk: 62000 },
+  { stage: 'Proposal', avgDaysInStage: 8.5, maxSlaAllowedDays: 10, atRiskDealsCount: 1, totalValueAtRisk: 185000 },
+  { stage: 'Contract', avgDaysInStage: 3.1, maxSlaAllowedDays: 5, atRiskDealsCount: 0, totalValueAtRisk: 0 }
+];

@@ -93,23 +93,23 @@ export const Navbar = () => {
     <header className="h-[65px] bg-white border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-[100]">
       
       {/* Quick Search & Mobile Hamburger */}
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
         <button
           type="button"
           onClick={toggleMobile}
-          className="p-2 -ml-1 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl md:hidden transition cursor-pointer"
+          className="p-2 -ml-1 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl md:hidden transition cursor-pointer shrink-0"
           title="Toggle Navigation Menu"
           aria-label="Toggle navigation menu"
         >
           {isMobileOpen ? <FiX size={20} /> : <FiMenu size={20} />}
         </button>
 
-        <div className="relative hidden md:flex items-center">
+        <div className="relative hidden md:flex items-center min-w-0">
           <FiSearch className="absolute left-3 text-slate-400 text-sm pointer-events-none" />
           <input 
             type="text" 
             placeholder="Search leads, users, features..."
-            className="w-64 pl-9 pr-12 py-1.5 bg-slate-50 hover:bg-slate-100 focus:bg-white text-xs text-slate-900 placeholder-slate-400 border border-slate-200 rounded-lg transition-all outline-none focus:ring-2 focus:ring-[var(--crm-primary)]/20 focus:border-[var(--crm-primary)]"
+            className="w-36 lg:w-64 pl-9 pr-12 py-1.5 bg-slate-50 hover:bg-slate-100 focus:bg-white text-xs text-slate-900 placeholder-slate-400 border border-slate-200 rounded-lg transition-all outline-none focus:ring-2 focus:ring-[var(--crm-primary)]/20 focus:border-[var(--crm-primary)]"
           />
           <kbd className="absolute right-2.5 text-[10px] font-medium text-slate-400 bg-white border border-slate-200 px-1.5 py-0.5 rounded shadow-2xs">
             ⌘K

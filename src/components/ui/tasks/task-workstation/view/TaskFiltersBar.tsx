@@ -36,7 +36,7 @@ const VIEW_TABS: { key: ViewMode; label: string; icon: React.ElementType }[] = [
 ];
 
 const selectClass =
-  'rounded-lg border border-slate-200 bg-slate-50/80 px-3 py-1.5 text-xs font-semibold text-slate-700 outline-none focus:border-blue-400 focus:bg-white transition cursor-pointer min-w-[120px]';
+  'rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 outline-none focus:border-slate-400 transition cursor-pointer shadow-2xs shrink-0';
 
 export default function TaskFiltersBar({
   search, setSearch,
@@ -51,30 +51,30 @@ export default function TaskFiltersBar({
   totalCards,
 }: TaskFiltersBarProps) {
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm">
-      {/* Row 1: Title + View Tabs + Create Button */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="flex flex-col gap-3.5 rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-5 shadow-xs">
+      {/* Header Row: Title & Action Controls */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <h1 className="text-base font-bold text-slate-800">Task Workstation</h1>
-          <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-500">
+          <h1 className="text-base sm:text-lg font-bold tracking-tight text-slate-900">Task Workstation</h1>
+          <span className="rounded-full bg-slate-100 border border-slate-200 px-2.5 py-0.5 text-xs font-semibold text-slate-600">
             {totalCards} total
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* View Switcher */}
-          <div className="flex rounded-lg border border-slate-200 bg-slate-50 p-0.5">
+        <div className="flex flex-wrap items-center gap-2 justify-between sm:justify-end">
+          {/* View Switcher Tabs */}
+          <div className="flex items-center rounded-xl bg-slate-100 p-1 border border-slate-200 overflow-x-auto no-scrollbar max-w-full">
             {VIEW_TABS.map(({ key, label, icon: Icon }) => (
               <button
                 key={key}
                 onClick={() => setViewMode(key)}
-                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition ${
+                className={`flex items-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition shrink-0 ${
                   viewMode === key
-                    ? 'bg-white text-slate-800 shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
+                    ? 'bg-slate-900 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <Icon size={13} /> {label}
+                <Icon size={13} /> <span className="hidden xs:inline">{label}</span>
               </button>
             ))}
           </div>
@@ -83,32 +83,26 @@ export default function TaskFiltersBar({
           <button
             type="button"
             onClick={onOpenCreateModal}
-            className="flex items-center gap-1.5 rounded-lg bg-slate-900 px-4 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition"
+            className="flex items-center justify-center gap-1.5 rounded-xl bg-slate-900 px-3.5 sm:px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition active:scale-95 shrink-0"
           >
             <FiPlus size={14} /> Create Task
           </button>
         </div>
       </div>
 
-      {/* Row 2: Filters + Search + Sort */}
-      <div className="flex flex-wrap items-center gap-2">
-        {/* Search */}
-        <div className="relative">
-          <FiSearch className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-400" />
+      {/* Filters & Search Row with Horizontal Scroll for Mobile */}
+      <div className="flex items-center gap-2.5 pt-2 border-t border-slate-100 overflow-x-auto no-scrollbar pb-1">
+        <div className="relative min-w-[200px] sm:max-w-xs flex-1">
+          <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search tasks..."
-            className="w-44 rounded-lg border border-slate-200 bg-slate-50/50 pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 outline-none focus:border-slate-400 focus:bg-white transition"
+            className="w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-3 py-2 text-xs text-slate-800 placeholder-slate-400 outline-none focus:border-slate-400 focus:bg-white transition"
           />
         </div>
 
-        {/* Status Filter */}
-        <select
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value as TaskStatus | 'ALL')}
-          className={selectClass}
-        >
+        <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value as TaskStatus | 'ALL')} className={selectClass}>
           <option value="ALL">All Status</option>
           <option value="TODO">To Do</option>
           <option value="IN_PROGRESS">In Progress</option>
@@ -116,12 +110,7 @@ export default function TaskFiltersBar({
           <option value="DONE">Done</option>
         </select>
 
-        {/* Priority Filter */}
-        <select
-          value={filterPriority}
-          onChange={(e) => setFilterPriority(e.target.value as TaskPriority | 'ALL')}
-          className={selectClass}
-        >
+        <select value={filterPriority} onChange={(e) => setFilterPriority(e.target.value as TaskPriority | 'ALL')} className={selectClass}>
           <option value="ALL">All Priorities</option>
           <option value="LOW">Low</option>
           <option value="MEDIUM">Medium</option>
@@ -129,12 +118,7 @@ export default function TaskFiltersBar({
           <option value="URGENT">Urgent</option>
         </select>
 
-        {/* Module Filter */}
-        <select
-          value={filterModule}
-          onChange={(e) => setFilterModule(e.target.value as ModuleType | 'ALL')}
-          className={selectClass}
-        >
+        <select value={filterModule} onChange={(e) => setFilterModule(e.target.value as ModuleType | 'ALL')} className={selectClass}>
           <option value="ALL">All Modules</option>
           <option value="GENERAL">General</option>
           <option value="SALES">Sales</option>
@@ -142,24 +126,14 @@ export default function TaskFiltersBar({
           <option value="SUPPORT">Support</option>
         </select>
 
-        {/* Assignee Filter */}
-        <select
-          value={filterAssignee}
-          onChange={(e) => setFilterAssignee(e.target.value)}
-          className={selectClass}
-        >
+        <select value={filterAssignee} onChange={(e) => setFilterAssignee(e.target.value)} className={selectClass}>
           <option value="ALL">All Assignees</option>
           {TEAM_MEMBERS.map((m) => (
             <option key={m.id} value={m.id}>{m.name}</option>
           ))}
         </select>
 
-        {/* Sort Key */}
-        <select
-          value={sortKey}
-          onChange={(e) => setSortKey(e.target.value as SortKey)}
-          className={selectClass}
-        >
+        <select value={sortKey} onChange={(e) => setSortKey(e.target.value as SortKey)} className={selectClass}>
           <option value="none">Sort By</option>
           <option value="priority">Priority</option>
           <option value="dueDate">Due Date</option>
@@ -167,11 +141,10 @@ export default function TaskFiltersBar({
           <option value="title">Title</option>
         </select>
 
-        {/* Sort Order Toggle */}
         {sortKey !== 'none' && (
           <button
             onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-            className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"
+            className="flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition shrink-0"
             title={sortOrder === 'asc' ? 'Ascending' : 'Descending'}
           >
             {sortOrder === 'asc' ? <FiArrowUp size={13} /> : <FiArrowDown size={13} />}

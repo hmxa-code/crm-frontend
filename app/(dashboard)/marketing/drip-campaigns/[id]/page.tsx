@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { DripCampaignDetail } from '@/src/components/marketing/drip-campaigns/DripCampaignDetail';
+import { DripCampaignDetail } from '@/src/components/ui/marketing/drip-campaigns/DripCampaignDetail';
 
 export default function DripCampaignDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = React.use(params);

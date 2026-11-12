@@ -1,7 +1,24 @@
-import { apiRequest } from '../api/client';
+import { apiRequest, API_BASE_URL, FALLBACK_API_URL } from '../api/client';
 import { USER_ROLES, isAccountOwner, resolveAccountType } from '../constants/roles';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
+const API_BASE = API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'https://crm-backend-nine-theta.vercel.app/api' || 'http://localhost:5000/api';
+
+/**
+ * Fetch wrapper with failover to localhost:5000 if primary is unreachable
+ */
+const fetchWithFallback = async (endpoint: string, options: RequestInit = {}): Promise<Response> => {
+  const primaryUrl = `${API_BASE}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+  try {
+    return await fetch(primaryUrl, options);
+  } catch (err: any) {
+    if (API_BASE !== FALLBACK_API_URL) {
+      console.warn(`[AuthService] Primary ${primaryUrl} failed. Trying fallback ${FALLBACK_API_URL}...`);
+      const fallbackUrl = `${FALLBACK_API_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+      return await fetch(fallbackUrl, options);
+    }
+    throw err;
+  }
+};
 
 /**
  * Save auth data to localStorage & cookie for reliable persistence
@@ -47,7 +64,7 @@ export const AuthService = {
     avatar?: string | null;
   }) {
     try {
-      const response = await fetch(`${API_BASE}/auth/signup`, {
+      const response = await fetchWithFallback('/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +94,7 @@ export const AuthService = {
    */
   async login(email: string, password: string) {
     try {
-      const response = await fetch(`${API_BASE}/auth/login`, {
+      const response = await fetchWithFallback('/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +130,7 @@ export const AuthService = {
         return null;
       }
 
-      const response = await fetch(`${API_BASE}/auth/current-user`, {
+      const response = await fetchWithFallback('/auth/current-user', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -150,7 +167,7 @@ export const AuthService = {
   async getAvailableRoles(): Promise<any[]> {
     try {
       const token = this.getToken();
-      const response = await fetch(`${API_BASE}/roles?page=1&limit=100`, {
+      const response = await fetchWithFallback('/roles?page=1&limit=100', {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
@@ -174,7 +191,7 @@ export const AuthService = {
       const token = this.getToken();
 
       if (token) {
-        await fetch(`${API_BASE}/auth/logout`, {
+        await fetchWithFallback('/auth/logout', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -251,7 +268,7 @@ export const AuthService = {
         throw new Error('No token available');
       }
 
-      const response = await fetch(`${API_BASE}/auth/refresh-token`, {
+      const response = await fetchWithFallback('/auth/refresh-token', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

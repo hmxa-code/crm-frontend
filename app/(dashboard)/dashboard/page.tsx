@@ -1,37 +1,30 @@
 ﻿'use client'
 
 import React, { useEffect, useMemo, useState } from 'react'
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer, 
-  AreaChart, 
-  Area, 
-  PieChart, 
-  Pie, 
-  Cell 
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
 } from 'recharts'
-import { 
-  FiMail, 
-  FiUsers, 
-  FiTrendingUp, 
-  FiVolume2, 
-  FiCpu, 
-  FiPieChart, 
-  FiShare2, 
-  FiZap, 
-  FiBarChart2, 
-  FiArrowRight, 
-  FiCheckCircle, 
-  FiClock, 
+import {
+  FiMail,
+  FiUsers,
+  FiTrendingUp,
+  FiVolume2,
+  FiCpu,
+  FiPieChart,
+  FiShare2,
+  FiZap,
+  FiBarChart2,
   FiLoader,
-  FiActivity
 } from 'react-icons/fi'
-import Link from 'next/link'
 import { CampaignsService } from '@/src/services/marketing/CampaignsService'
 import { DripCampaignsService } from '@/src/services/marketing/DripCampaignsService'
 import { Campaign } from '@/src/types/marketing/campaign'
@@ -40,6 +33,7 @@ import { DripCampaign } from '@/src/types/marketing/drip-campaign'
 export default function MarketingDashboard() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [dripCampaigns, setDripCampaigns] = useState<DripCampaign[]>([])
+  // TODO: replace with your lead scoring service count
   const [leadScoresCount, setLeadScoresCount] = useState(0)
   const [loading, setLoading] = useState(true)
 
@@ -47,14 +41,13 @@ export default function MarketingDashboard() {
     async function loadDashboardData() {
       setLoading(true)
       try {
-        const [campaignData, dripData, leadScores] = await Promise.all([
+        const [campaignData, dripData] = await Promise.all([
           CampaignsService.getAllCampaigns(),
           DripCampaignsService.getAllDripCampaigns(),
         ])
 
         setCampaigns(campaignData || [])
         setDripCampaigns(dripData || [])
-        setLeadScoresCount(leadScores?.length || 0)
       } catch (error) {
         console.error('Error loading marketing dashboard data:', error)
       } finally {
@@ -76,7 +69,6 @@ export default function MarketingDashboard() {
     [dripCampaigns],
   )
 
-  // Chart Mock Analytics matching the sleek Slate palette
   const analyticsTrend = [
     { month: 'Jan', openRate: 24, clicks: 12, conversions: 4.2 },
     { month: 'Feb', openRate: 28, clicks: 15, conversions: 5.1 },
@@ -87,10 +79,10 @@ export default function MarketingDashboard() {
   ]
 
   const channelDistribution = [
-    { name: 'Email Direct', value: 45, color: '#0f172a' }, // Slate 900
-    { name: 'Drip Sequence', value: 30, color: '#10b981' }, // Emerald 500
-    { name: 'Social Push', value: 15, color: '#f59e0b' }, // Amber 500
-    { name: 'SMS Flow', value: 10, color: '#64748b' }, // Slate 500
+    { name: 'Email Direct', value: 45, color: '#0f172a' },
+    { name: 'Drip Sequence', value: 30, color: '#10b981' },
+    { name: 'Social Push', value: 15, color: '#f59e0b' },
+    { name: 'SMS Flow', value: 10, color: '#64748b' },
   ]
 
   const stats = [
@@ -159,7 +151,10 @@ export default function MarketingDashboard() {
     () =>
       campaigns
         .slice()
-        .sort((a, b) => (b.start_date || 0) - (a.start_date || 0))
+        .sort(
+          (a, b) =>
+            new Date(b.start_date ?? 0).getTime() - new Date(a.start_date ?? 0).getTime(),
+        )
         .slice(0, 4)
         .map((campaign) => ({
           id: campaign._id ?? campaign.campaign_name,
@@ -185,39 +180,45 @@ export default function MarketingDashboard() {
 
   if (loading) {
     return (
-      <div className="w-full h-screen bg-[#f8fafc] flex flex-col items-center justify-center">
+      <div className="w-full min-h-[60vh] bg-[#f8fafc] flex flex-col items-center justify-center px-4">
         <FiLoader className="animate-spin w-7 h-7 text-slate-600 mb-3" />
-        <p className="text-slate-400 text-xs font-bold tracking-tight">Syncing Marketing Intelligence...</p>
+        <p className="text-slate-400 text-xs font-bold tracking-tight text-center">
+          Syncing Marketing Intelligence...
+        </p>
       </div>
     )
   }
 
   return (
-    <div className="w-full bg-[#f8fafc] min-h-screen p-6 text-slate-900 font-sans antialiased">
-      <div className="max-w-7xl mx-auto space-y-6">
-        
-        {/* --- Top Title Bar (Original Style) --- */}
-        <div className="bg-white border border-slate-200/80 rounded-xl px-5 py-4 shadow-2xs">
-          <h1 className="text-base font-bold text-slate-900 tracking-tight">Marketing Intelligence</h1>
-          <p className="text-xs text-slate-500 font-medium mt-0.5">
+    <div className="w-full bg-[#f8fafc] p-3 sm:p-4 lg:p-6 text-slate-900 font-sans antialiased">
+      <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6">
+
+        {/* Title */}
+        <div className="bg-white border border-slate-200/80 rounded-xl px-4 sm:px-5 py-3 sm:py-4 shadow-2xs">
+          <h1 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
+            Marketing Intelligence
+          </h1>
+          <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
             Streamline automated sequences, user matrix distribution, and core tracking loops.
           </p>
         </div>
 
-        {/* --- Unified Performance Metrics Row --- */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {/* Stats */}
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-3">
           {stats.map((stat) => {
             const Icon = stat.icon
             return (
-              <div 
-                key={stat.label} 
-                className="bg-white border border-slate-200 rounded-xl p-4 shadow-3xs flex items-center justify-between"
+              <div
+                key={stat.label}
+                className="bg-white border border-slate-200 rounded-xl p-3 sm:p-4 shadow-3xs flex items-center justify-between gap-2 min-w-0"
               >
-                <div>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{stat.label}</p>
-                  <p className="text-xl font-bold text-slate-900 mt-1">{stat.value}</p>
+                <div className="min-w-0">
+                  <p className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider truncate">
+                    {stat.label}
+                  </p>
+                  <p className="text-lg sm:text-xl font-bold text-slate-900 mt-1">{stat.value}</p>
                 </div>
-                <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-lg text-slate-500">
+                <div className="p-2 sm:p-2.5 bg-slate-50 border border-slate-100 rounded-lg text-slate-500 shrink-0">
                   <Icon size={14} />
                 </div>
               </div>
@@ -225,17 +226,19 @@ export default function MarketingDashboard() {
           })}
         </div>
 
-        {/* --- Charts Grid (Matching Original Theme) --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Main Analytics Area Chart */}
-          <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-3xs lg:col-span-2">
-            <div className="flex justify-between items-center mb-6">
+        {/* Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+
+          {/* Area Chart */}
+          <div className="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-3xs lg:col-span-2 min-w-0">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4 sm:mb-6">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Performance Stream</span>
+                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
+                  Performance Stream
+                </span>
                 <h3 className="font-bold text-slate-900 text-xs mt-0.5">Engagement Velocity</h3>
               </div>
-              <div className="flex gap-4 text-[10px] font-bold uppercase tracking-wider">
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-bold uppercase tracking-wider">
                 <span className="flex items-center gap-1.5 text-slate-600">
                   <span className="w-2 h-2 bg-slate-900 rounded-xs" /> Open Rate %
                 </span>
@@ -244,46 +247,72 @@ export default function MarketingDashboard() {
                 </span>
               </div>
             </div>
-            <div className="h-56 w-full text-xs font-medium">
+            <div className="h-48 sm:h-56 lg:h-64 w-full text-xs font-medium">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={analyticsTrend} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
+                <AreaChart data={analyticsTrend} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorOpenRate" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#0f172a" stopOpacity={0.12}/>
-                      <stop offset="95%" stopColor="#0f172a" stopOpacity={0.0}/>
+                      <stop offset="5%" stopColor="#0f172a" stopOpacity={0.12} />
+                      <stop offset="95%" stopColor="#0f172a" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="colorConversions" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.15}/>
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0.0}/>
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.15} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                   <XAxis dataKey="month" stroke="#94a3b8" tickLine={false} axisLine={false} dy={5} />
                   <YAxis stroke="#94a3b8" tickLine={false} axisLine={false} dx={-5} />
-                  <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', borderRadius: '6px', fontSize: '11px', fontWeight: 'bold' }} />
-                  <Area type="monotone" dataKey="openRate" stroke="#0f172a" strokeWidth={2} fillOpacity={1} fill="url(#colorOpenRate)" name="Open Rate (%)" />
-                  <Area type="monotone" dataKey="conversions" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorConversions)" name="Conversions (%)" />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#ffffff',
+                      borderColor: '#e2e8f0',
+                      borderRadius: '6px',
+                      fontSize: '11px',
+                      fontWeight: 'bold',
+                    }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="openRate"
+                    stroke="#0f172a"
+                    strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#colorOpenRate)"
+                    name="Open Rate (%)"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="conversions"
+                    stroke="#10b981"
+                    strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#colorConversions)"
+                    name="Conversions (%)"
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          {/* Traffic Share Donut Chart */}
-          <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-3xs flex flex-col justify-between">
+          {/* Donut Chart */}
+          <div className="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-3xs flex flex-col justify-between min-w-0">
             <div>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Traffic Matrix</span>
+              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
+                Traffic Matrix
+              </span>
               <h3 className="font-bold text-slate-900 text-xs mt-0.5 mb-2">Channel Allocation</h3>
             </div>
-            
-            <div className="h-40 w-full relative flex items-center justify-center">
+
+            <div className="h-44 sm:h-48 lg:h-40 w-full relative flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={channelDistribution}
                     cx="50%"
                     cy="50%"
-                    innerRadius={45}
-                    outerRadius={65}
+                    innerRadius="60%"
+                    outerRadius="85%"
                     paddingAngle={3}
                     dataKey="value"
                   >
@@ -294,16 +323,18 @@ export default function MarketingDashboard() {
                   <Tooltip contentStyle={{ borderRadius: '6px', fontSize: '11px', fontWeight: 'bold' }} />
                 </PieChart>
               </ResponsiveContainer>
-              <div className="absolute flex flex-col items-center">
-                <span className="text-[9px] font-bold uppercase text-slate-400 tracking-wider">Allocation</span>
+              <div className="absolute flex flex-col items-center pointer-events-none">
+                <span className="text-[9px] font-bold uppercase text-slate-400 tracking-wider">
+                  Allocation
+                </span>
                 <span className="text-base font-extrabold text-slate-900">100%</span>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 pt-3 border-t border-slate-100 text-[10px] font-bold text-slate-600">
-              {channelDistribution.map((item, i) => (
-                <div key={i} className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-xs" style={{ backgroundColor: item.color }} />
+            <div className="grid grid-cols-2 gap-2 pt-3 mt-3 border-t border-slate-100 text-[10px] font-bold text-slate-600">
+              {channelDistribution.map((item) => (
+                <div key={item.name} className="flex items-center gap-1.5 min-w-0">
+                  <span className="w-2 h-2 rounded-xs shrink-0" style={{ backgroundColor: item.color }} />
                   <span className="truncate">{item.name}</span>
                 </div>
               ))}
@@ -311,12 +342,6 @@ export default function MarketingDashboard() {
           </div>
 
         </div>
-
-        {/* --- Ledger Table & Activity Split --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-        </div>
-
       </div>
     </div>
   )

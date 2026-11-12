@@ -12,7 +12,7 @@ interface TaskTimelineViewProps {
 
 export default function TaskTimelineView({ tasks, onView, onEdit }: TaskTimelineViewProps) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
       <div className="mb-6 flex items-center justify-between border-b border-slate-100 pb-4">
         <div className="flex items-center gap-2">
           <FiClock className="text-slate-700" size={20} />
@@ -23,18 +23,18 @@ export default function TaskTimelineView({ tasks, onView, onEdit }: TaskTimeline
         </span>
       </div>
 
-      <div className="relative border-l-2 border-slate-200 ml-4 pl-8 space-y-6">
+      <div className="relative border-l-2 border-slate-200 ml-2 sm:ml-4 pl-6 sm:pl-8 space-y-6">
         {tasks.length === 0 ? (
           <p className="py-10 text-center text-sm font-medium text-slate-400">No timeline data available.</p>
         ) : (
           tasks.map((task) => (
             <div key={task._id} className="relative group">
-              <span className="absolute -left-[32.5px] top-3.5 h-3.5 w-3.5 rounded-full border-2 border-slate-400 bg-white shadow-sm transition group-hover:border-blue-400" />
+              <span className="absolute -left-[30.5px] sm:-left-[32.5px] top-3.5 h-3.5 w-3.5 rounded-full border-2 border-slate-400 bg-white shadow-sm transition group-hover:border-blue-400" />
 
-              <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4 transition hover:border-blue-200 hover:bg-white hover:shadow-md">
+              <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-3.5 sm:p-4 transition hover:border-blue-200 hover:bg-white hover:shadow-md">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <h4 className="text-sm font-semibold text-slate-800">{task.title}</h4>
-                  <div className="flex items-center gap-2">
+                  <div className="files flex items-center gap-2">
                     <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-bold text-slate-600 border border-slate-200">
                       {task.status}
                     </span>

@@ -25,9 +25,11 @@ export interface CRMSettings {
   sidebarBg: string;
   sidebarText: string;
   cardBorder: string;
+  sidebarActiveColor: string;
+  sidebarHoverColor: string;
 
   // Sidebar Architecture & Theme Suits
-  sidebarThemeSuit: 'enterprise_slate' | 'executive_dark' | 'glass_modern';
+  sidebarThemeSuit: 'enterprise_slate' | 'executive_dark' | 'corporate_navy' | 'glass_modern';
   sidebarDensity: 'compact' | 'comfortable' | 'spacious';
   sidebarActiveStyle: 'filled' | 'pill' | 'subtle' | 'border_left';
   sidebarCornerRadius: 'sharp' | 'rounded' | 'full';
@@ -44,12 +46,15 @@ export interface CRMSettings {
   logoUploadData?: string; // base64 or object URL
   logoWidth: number;
   logoHeight: number;
+  logoAlignment: 'left' | 'center' | 'right';
   faviconUrl: string;
 
   // Workspace & Purpose Metadata
   crmPurposeText: string;
   crmTagline: string;
   companyName: string;
+  showCompanyName: boolean;
+  showTagline: boolean;
   customDomain: string;
   cnameVerified: boolean;
 
@@ -75,53 +80,11 @@ export interface CRMSettings {
   }[];
 }
 
-export const THEME_PRESETS = [
-  {
-    name: "Enterprise Blue",
-    description: "HubSpot & Salesforce inspired corporate palette",
-    primaryColor: "#0066FF",
-    accentColor: "#0F172A",
-    sidebarBg: "#FFFFFF",
-    sidebarText: "#1E293B",
-    cardBorder: "#E2E8F0",
-  },
-  {
-    name: "Dark Obsidian",
-    description: "Sleek, modern deep graphite with electric cyan",
-    primaryColor: "#06B6D4",
-    accentColor: "#090D16",
-    sidebarBg: "#0F172A",
-    sidebarText: "#F8FAFC",
-    cardBorder: "#334155",
-  },
-  {
-    name: "Emerald Slate",
-    description: "Fintech & wealth management balanced green",
-    primaryColor: "#10B981",
-    accentColor: "#064E3B",
-    sidebarBg: "#F8FAFC",
-    sidebarText: "#0F172A",
-    cardBorder: "#CBD5E1",
-  },
-  {
-    name: "Sunset Amber",
-    description: "High-energy dynamic warm CRM brand theme",
-    primaryColor: "#F59E0B",
-    accentColor: "#78350F",
-    sidebarBg: "#FFFFFF",
-    sidebarText: "#1C1917",
-    cardBorder: "#E7E5E4",
-  },
-  {
-    name: "Royal Violet",
-    description: "Premium SaaS & product-led tech look",
-    primaryColor: "#8B5CF6",
-    accentColor: "#4C1D95",
-    sidebarBg: "#FAF5FF",
-    sidebarText: "#1E1B4B",
-    cardBorder: "#DDD6FE",
-  },
-];
+// Preset theme suites have been removed. Sidebar colors are configured individually.
+export const THEME_PRESETS: Array<{
+  name: string; description: string; primaryColor: string; accentColor: string;
+  sidebarBg: string; sidebarText: string; cardBorder: string;
+}> = [];
 
 export const INITIAL_INTEGRATIONS: IntegrationAddon[] = [
   {
@@ -323,11 +286,13 @@ export const INITIAL_INTEGRATIONS: IntegrationAddon[] = [
 
 export const DEFAULT_CRM_SETTINGS: CRMSettings = {
   // Colors
-  primaryColor: "#0066FF",
-  accentColor: "#0F172A",
+  primaryColor: "#111827",
+  accentColor: "#111827",
   sidebarBg: "#FFFFFF",
   sidebarText: "#1E293B",
   cardBorder: "#E2E8F0",
+  sidebarActiveColor: "#111827",
+  sidebarHoverColor: "#F3F4F6",
 
   // Sidebar Architecture & Theme Suits
   sidebarThemeSuit: "enterprise_slate",
@@ -347,12 +312,15 @@ export const DEFAULT_CRM_SETTINGS: CRMSettings = {
   logoUploadData: "",
   logoWidth: 140,
   logoHeight: 36,
+  logoAlignment: "center",
   faviconUrl: "",
 
   // Workspace Metadata
   crmPurposeText: "Turn every opportunity into a measurable customer journey.",
   crmTagline: "The modern revenue platform designed for ambitious growth teams.",
   companyName: "Wholcure Global CRM",
+  showCompanyName: false,
+  showTagline: false,
   customDomain: "crm.wholcure.com",
   cnameVerified: true,
 
@@ -407,18 +375,56 @@ export const DEFAULT_CRM_SETTINGS: CRMSettings = {
 const STORAGE_KEY = "crm-settings-v2";
 const INTEGRATIONS_STORAGE_KEY = "crm-integrations-v2";
 
+export const isHexColor = (value: string | undefined | null): value is string =>
+  !!value && /^#[0-9a-fA-F]{6}$/.test(value.trim());
+
+export const safeHex = (value: string | undefined | null, fallback: string) =>
+  isHexColor(value) ? value.trim() : fallback;
+
+export const hexToRgba = (hex: string, alpha: number) => {
+  const h = safeHex(hex, "#111827").slice(1);
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+export const isDarkHex = (hex: string) => {
+  const h = safeHex(hex, "#111827").slice(1);
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 < 0.62;
+};
+
+export const contrastText = (hex: string) => (isDarkHex(hex) ? "#FFFFFF" : "#111827");
+
+export const resolveCrmLogo = (
+  settings: Pick<CRMSettings, "logoUploadData" | "logoUrl">,
+  fallback: string
+) => {
+  const upload = settings.logoUploadData?.trim();
+  const url = settings.logoUrl?.trim();
+  if (upload) return upload;
+  if (url) return url;
+  return fallback;
+};
+
 export const applyCRMSettings = (settings: CRMSettings) => {
   if (typeof document === "undefined") return;
-
   const root = document.documentElement;
-  root.style.setProperty("--crm-primary", settings.primaryColor);
-  root.style.setProperty("--crm-accent", settings.accentColor);
-  root.style.setProperty("--crm-primary-soft", `${settings.primaryColor}22`);
-  root.style.setProperty("--primary", settings.primaryColor);
-  root.style.setProperty("--accent", settings.accentColor);
-  root.style.setProperty("--sidebar-bg", settings.sidebarBg);
-  root.style.setProperty("--sidebar-text", settings.sidebarText);
-  root.style.setProperty("--card-border", settings.cardBorder);
+
+  // These tokens are deliberately sidebar-scoped; global buttons and app theme remain untouched.
+  root.style.setProperty("--sidebar-bg", settings.sidebarBg || "#FFFFFF");
+  root.style.setProperty("--sidebar-text", settings.sidebarText || "#1E293B");
+  root.style.setProperty("--sidebar-border", settings.cardBorder || "#E2E8F0");
+  root.style.setProperty("--sidebar-primary", settings.primaryColor || "#111827");
+  root.style.setProperty("--sidebar-active-color", settings.sidebarActiveColor || settings.primaryColor || "#111827");
+  root.style.setProperty("--sidebar-hover-color", settings.sidebarHoverColor || "#F3F4F6");
+
+  if (settings.companyName && settings.showCompanyName) {
+    document.title = settings.companyName;
+  }
 };
 
 export const getCRMSettings = (): CRMSettings => {

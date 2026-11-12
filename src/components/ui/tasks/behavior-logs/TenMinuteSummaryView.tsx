@@ -74,16 +74,13 @@ export default function TenMinuteSummaryView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Top Banner */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-sky-50 text-sky-600 border border-sky-100">
-              <FiFileText className="h-6 w-6" />
-            </span>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-slate-900">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
                 10-Minute Summary Logs
               </h1>
               <p className="text-xs text-slate-500 font-medium">
@@ -93,13 +90,13 @@ export default function TenMinuteSummaryView() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           <Link
             href="/tasks/os-tracker"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs"
           >
             <FiMonitor className="h-4 w-4 text-slate-500" />
-            Live OS Tracker
+            <span className="truncate">Live OS Tracker</span>
           </Link>
           <button
             onClick={() => {
@@ -109,86 +106,86 @@ export default function TenMinuteSummaryView() {
               dl.setAttribute('download', `10-min-summary-${selectedDate}.json`);
               dl.click();
             }}
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-xs"
           >
             <FiDownload className="h-4 w-4" />
-            Export Audit Report
+            <span className="truncate">Export Audit Report</span>
           </button>
         </div>
       </div>
 
       {/* Aggregate KPI Cards */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
               Audited Intervals
             </span>
-            <span className="rounded-xl bg-slate-50 p-2 text-slate-600 border border-slate-100">
+            <span className="rounded-xl bg-slate-50 p-1.5 sm:p-2 text-slate-600 border border-slate-100">
               <FiClock className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">{totalIntervals} Blocks</div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">{totalIntervals} Blocks</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">
             {totalIntervals * 10} minutes shadowed
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">
               Productivity Index
             </span>
-            <span className="rounded-xl bg-emerald-50 p-2 text-emerald-600 border border-emerald-100">
+            <span className="rounded-xl bg-emerald-50 p-1.5 sm:p-2 text-emerald-600 border border-emerald-100">
               <FiTrendingUp className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-emerald-600">{avgProductivity}%</div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">Interval average score</div>
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-emerald-600 truncate">{avgProductivity}%</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">Interval average score</div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-sky-600">
               Interval Keystrokes
             </span>
-            <span className="rounded-xl bg-sky-50 p-2 text-sky-600 border border-sky-100">
+            <span className="rounded-xl bg-sky-50 p-1.5 sm:p-2 text-sky-600 border border-sky-100">
               <FiCode className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">
             {totalKeystrokes.toLocaleString()}
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">
-            ~{totalIntervals > 0 ? Math.round(totalKeystrokes / totalIntervals) : 0} keys / 10 mins
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">
+            ~{totalIntervals > 0 ? Math.round(totalKeystrokes / totalIntervals) : 0} keys / 10m
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-violet-600">
               Hotkeys Detected
             </span>
-            <span className="rounded-xl bg-violet-50 p-2 text-violet-600 border border-violet-100">
+            <span className="rounded-xl bg-violet-50 p-1.5 sm:p-2 text-violet-600 border border-violet-100">
               <FiCommand className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">
             {totalHotkeys} Combinations
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">Ctrl+S, Alt+Tab, etc.</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">Ctrl+S, Alt+Tab, etc.</div>
         </div>
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-1 flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2">
-            <FiFolder className="text-slate-400" size={14} />
+      <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-3.5 sm:p-4 shadow-xs lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-1 items-center gap-2.5 overflow-x-auto no-scrollbar pb-1 lg:pb-0">
+          <div className="flex items-center gap-2 shrink-0">
+            <FiFolder className="text-slate-400 hidden sm:inline" size={14} />
             <select
               value={selectedProjectId}
               onChange={(e) => setSelectedProjectId(e.target.value)}
-              className="rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-2 text-xs font-semibold text-slate-800 outline-none transition focus:border-sky-500"
+              className="rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-2 text-xs font-semibold text-slate-800 outline-none transition focus:border-sky-500 cursor-pointer"
             >
               <option value="ALL">All Projects Intervals</option>
               {projects.map((p) => (
@@ -199,8 +196,8 @@ export default function TenMinuteSummaryView() {
             </select>
           </div>
 
-          <div className="flex items-center gap-2">
-            <FiCalendar className="text-slate-400" size={14} />
+          <div className="flex items-center gap-2 shrink-0">
+            <FiCalendar className="text-slate-400 hidden sm:inline" size={14} />
             <input
               type="date"
               value={selectedDate}
@@ -209,14 +206,14 @@ export default function TenMinuteSummaryView() {
             />
           </div>
 
-          <div className="relative min-w-[220px] flex-1">
+          <div className="relative min-w-[200px] sm:min-w-[220px] flex-1">
             <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search interval notes, windows, keys typed..."
-              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 py-2.5 pl-10 pr-3 text-xs text-slate-800 placeholder-slate-400 outline-none transition focus:border-sky-500 focus:bg-white"
+              placeholder="Search interval notes, windows..."
+              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 py-2 pl-10 pr-3 text-xs text-slate-800 placeholder-slate-400 outline-none transition focus:border-sky-500 focus:bg-white"
             />
           </div>
         </div>
@@ -230,39 +227,33 @@ export default function TenMinuteSummaryView() {
           return (
             <div
               key={summary.id}
-              className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs transition hover:border-slate-300"
+              className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-xs transition hover:border-slate-300"
             >
-              {/* Summary Card Header */}
+              {/* Summary Card Header (Time pill removed as requested) */}
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-24 items-center justify-center rounded-xl bg-slate-900 font-mono text-xs font-bold text-white shadow-xs">
-                    {summary.timeSlot}
-                  </span>
-
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <span className="rounded bg-sky-50 px-2 py-0.5 text-[10px] font-bold text-sky-700 border border-sky-100">
-                        {summary.projectName}
-                      </span>
-                      <span
-                        className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-bold ${getStatusBadge(
-                          summary.status
-                        )}`}
-                      >
-                        {summary.status.replace('_', ' ')} ({summary.productivityScore}%)
-                      </span>
-                    </div>
-
-                    <h4 className="mt-1 text-xs font-semibold text-slate-800">
-                      Dominant App: <strong className="text-slate-900">{summary.dominantApp}</strong>
-                    </h4>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded bg-sky-50 px-2 py-0.5 text-[10px] font-bold text-sky-700 border border-sky-100 truncate max-w-[130px]">
+                      {summary.projectName}
+                    </span>
+                    <span
+                      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-bold whitespace-nowrap ${getStatusBadge(
+                        summary.status
+                      )}`}
+                    >
+                      {summary.status.replace('_', ' ')} ({summary.productivityScore}%)
+                    </span>
                   </div>
+
+                  <h4 className="mt-1 text-xs font-semibold text-slate-800 truncate max-w-xs sm:max-w-md">
+                    Dominant App: <strong className="text-slate-900">{summary.dominantApp}</strong>
+                  </h4>
                 </div>
 
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-4 text-right text-xs">
+                <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 border-t sm:border-t-0 pt-2 sm:pt-0 border-slate-100">
+                  <div className="flex items-center gap-3 sm:gap-4 text-left sm:text-right text-xs">
                     <div>
-                      <span className="text-[10px] font-bold uppercase text-slate-400">Keystrokes</span>
+                      <span className="text-[10px] font-bold uppercase text-slate-400">Keys</span>
                       <div className="font-mono font-bold text-slate-800">{summary.keystrokes}</div>
                     </div>
                     <div>
@@ -275,20 +266,22 @@ export default function TenMinuteSummaryView() {
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => setPreviewSummary(summary)}
-                    className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition"
-                    title="Inspect Screenshot & Telemetry"
-                  >
-                    <FiEye size={14} />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setPreviewSummary(summary)}
+                      className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition"
+                      title="Inspect Snapshot"
+                    >
+                      <FiEye size={14} />
+                    </button>
 
-                  <button
-                    onClick={() => setExpandedId(isExpanded ? null : summary.id)}
-                    className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-500 hover:bg-slate-100 transition"
-                  >
-                    {isExpanded ? <FiChevronUp size={14} /> : <FiChevronDown size={14} />}
-                  </button>
+                    <button
+                      onClick={() => setExpandedId(isExpanded ? null : summary.id)}
+                      className="rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-500 hover:bg-slate-100 transition"
+                    >
+                      {isExpanded ? <FiChevronUp size={14} /> : <FiChevronDown size={14} />}
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -300,7 +293,7 @@ export default function TenMinuteSummaryView() {
                 </div>
 
                 {summary.typedSummary && (
-                  <div className="rounded-xl border border-sky-100 bg-sky-50/50 p-3 text-xs text-slate-700 font-mono">
+                  <div className="rounded-xl border border-sky-100 bg-sky-50/50 p-3 text-xs text-slate-700 font-mono overflow-x-auto">
                     <span className="font-sans font-bold text-sky-900">Keys & Typed Buffer Audit: </span>
                     <span className="text-slate-800">{summary.typedSummary}</span>
                     {summary.hotkeysSample && (
@@ -322,13 +315,13 @@ export default function TenMinuteSummaryView() {
 
               {/* App Distribution Bar */}
               <div className="mt-3.5 space-y-1.5">
-                <div className="flex items-center justify-between text-[11px] text-slate-400">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-slate-400 gap-1">
                   <span>Application Distribution (10 Minutes)</span>
-                  <div className="flex items-center gap-3 font-medium">
+                  <div className="flex flex-wrap items-center gap-2.5 font-medium">
                     {summary.appDistribution.map((app) => (
                       <span key={app.app} className="flex items-center gap-1 text-slate-600">
                         <span
-                          className="h-2 w-2 rounded-full"
+                          className="h-2 w-2 rounded-full shrink-0"
                           style={{ backgroundColor: app.color }}
                         />
                         {app.app} ({app.percentage}%)
@@ -358,7 +351,7 @@ export default function TenMinuteSummaryView() {
                   <div className="font-mono text-[11px] text-slate-700 bg-slate-100 p-2.5 rounded-lg truncate">
                     {summary.activeWindowTitle}
                   </div>
-                  <div className="flex items-center justify-between text-[11px] text-slate-400">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-slate-400 gap-1">
                     <span>Daemon Log Timestamp: {summary.startTimestamp}</span>
                     <span>Confidence Score: 99.8% Verified</span>
                   </div>
@@ -375,61 +368,76 @@ export default function TenMinuteSummaryView() {
         )}
       </div>
 
-      {/* ------------------------------------------------------------- */}
-      {/* SCREENSHOT & AUDIT PREVIEW MODAL                              */}
-      {/* ------------------------------------------------------------- */}
+      {/* CLEAN COMPACT SLIDE-OVER / MODAL PREVIEW */}
       {previewSummary && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-          <div className="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 overflow-y-auto">
+          <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-2xl space-y-4 my-auto animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <h3 className="text-base font-bold text-slate-900">
-                  10-Min Desktop Shadow Snapshot ({previewSummary.timeSlot})
+                <span className="font-mono text-[11px] font-bold text-sky-600 bg-sky-50 px-2 py-0.5 rounded border border-sky-100">
+                  {previewSummary.timeSlot} Snapshot
+                </span>
+                <h3 className="text-base font-bold text-slate-900 mt-1">
+                  {previewSummary.projectName}
                 </h3>
-                <p className="text-xs text-slate-500">
-                  Project: {previewSummary.projectName} • Date: {previewSummary.date}
-                </p>
               </div>
               <button
                 onClick={() => setPreviewSummary(null)}
-                className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100"
+                className="rounded-xl bg-slate-100 p-2 text-slate-500 hover:bg-slate-200 transition"
               >
-                <FiX size={18} />
+                <FiX size={16} />
               </button>
             </div>
 
-            {/* Desktop Shadow Screenshot Canvas */}
-            <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-slate-800 bg-slate-950 p-5 text-white flex flex-col justify-between">
-              <div className="flex items-center justify-between text-xs text-slate-400 border-b border-slate-800 pb-2.5">
-                <span className="font-mono text-emerald-400 flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                  SHADOW CAPTURE - DISPLAY 1 (2560x1440)
-                </span>
-                <span>{previewSummary.dominantApp}</span>
-              </div>
-
-              <div className="my-auto space-y-3 text-center">
-                <div className="font-mono text-xs text-slate-400">Captured Active Foreground Window:</div>
-                <div className="font-mono text-sm font-bold text-sky-400 bg-slate-900/90 p-3.5 rounded-lg border border-slate-800">
+            <div className="space-y-3.5 text-xs">
+              <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 space-y-2">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Active Foreground Window
+                </div>
+                <div className="font-mono text-xs font-bold text-slate-900 break-all bg-white p-2.5 rounded-lg border border-slate-200">
                   {previewSummary.activeWindowTitle}
                 </div>
-                <div className="text-xs text-slate-400 font-mono">
-                  {previewSummary.keystrokes} Keystrokes • {previewSummary.hotkeysCount || 8} Hotkeys • {previewSummary.clicks} Clicks
+              </div>
+
+              <div className="grid grid-cols-3 gap-2.5 text-center">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                  <div className="text-[10px] font-bold uppercase text-slate-400">Keystrokes</div>
+                  <div className="mt-1 font-mono text-base font-black text-slate-900">{previewSummary.keystrokes}</div>
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                  <div className="text-[10px] font-bold uppercase text-slate-400">Hotkeys</div>
+                  <div className="mt-1 font-mono text-base font-black text-amber-600">{previewSummary.hotkeysCount || 8}</div>
+                </div>
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                  <div className="text-[10px] font-bold uppercase text-slate-400">Clicks</div>
+                  <div className="mt-1 font-mono text-base font-black text-slate-900">{previewSummary.clicks}</div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] text-slate-500 border-t border-slate-800 pt-2.5">
-                <span>Classification: {previewSummary.status}</span>
-                <span>Productivity Index: {previewSummary.productivityScore}%</span>
+              <div className="rounded-xl border border-slate-200 bg-white p-3.5 space-y-1.5">
+                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  AI Interval Summary
+                </div>
+                <p className="text-slate-700 font-medium leading-relaxed">{previewSummary.summaryNote}</p>
               </div>
+
+              {previewSummary.typedSummary && (
+                <div className="rounded-xl border border-sky-100 bg-sky-50/40 p-3.5 space-y-1.5 font-mono">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-sky-700 font-sans">
+                    Typed Buffer Sample
+                  </div>
+                  <p className="text-slate-800 text-[11px] leading-relaxed">{previewSummary.typedSummary}</p>
+                </div>
+              )}
             </div>
 
-            <div className="flex justify-end pt-2">
+            <div className="flex items-center justify-between border-t border-slate-100 pt-3 text-[11px] text-slate-500">
+              <span>Status: <strong className="text-slate-900">{previewSummary.status}</strong></span>
               <button
                 onClick={() => setPreviewSummary(null)}
-                className="rounded-xl bg-slate-900 px-5 py-2 text-xs font-bold text-white hover:bg-slate-800"
+                className="rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white hover:bg-slate-800"
               >
-                Close Snapshot
+                Done
               </button>
             </div>
           </div>

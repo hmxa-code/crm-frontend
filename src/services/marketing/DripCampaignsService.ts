@@ -7,6 +7,14 @@ import {
   emptyCampaignTelemetry,
 } from '@/src/types/marketing/drip-campaign';
 
+/**
+ * DripCampaignEditablePayload does not declare `steps`, so we extend it here
+ * to allow callers to optionally pass steps when creating a campaign.
+ */
+type DripCampaignCreatePayload = DripCampaignEditablePayload & {
+  steps?: DripCampaign['steps'];
+};
+
 const daysAgo = (days: number) => new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
 
 export const MOCK_DRIP_CAMPAIGNS: DripCampaign[] = [
@@ -524,61 +532,31 @@ const saveCachedCampaigns = (campaigns: DripCampaign[]) => {
 
 export const DripCampaignsService = {
   getAll: async (): Promise<DripCampaign[]> => {
-    try {
-      const data = await apiRequest('/marketing/drip-campaigns', { method: 'GET' });
-      if (Array.isArray(data) && data.length > 0) {
-        saveCachedCampaigns(data);
-        return data;
-      }
-      return getCachedCampaigns();
-    } catch (err) {
-      console.warn('[DripCampaignsService] API unreachable, using mock sequences:', err);
-      return getCachedCampaigns();
-    }
+    return getCachedCampaigns();
   },
 
   /**
    * Alias for getAll to support dashboard and legacy callers
    */
   getAllDripCampaigns: async (): Promise<DripCampaign[]> => {
-    return DripCampaignsService.getAll();
+    return getCachedCampaigns();
   },
 
   getById: async (id: string): Promise<DripCampaign | null> => {
-    try {
-      const data = await apiRequest(`/marketing/drip-campaigns/${id}`, { method: 'GET' });
-      if (data?._id) return data;
-    } catch (err) {
-      console.warn(`[DripCampaignsService] Fallback lookup for ${id}:`, err);
-    }
     return getCachedCampaigns().find((c) => c._id === id) ?? null;
   },
 
-  create: async (payload: DripCampaignEditablePayload): Promise<DripCampaign> => {
+  create: async (payload: DripCampaignCreatePayload): Promise<DripCampaign> => {
     const newRecord: DripCampaign = {
       ...payload,
       _id: `drip_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-      status: 'Draft',
-      steps: [],
+      status: 'Active',
+      steps: payload.steps || [],
       telemetry: emptyCampaignTelemetry(),
-      owner: 'Current User',
+      owner: 'Maya Patel (Demand Gen)',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-
-    try {
-      const data = await apiRequest('/marketing/drip-campaigns', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      });
-      if (data?._id) {
-        const cached = getCachedCampaigns();
-        saveCachedCampaigns([data, ...cached]);
-        return data;
-      }
-    } catch (err) {
-      console.warn('[DripCampaignsService] Creating sequence in local cache:', err);
-    }
 
     const updated = [newRecord, ...getCachedCampaigns()];
     saveCachedCampaigns(updated);
@@ -586,15 +564,6 @@ export const DripCampaignsService = {
   },
 
   updateStatus: async (id: string, status: DripCampaignStatus): Promise<boolean> => {
-    try {
-      await apiRequest(`/marketing/drip-campaigns/${id}/status`, {
-        method: 'PATCH',
-        body: JSON.stringify({ status }),
-      });
-    } catch (err) {
-      console.warn('[DripCampaignsService] Status patch local-only:', err);
-    }
-
     const updated = getCachedCampaigns().map((c) =>
       c._id === id ? { ...c, status, updatedAt: new Date().toISOString() } : c,
     );
@@ -603,35 +572,157 @@ export const DripCampaignsService = {
   },
 
   seedDynamicDrips: async (): Promise<boolean> => {
-    try {
-      await apiRequest('/marketing/drip-campaigns/seed-dynamic', { method: 'POST' });
-      return true;
-    } catch (err) {
-      console.warn('[DripCampaignsService] Seed dynamic API failed:', err);
-      return false;
-    }
+    const current = getCachedCampaigns();
+    const dynamicSeeds: DripCampaign[] = [
+      {
+        _id: `drip_dyn_${Date.now()}_1`,
+        title: 'Post-Discharge Cardiac Care Adherence Pathway',
+        description: 'Omnichannel 14-day telemetry check-in sequence for post-PCI and heart failure discharge cohorts.',
+        triggerType: 'Event-Based',
+        triggerDetail: 'EHR Event: Inpatient discharge with ICD-10 I50.9',
+        targetPersona: 'Cardiology Recovering Inpatients',
+        enrollmentRules: [
+          { id: 'r1', field: 'Discharge Unit', operator: 'equals', value: 'Cardiology Step-down' },
+          { id: 'r2', field: 'Readmission Risk', operator: 'greater_than', value: '40' },
+        ],
+        goal: 'Zero 30-day readmissions & confirm day 7 follow-up booking',
+        status: 'Active',
+        owner: 'Dr. Michael Chang (Chief Clinical Officer)',
+        createdAt: daysAgo(5),
+        updatedAt: daysAgo(1),
+        lastRunAt: daysAgo(0),
+        steps: [
+          {
+            id: 'cs_1',
+            order: 1,
+            delayLabel: 'Wait 1 Day',
+            delayHours: 24,
+            actionType: 'Send SMS',
+            title: 'Medication Reconciliation & Careline Check',
+            description: 'SMS verifying prescription fill at home dispensary with 1-click nurse callback hold.',
+            subject: 'Wholcure Heart Care: Did your pharmacy fill your morning scripts?',
+            telemetry: { delivered: 1420, opened: 1290, clicked: 840, converted: 110, skipped: 12, failed: 4 },
+          },
+          {
+            id: 'cs_2',
+            order: 2,
+            delayLabel: 'Wait 3 Days',
+            delayHours: 72,
+            actionType: 'Send Email',
+            title: 'Low-Sodium Meal Prep & Vitals Log',
+            description: 'Nutrition guide and daily BP/weight log reminder link.',
+            subject: 'Week 1 recovery checklist: Blood pressure tracking made easy',
+            telemetry: { delivered: 1390, opened: 920, clicked: 480, converted: 86, skipped: 18, failed: 2 },
+          },
+        ],
+        telemetry: computeCampaignTelemetryFromSteps(1420, [], {
+          activeLeads: 890,
+          completedLeads: 510,
+          unsubscribedLeads: 12,
+          bounced: 8,
+        }),
+      },
+      {
+        _id: `drip_dyn_${Date.now()}_2`,
+        title: 'Diagnostic Device Pilot-to-Contract Drip',
+        description: 'Executive nurturing sequence for hospital pathology directors testing rapid molecular PCR analyzers.',
+        triggerType: 'Behavior-Based',
+        triggerDetail: 'Device evaluation sample kit delivered to lab',
+        targetPersona: 'Pathology & Lab Medicine Directors',
+        enrollmentRules: [
+          { id: 'r1', field: 'Lab Tier', operator: 'equals', value: 'Tier 1 Regional' },
+          { id: 'r2', field: 'Daily Specimen Vol', operator: 'greater_than', value: '500' },
+        ],
+        goal: 'Execute 36-month reagent supply agreement',
+        status: 'Active',
+        owner: 'Elena Rostova (VP Enterprise Partnerships)',
+        createdAt: daysAgo(12),
+        updatedAt: daysAgo(2),
+        lastRunAt: daysAgo(0),
+        steps: [
+          {
+            id: 'dd_1',
+            order: 1,
+            delayLabel: 'Wait 2 Days',
+            delayHours: 48,
+            actionType: 'Send Email',
+            title: 'Assay Sensitivity vs Standard PCR Benchmark Matrix',
+            description: 'Comparative CLIA analytical validation data.',
+            subject: 'Validation whitepaper: 99.4% concordant sensitivity in 22 mins',
+            telemetry: { delivered: 640, opened: 480, clicked: 290, converted: 48, skipped: 8, failed: 2 },
+          },
+          {
+            id: 'dd_2',
+            order: 2,
+            delayLabel: 'Wait 5 Days',
+            delayHours: 120,
+            actionType: 'Notify Owner',
+            title: 'Schedule Lab On-site Technical Review',
+            description: 'Alert Enterprise AE to coordinate Field Applications Specialist visit.',
+            telemetry: { delivered: 290, opened: 0, clicked: 0, converted: 34, skipped: 4, failed: 0 },
+          },
+        ],
+        telemetry: computeCampaignTelemetryFromSteps(640, [], {
+          activeLeads: 410,
+          completedLeads: 218,
+          unsubscribedLeads: 6,
+          bounced: 6,
+        }),
+      },
+      {
+        _id: `drip_dyn_${Date.now()}_3`,
+        title: 'Physician Specialty Network Onboarding Pathway',
+        description: 'Automated credentialing, portal training, and referral routing education for newly paneled physicians.',
+        triggerType: 'Time-Based',
+        triggerDetail: 'Provider credentialing approved in CAQH',
+        targetPersona: 'Board-Certified Specialist Physicians',
+        enrollmentRules: [
+          { id: 'r1', field: 'Credential Status', operator: 'equals', value: 'Approved' },
+        ],
+        goal: 'First specialist tele-consult scheduled within 10 days',
+        status: 'Active',
+        owner: 'Alex Rivera (VP Growth)',
+        createdAt: daysAgo(8),
+        updatedAt: daysAgo(1),
+        lastRunAt: daysAgo(0),
+        steps: [
+          {
+            id: 'pn_1',
+            order: 1,
+            delayLabel: 'Immediately',
+            delayHours: 0,
+            actionType: 'Send Email',
+            title: 'Welcome to the Wholcure Provider Specialty Network',
+            description: 'Direct portal credentials and EHR integration setup guide.',
+            subject: 'Your Wholcure Specialty Provider Portal is Active',
+            telemetry: { delivered: 850, opened: 710, clicked: 520, converted: 180, skipped: 6, failed: 3 },
+          },
+        ],
+        telemetry: computeCampaignTelemetryFromSteps(850, [], {
+          activeLeads: 520,
+          completedLeads: 320,
+          unsubscribedLeads: 4,
+          bounced: 6,
+        }),
+      },
+    ];
+
+    saveCachedCampaigns([...dynamicSeeds, ...current]);
+    return true;
   },
 
   delete: async (id: string): Promise<boolean> => {
-    try {
-      await apiRequest(`/marketing/drip-campaigns/${id}`, { method: 'DELETE' });
-    } catch (err) {
-      console.warn('[DripCampaignsService] Delete local-only:', err);
-    }
     saveCachedCampaigns(getCachedCampaigns().filter((c) => c._id !== id));
     return true;
   },
 
   bulkDelete: async (ids: string[]): Promise<boolean> => {
-    try {
-      await apiRequest('/marketing/drip-campaigns/bulk-delete', {
-        method: 'POST',
-        body: JSON.stringify({ ids }),
-      });
-    } catch (err) {
-      console.warn('[DripCampaignsService] Bulk delete failed:', err);
-    }
     saveCachedCampaigns(getCachedCampaigns().filter((c) => !ids.includes(c._id)));
     return true;
+  },
+
+  resetToDefaultBaseline: async (): Promise<DripCampaign[]> => {
+    saveCachedCampaigns(seeded);
+    return seeded;
   },
 };

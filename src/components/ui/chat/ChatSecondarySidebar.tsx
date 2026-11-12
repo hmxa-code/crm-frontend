@@ -10,12 +10,10 @@ import {
   FiMessageSquare,
   FiAtSign,
   FiUsers,
-  FiVolumeX,
   FiChevronDown,
   FiChevronRight,
 } from 'react-icons/fi';
 import { getDiceBearAvatar } from '@/src/utils/avatarHelper';
-
 
 interface ChatSecondarySidebarProps {
   primaryColor: string;
@@ -60,7 +58,7 @@ export default function ChatSecondarySidebar({
           />
         </div>
 
-        {/* Zoho Filter Icons Bar (All, DMs, Mentions, Channels) */}
+        {/* Filter Icons Bar (All, DMs, Mentions, Channels) */}
         <div className="flex items-center justify-between mt-2.5 pt-1 border-t border-slate-100 text-slate-500">
           <button
             onClick={() => setFilterType('all')}
@@ -121,7 +119,7 @@ export default function ChatSecondarySidebar({
                 onClick={() => openTarget('channel', 'c-general')}
                 className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-slate-700 hover:bg-slate-100 font-medium truncate"
               >
-                <BsPinAngle size={11} className="text-amber-500 shrink-0" />
+                <BsPinAngle size={11} className="text-slate-600 shrink-0" />
                 <span className="truncate"># Developers</span>
               </button>
             </div>
@@ -152,9 +150,9 @@ export default function ChatSecondarySidebar({
                   <button
                     key={ch.id}
                     onClick={() => openTarget('channel', ch.id)}
-                    style={isActive ? { backgroundColor: primaryColor, color: '#fff' } : undefined}
+                    style={isActive ? { backgroundColor: '#0f172a', color: '#fff' } : undefined}
                     className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-xl font-medium transition ${
-                      isActive ? 'font-bold shadow-2xs' : 'text-slate-700 hover:bg-slate-100'
+                      isActive ? 'font-bold shadow-2xs bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-100'
                     }`}
                   >
                     {ch.isPrivate ? <FiLock size={12} /> : <FiHash size={12} />}
@@ -170,9 +168,9 @@ export default function ChatSecondarySidebar({
                   <button
                     key={user.id}
                     onClick={() => openTarget('dm', user.id)}
-                    style={isActive ? { backgroundColor: primaryColor, color: '#fff' } : undefined}
+                    style={isActive ? { backgroundColor: '#0f172a', color: '#fff' } : undefined}
                     className={`w-full flex items-center gap-2 px-2.5 py-1.5 rounded-xl font-medium transition ${
-                      isActive ? 'font-bold shadow-2xs' : 'text-slate-700 hover:bg-slate-100'
+                      isActive ? 'font-bold shadow-2xs bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-100'
                     }`}
                   >
                     <div className="w-5 h-5 rounded-md bg-slate-100 overflow-hidden flex items-center justify-center shrink-0 border border-slate-200/50">

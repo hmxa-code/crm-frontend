@@ -96,16 +96,13 @@ export default function ActivityTrackerView() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Top Banner */}
-      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100">
-              <FiActivity className="h-6 w-6" />
-            </span>
             <div>
-              <h1 className="text-xl font-bold tracking-tight text-slate-900">
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
                 Activity & Behavior Tracker
               </h1>
               <p className="text-xs text-slate-500 font-medium">
@@ -115,135 +112,95 @@ export default function ActivityTrackerView() {
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
           <Link
             href="/tasks/behavior-logs"
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-white hover:bg-slate-800 transition shadow-xs"
           >
-            <FiClock className="h-4 w-4" />
-            10-Min Summary Logs
+            <span className="truncate text-white">10-Min Summary Logs</span>
           </Link>
           <Link
             href="/tasks/time-tracker"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 sm:px-4 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-xs"
           >
             <FiClock className="h-4 w-4 text-sky-600" />
-            Time Tracker
+            <span className="truncate">Time Tracker</span>
           </Link>
-        </div>
-      </div>
-
-      {/* Live Active Window Status Bar */}
-      <div className="rounded-2xl border border-slate-800 bg-slate-950 p-6 text-white shadow-md">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <span className="flex h-2.5 w-2.5 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-              </span>
-              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-emerald-400">
-                Live Keypress & OS Telemetry Stream
-              </span>
-              <span className="rounded bg-slate-800 px-2 py-0.5 text-[10px] font-bold text-slate-300">
-                {currentActiveApp.name}
-              </span>
-            </div>
-            <h3 className="text-base font-bold text-white tracking-tight">
-              {currentActiveApp.title}
-            </h3>
-          </div>
-
-          <div className="flex items-center gap-6 border-t border-slate-800 pt-3 md:border-t-0 md:pt-0">
-            <div className="text-right">
-              <div className="text-[10px] font-bold uppercase text-slate-400">Typing Velocity</div>
-              <div className="font-mono text-2xl font-black text-emerald-400">
-                {currentActiveApp.wpm} <span className="text-xs font-normal text-slate-400">WPM</span>
-              </div>
-            </div>
-
-            <div className="text-right">
-              <div className="text-[10px] font-bold uppercase text-slate-400">Focus Index</div>
-              <div className="font-mono text-2xl font-black text-sky-400">
-                98% <span className="text-xs font-normal text-slate-400">Active</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Aggregate Telemetry KPI Cards */}
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
               Active Focus Time
             </span>
-            <span className="rounded-xl bg-slate-50 p-2 text-slate-600 border border-slate-100">
+            <span className="rounded-xl bg-slate-50 p-1.5 sm:p-2 text-slate-600 border border-slate-100">
               <FiClock className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">
             {Math.floor(totalAppMinutes / 60)}h {totalAppMinutes % 60}m
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">Recorded today</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">Recorded today</div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-sky-600">
               Total Keystrokes
             </span>
-            <span className="rounded-xl bg-sky-50 p-2 text-sky-600 border border-sky-100">
+            <span className="rounded-xl bg-sky-50 p-1.5 sm:p-2 text-sky-600 border border-sky-100">
               <FiCode className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">
             {totalKeystrokes.toLocaleString()}
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">Logged key inputs</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">Logged key inputs</div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-violet-600">
               Mouse Clicks
             </span>
-            <span className="rounded-xl bg-violet-50 p-2 text-violet-600 border border-violet-100">
+            <span className="rounded-xl bg-violet-50 p-1.5 sm:p-2 text-violet-600 border border-violet-100">
               <FiMonitor className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-slate-900">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-slate-900 truncate">
             {totalClicks.toLocaleString()}
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">UI interactions captured</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">UI interactions captured</div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">
               Productivity Ratio
             </span>
-            <span className="rounded-xl bg-emerald-50 p-2 text-emerald-600 border border-emerald-100">
+            <span className="rounded-xl bg-emerald-50 p-1.5 sm:p-2 text-emerald-600 border border-emerald-100">
               <FiTrendingUp className="h-4 w-4" />
             </span>
           </div>
-          <div className="mt-2 text-3xl font-black text-emerald-600">
+          <div className="mt-2 text-2xl sm:text-3xl font-black text-emerald-600 truncate">
             {avgActivePct}%
           </div>
-          <div className="mt-1 text-[11px] text-slate-500 font-medium">Focus vs idle ratio</div>
+          <div className="mt-1 text-[11px] text-slate-500 font-medium truncate">Focus vs idle ratio</div>
         </div>
       </div>
 
       {/* Filter Bar & Tabs */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-1 flex-wrap items-center gap-3">
-          <div className="flex items-center gap-2">
-            <FiFolder className="text-slate-400" size={14} />
+      <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white p-3.5 sm:p-4 shadow-xs lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-1 items-center gap-2.5 overflow-x-auto no-scrollbar pb-1 lg:pb-0">
+          <div className="flex items-center gap-2 shrink-0">
+            <FiFolder className="text-slate-400 hidden sm:inline" size={14} />
             <select
               value={selectedProjectId}
               onChange={(e) => setSelectedProjectId(e.target.value)}
-              className="rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-2 text-xs font-semibold text-slate-800 outline-none transition focus:border-sky-500"
+              className="rounded-xl border border-slate-200 bg-slate-50/70 px-3 py-2 text-xs font-semibold text-slate-800 outline-none transition focus:border-sky-500 cursor-pointer"
             >
               <option value="ALL">All Projects Telemetry</option>
               {projects.map((p) => (
@@ -254,60 +211,57 @@ export default function ActivityTrackerView() {
             </select>
           </div>
 
-          <div className="relative min-w-[200px] flex-1">
+          <div className="relative min-w-[200px] sm:min-w-[240px] flex-1">
             <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search keys typed, apps, window titles, URLs..."
-              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 py-2.5 pl-10 pr-3 text-xs text-slate-800 placeholder-slate-400 outline-none transition focus:border-sky-500 focus:bg-white"
+              placeholder="Search keys typed, apps, URLs..."
+              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 py-2 pl-10 pr-3 text-xs text-slate-800 placeholder-slate-400 outline-none transition focus:border-sky-500 focus:bg-white"
             />
           </div>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex rounded-xl border border-slate-200 bg-slate-50/70 p-1">
+        <div className="flex rounded-xl border border-slate-200 bg-slate-50/70 p-1 overflow-x-auto no-scrollbar shrink-0">
           <button
             onClick={() => setActiveTab('keystrokes')}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition shrink-0 ${
               activeTab === 'keystrokes'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-500 hover:text-slate-900'
             }`}
           >
-            <FiCommand size={13} /> Keystrokes & Keys Pressed ({keypressLogs.length})
+            <FiCommand size={13} /> Keystrokes ({keypressLogs.length})
           </button>
           <button
             onClick={() => setActiveTab('apps')}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition shrink-0 ${
               activeTab === 'apps'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-500 hover:text-slate-900'
             }`}
           >
-            <FiCpu size={13} /> Applications ({filteredApps.length})
+            <FiCpu size={13} /> Apps ({filteredApps.length})
           </button>
           <button
             onClick={() => setActiveTab('browsing')}
-            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+            className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition shrink-0 ${
               activeTab === 'browsing'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-500 hover:text-slate-900'
             }`}
           >
-            <FiGlobe size={13} /> Browsing & URLs ({filteredBrowsing.length})
+            <FiGlobe size={13} /> Browsing ({filteredBrowsing.length})
           </button>
         </div>
       </div>
 
-      {/* ------------------------------------------------------------- */}
-      {/* 1. KEYSTROKES & KEYS PRESSED LOG (DETAILED TYPING AUDIT)      */}
-      {/* ------------------------------------------------------------- */}
+      {/* 1. KEYSTROKES & KEYS PRESSED LOG */}
       {activeTab === 'keystrokes' && (
         <div className="space-y-6">
-          {/* Live Keypress Tester & Simulator Bar */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs space-y-4">
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-xs space-y-4">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
@@ -315,19 +269,17 @@ export default function ActivityTrackerView() {
                   Live Keypress Capture & Buffer Audit
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Type into the testing box or click simulation triggers to watch keys, hotkeys, and buffer telemetry register live
+                  Type into the testing box or click simulation triggers to watch keys and hotkeys register live
                 </p>
               </div>
 
-              {/* Privacy Shield Badge */}
-              <div className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 border border-emerald-200/80">
+              <div className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 border border-emerald-200/80 self-start sm:self-auto">
                 <FiShield size={13} />
-                Privacy Protection Active (Passwords Masked)
+                Privacy Protection Active
               </div>
             </div>
 
-            {/* Interactive Live Input Field */}
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <div className="relative flex-1">
                 <FiTerminal className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                 <input
@@ -335,7 +287,7 @@ export default function ActivityTrackerView() {
                   value={interactiveInput}
                   onChange={(e) => setInteractiveInput(e.target.value)}
                   onKeyDown={handleKeyDownCapture}
-                  placeholder="Test live keystroke hook: Type code or shortcuts here (e.g. git commit, const [id], Ctrl+S)..."
+                  placeholder="Test hook: Type code or shortcuts here..."
                   className="w-full rounded-xl border border-slate-200 bg-slate-50/70 py-2.5 pl-10 pr-3 text-xs font-mono text-slate-800 placeholder-slate-400 outline-none transition focus:border-sky-500 focus:bg-white"
                 />
               </div>
@@ -347,13 +299,12 @@ export default function ActivityTrackerView() {
                     setInteractiveInput('');
                   }
                 }}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-bold text-white hover:bg-slate-800 transition shadow-xs"
+                className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2.5 text-xs font-bold text-white hover:bg-slate-800 transition shadow-xs"
               >
-                <FiCornerDownLeft size={13} /> Push Key Event
+                <FiCornerDownLeft size={13} /> Push Event
               </button>
             </div>
 
-            {/* Quick Simulation Triggers */}
             <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100 text-xs">
               <span className="font-semibold text-slate-400 text-[11px]">Quick Samples:</span>
               <button
@@ -366,7 +317,7 @@ export default function ActivityTrackerView() {
                 }
                 className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-mono text-slate-700 hover:bg-slate-100"
               >
-                + Code: TypeScript Interface
+                + TypeScript Interface
               </button>
               <button
                 onClick={() =>
@@ -388,20 +339,12 @@ export default function ActivityTrackerView() {
               >
                 + Shell: npm build
               </button>
-              <button
-                onClick={() =>
-                  simulateKeypressEvent('Alt + Tab (Switch Window)', 'OS Manager', 'HOTKEY')
-                }
-                className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-mono text-slate-700 hover:bg-slate-100"
-              >
-                + Hotkey: Alt + Tab
-              </button>
             </div>
           </div>
 
           {/* Keypress Ledger Table */}
           <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
-            <div className="flex items-center justify-between border-b border-slate-100 p-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 p-4 sm:p-5">
               <div>
                 <h3 className="text-sm font-bold text-slate-900">
                   Audit Trail: Exact Keys Pressed & Input Streams
@@ -411,13 +354,12 @@ export default function ActivityTrackerView() {
                 </p>
               </div>
 
-              {/* Filter By Category */}
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-semibold text-slate-400">Category:</span>
                 <select
                   value={filterCategory}
                   onChange={(e) => setFilterCategory(e.target.value)}
-                  className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 outline-none"
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 outline-none cursor-pointer"
                 >
                   <option value="ALL">All Categories</option>
                   <option value="CODE">Code Syntax</option>
@@ -428,29 +370,29 @@ export default function ActivityTrackerView() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs min-w-[700px]">
                 <thead className="border-b border-slate-100 bg-slate-50/70 font-bold uppercase tracking-wider text-slate-400">
                   <tr>
-                    <th className="px-5 py-3">Timestamp</th>
-                    <th className="px-5 py-3">Keys / Buffer Pressed</th>
-                    <th className="px-5 py-3">Category</th>
-                    <th className="px-5 py-3">Target Application</th>
-                    <th className="px-5 py-3">Typing WPM</th>
-                    <th className="px-5 py-3 text-right">Characters</th>
+                    <th className="px-4 sm:px-5 py-3">Timestamp</th>
+                    <th className="px-4 sm:px-5 py-3">Keys / Buffer Pressed</th>
+                    <th className="px-4 sm:px-5 py-3">Category</th>
+                    <th className="px-4 sm:px-5 py-3">Target Application</th>
+                    <th className="px-4 sm:px-5 py-3">Typing WPM</th>
+                    <th className="px-4 sm:px-5 py-3 text-right">Characters</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-mono">
                   {filteredKeypresses.map((kp) => (
                     <tr key={kp.id} className="transition hover:bg-slate-50/60">
-                      <td className="px-5 py-3.5 text-slate-500 text-[11px]">
+                      <td className="px-4 sm:px-5 py-3.5 text-slate-500 text-[11px]">
                         {kp.timestamp}
                       </td>
-                      <td className="px-5 py-3.5 font-bold text-slate-900 max-w-[420px] truncate">
+                      <td className="px-4 sm:px-5 py-3.5 font-bold text-slate-900 max-w-[280px] sm:max-w-[420px] truncate">
                         <span className="rounded bg-slate-100 border border-slate-200 px-2 py-1 text-xs text-slate-800">
                           {kp.keyCombo}
                         </span>
                       </td>
-                      <td className="px-5 py-3.5 font-sans">
+                      <td className="px-4 sm:px-5 py-3.5 font-sans">
                         <span
                           className={`rounded px-2 py-0.5 text-[10px] font-bold ${
                             kp.category === 'CODE'
@@ -463,13 +405,13 @@ export default function ActivityTrackerView() {
                           {kp.category}
                         </span>
                       </td>
-                      <td className="px-5 py-3.5 font-sans text-slate-700 font-medium">
+                      <td className="px-4 sm:px-5 py-3.5 font-sans text-slate-700 font-medium">
                         {kp.appName}
                       </td>
-                      <td className="px-5 py-3.5 text-emerald-600 font-bold">
+                      <td className="px-4 sm:px-5 py-3.5 text-emerald-600 font-bold">
                         {kp.wpm} WPM
                       </td>
-                      <td className="px-5 py-3.5 text-right text-slate-500 font-bold">
+                      <td className="px-4 sm:px-5 py-3.5 text-right text-slate-500 font-bold">
                         {kp.keystrokeCount} keys
                       </td>
                     </tr>
@@ -487,7 +429,7 @@ export default function ActivityTrackerView() {
           </div>
 
           {/* Keystroke Density Distribution Graph */}
-          <div className="rounded-2xl border border-slate-200/90 bg-white p-6 shadow-xs space-y-4">
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-6 shadow-xs space-y-4">
             <div>
               <h3 className="text-sm font-bold text-slate-900">24-Hour Keystroke Burst Density</h3>
               <p className="text-xs text-slate-500">
@@ -521,57 +463,55 @@ export default function ActivityTrackerView() {
         </div>
       )}
 
-      {/* ------------------------------------------------------------- */}
-      {/* 2. APPLICATIONS TAB                                           */}
-      {/* ------------------------------------------------------------- */}
+      {/* 2. APPLICATIONS TAB */}
       {activeTab === 'apps' && (
         <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[750px]">
               <thead className="border-b border-slate-200 bg-slate-50/70 font-bold uppercase tracking-wider text-slate-500">
                 <tr>
-                  <th className="px-5 py-3">Software Application</th>
-                  <th className="px-5 py-3">Active Window Title</th>
-                  <th className="px-5 py-3">Project Association</th>
-                  <th className="px-5 py-3">Category</th>
-                  <th className="px-5 py-3">Duration</th>
-                  <th className="px-5 py-3">Keystrokes</th>
-                  <th className="px-5 py-3">Active Focus %</th>
+                  <th className="px-4 sm:px-5 py-3">Software Application</th>
+                  <th className="px-4 sm:px-5 py-3">Active Window Title</th>
+                  <th className="px-4 sm:px-5 py-3">Project Association</th>
+                  <th className="px-4 sm:px-5 py-3">Category</th>
+                  <th className="px-4 sm:px-5 py-3">Duration</th>
+                  <th className="px-4 sm:px-5 py-3">Keystrokes</th>
+                  <th className="px-4 sm:px-5 py-3">Active Focus %</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredApps.map((app) => (
                   <tr key={app.id} className="transition hover:bg-slate-50/60">
-                    <td className="px-5 py-3.5 font-bold text-slate-900">
+                    <td className="px-4 sm:px-5 py-3.5 font-bold text-slate-900">
                       <div className="flex items-center gap-2">
-                        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-700 font-bold text-[11px]">
+                        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-700 font-bold text-[11px] shrink-0">
                           {app.appName.slice(0, 2).toUpperCase()}
                         </span>
-                        {app.appName}
+                        <span className="truncate">{app.appName}</span>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-slate-600 max-w-[280px] truncate" title={app.windowTitle}>
+                    <td className="px-4 sm:px-5 py-3.5 text-slate-600 max-w-[200px] sm:max-w-[280px] truncate" title={app.windowTitle}>
                       {app.windowTitle}
                     </td>
-                    <td className="px-5 py-3.5">
+                    <td className="px-4 sm:px-5 py-3.5">
                       <span className="rounded bg-sky-50 px-2 py-0.5 text-[10px] font-bold text-sky-700 border border-sky-100">
                         {app.projectName}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5">
+                    <td className="px-4 sm:px-5 py-3.5">
                       <span className="rounded bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600">
                         {app.category}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 font-mono font-bold text-slate-800">
+                    <td className="px-4 sm:px-5 py-3.5 font-mono font-bold text-slate-800">
                       {Math.floor(app.durationMinutes / 60) > 0
                         ? `${Math.floor(app.durationMinutes / 60)}h ${app.durationMinutes % 60}m`
                         : `${app.durationMinutes}m`}
                     </td>
-                    <td className="px-5 py-3.5 font-mono text-slate-700">
+                    <td className="px-4 sm:px-5 py-3.5 font-mono text-slate-700">
                       {app.keystrokes.toLocaleString()}
                     </td>
-                    <td className="px-5 py-3.5">
+                    <td className="px-4 sm:px-5 py-3.5">
                       <div className="flex items-center gap-2">
                         <div className="h-1.5 w-16 overflow-hidden rounded-full bg-slate-100">
                           <div
@@ -592,45 +532,43 @@ export default function ActivityTrackerView() {
         </div>
       )}
 
-      {/* ------------------------------------------------------------- */}
-      {/* 3. BROWSING & URLS TAB                                        */}
-      {/* ------------------------------------------------------------- */}
+      {/* 3. BROWSING & URLS TAB */}
       {activeTab === 'browsing' && (
         <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full text-left text-xs min-w-[750px]">
               <thead className="border-b border-slate-200 bg-slate-50/70 font-bold uppercase tracking-wider text-slate-500">
                 <tr>
-                  <th className="px-5 py-3">Domain</th>
-                  <th className="px-5 py-3">Page / Pull Request Title</th>
-                  <th className="px-5 py-3">Time Spent</th>
-                  <th className="px-5 py-3">Classification</th>
-                  <th className="px-5 py-3">Last Visit</th>
-                  <th className="px-5 py-3 text-right">URL Link</th>
+                  <th className="px-4 sm:px-5 py-3">Domain</th>
+                  <th className="px-4 sm:px-5 py-3">Page / Pull Request Title</th>
+                  <th className="px-4 sm:px-5 py-3">Time Spent</th>
+                  <th className="px-4 sm:px-5 py-3">Classification</th>
+                  <th className="px-4 sm:px-5 py-3">Last Visit</th>
+                  <th className="px-4 sm:px-5 py-3 text-right">URL Link</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {filteredBrowsing.map((b) => (
                   <tr key={b.id} className="transition hover:bg-slate-50/60">
-                    <td className="px-5 py-3.5 font-bold text-slate-900">
+                    <td className="px-4 sm:px-5 py-3.5 font-bold text-slate-900">
                       <div className="flex items-center gap-2">
-                        <FiGlobe className="text-slate-400" size={14} />
-                        {b.domain}
+                        <FiGlobe className="text-slate-400 shrink-0" size={14} />
+                        <span className="truncate">{b.domain}</span>
                       </div>
                     </td>
-                    <td className="px-5 py-3.5 text-slate-600 max-w-[340px] truncate" title={b.urlTitle}>
+                    <td className="px-4 sm:px-5 py-3.5 text-slate-600 max-w-[220px] sm:max-w-[340px] truncate" title={b.urlTitle}>
                       {b.urlTitle}
                     </td>
-                    <td className="px-5 py-3.5 font-mono font-bold text-slate-800">
+                    <td className="px-4 sm:px-5 py-3.5 font-mono font-bold text-slate-800">
                       {Math.floor(b.timeSpentSeconds / 60)}m {b.timeSpentSeconds % 60}s
                     </td>
-                    <td className="px-5 py-3.5">
-                      <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200/60">
+                    <td className="px-4 sm:px-5 py-3.5">
+                      <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 border border-emerald-200/60 whitespace-nowrap">
                         {b.rating.replace('_', ' ')}
                       </span>
                     </td>
-                    <td className="px-5 py-3.5 font-mono text-slate-500">{b.visitTime}</td>
-                    <td className="px-5 py-3.5 text-right">
+                    <td className="px-4 sm:px-5 py-3.5 font-mono text-slate-500">{b.visitTime}</td>
+                    <td className="px-4 sm:px-5 py-3.5 text-right">
                       <a
                         href={b.fullUrl}
                         target="_blank"

@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 // Icons
-import { 
-  FiHome, 
-  FiChevronLeft, 
-  FiChevronDown, 
-  FiCalendar, 
-  FiSettings, 
+import type { IconType } from "react-icons";
+import {
+  FiHome,
+  FiChevronLeft,
+  FiChevronDown,
+  FiCalendar,
+  FiSettings,
   FiArrowRight,
   FiBarChart2,
   FiMessageSquare,
@@ -32,18 +33,57 @@ import {
   FiFileText,
   FiPaperclip,
   FiTarget,
-  FiX
+  FiX,
 } from "react-icons/fi";
 
 // Utilities & Hooks
 import { getAvatarUrl } from "@/src/utils/avatarHelper";
-import { ACCOUNT_TYPE_LABELS, isAccountOwner, hasFeatureAccess, resolveAccountType } from '@/src/constants/roles';
-import { MENU_FEATURE_MAP } from '@/src/constants/permissions';
+import {
+  ACCOUNT_TYPE_LABELS,
+  isAccountOwner,
+  hasFeatureAccess,
+  resolveAccountType,
+} from "@/src/constants/roles";
+import { MENU_FEATURE_MAP } from "@/src/constants/permissions";
 import { useSidebar } from "@/src/hooks/use-sidebar";
 import logo from "@/src/assets/crm-logo.png";
-import { DEFAULT_CRM_SETTINGS, getCRMSettings, type CRMSettings } from "@/src/utils/crmSettings";
+import {
+  DEFAULT_CRM_SETTINGS,
+  contrastText,
+  getCRMSettings,
+  hexToRgba,
+  isDarkHex,
+  resolveCrmLogo,
+  safeHex,
+  type CRMSettings,
+} from "@/src/utils/crmSettings";
+import { FaRegHandshake } from "react-icons/fa6";
 
-const cn = (...classes: (string | boolean | undefined | null)[]) => classes.filter(Boolean).join(" ");
+// Types
+type SubMenuItem = {
+  label: string;
+  href: string;
+  icon: IconType;
+};
+
+type NavItem = {
+  icon: IconType;
+  label: string;
+  href: string;
+  feature?: string;
+  badge?: string;
+  description?: string;
+  requiresOwner?: boolean;
+  submenu?: SubMenuItem[];
+};
+
+type NavGroup = {
+  groupTitle: string;
+  items: NavItem[];
+};
+
+const cn = (...classes: (string | boolean | undefined | null)[]) =>
+  classes.filter(Boolean).join(" ");
 
 export const Sidebar = () => {
   const pathname = usePathname();
@@ -55,19 +95,23 @@ export const Sidebar = () => {
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname, setMobileOpen]);
+
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [hoveredCollapsedItem, setHoveredCollapsedItem] = useState<string | null>(null);
+  const [hoveredCollapsedItem, setHoveredCollapsedItem] = useState<
+    string | null
+  >(null);
   const [hasMounted, setHasMounted] = useState(false);
-  const [crmSettings, setCRMSettings] = useState<CRMSettings>(DEFAULT_CRM_SETTINGS);
+  const [crmSettings, setCRMSettings] =
+    useState<CRMSettings>(DEFAULT_CRM_SETTINGS);
 
   const loadUserData = () => {
-    if (typeof window !== 'undefined') {
-      const storedUser = localStorage.getItem('user');
+    if (typeof window !== "undefined") {
+      const storedUser = localStorage.getItem("user");
       if (storedUser) {
         try {
           setUserInfo(JSON.parse(storedUser));
         } catch (e) {
-          console.error('Error parsing user info:', e);
+          console.error("Error parsing user info:", e);
         }
       }
     }
@@ -83,22 +127,24 @@ export const Sidebar = () => {
 
     syncCRMSettings();
 
-    if (typeof window !== 'undefined') {
-      window.addEventListener('storage', loadUserData);
-      window.addEventListener('userUpdated', loadUserData);
-      window.addEventListener('crm-settings-updated', syncCRMSettings);
+    if (typeof window !== "undefined") {
+      window.addEventListener("storage", loadUserData);
+      window.addEventListener("userUpdated", loadUserData);
+      window.addEventListener("crm-settings-updated", syncCRMSettings);
 
       return () => {
-        window.removeEventListener('storage', loadUserData);
-        window.removeEventListener('userUpdated', loadUserData);
-        window.removeEventListener('crm-settings-updated', syncCRMSettings);
+        window.removeEventListener("storage", loadUserData);
+        window.removeEventListener("userUpdated", loadUserData);
+        window.removeEventListener("crm-settings-updated", syncCRMSettings);
       };
     }
   }, []);
 
   const accountType = resolveAccountType(userInfo);
   const isAccountOwnerUser = isAccountOwner(accountType);
-  const accountTypeLabel = accountType ? ACCOUNT_TYPE_LABELS[accountType] || accountType : undefined;
+  const accountTypeLabel = accountType
+    ? ACCOUNT_TYPE_LABELS[accountType] || accountType
+    : undefined;
 
   const canSeeMenuItem = (href: string) => {
     if (!userInfo) return true;
@@ -108,15 +154,40 @@ export const Sidebar = () => {
     return hasFeatureAccess(userInfo, featureKey);
   };
 
-  const navGroups = [
+  const navGroups: NavGroup[] = [
     {
       groupTitle: "Core Operations",
       items: [
-        { icon: FiHome, label: "Dashboard", href: "/dashboard", feature: "dashboard", badge: undefined },
-        { icon: FiUsers, label: "User Management", href: "/user", feature: "users", requiresOwner: true, badge: undefined },
-        { icon: FiCalendar, label: "Calendar", href: "/calendar", badge: "Today" },
-        { icon: FiGitCommit, label: "Automation Workflows", href: "/workflows", feature: "automation-workflow", badge: "Flow", description: "Cross-CRM orchestration engine" },
-      ]
+        {
+          icon: FiHome,
+          label: "Dashboard",
+          href: "/dashboard",
+          feature: "dashboard",
+          badge: undefined,
+        },
+        {
+          icon: FiUsers,
+          label: "User Management",
+          href: "/user",
+          feature: "users",
+          requiresOwner: true,
+          badge: undefined,
+        },
+        {
+          icon: FiCalendar,
+          label: "Calendar",
+          href: "/calendar",
+          badge: "Today",
+        },
+        {
+          icon: FiGitCommit,
+          label: "Automation Workflows",
+          href: "/workflows",
+          feature: "automation-workflow",
+          badge: "Flow",
+          description: "Cross-CRM orchestration engine",
+        },
+      ],
     },
     {
       groupTitle: "Growth & Engagement",
@@ -130,211 +201,238 @@ export const Sidebar = () => {
           description: "Campaigns and social outreach",
           submenu: [
             { label: "Campaigns", href: "/marketing/campaigns", icon: FiZap },
-            { label: "Social Accounts", href: "/marketing/social-accounts", icon: FiZap },
-            { label: "Content Engine", href: "/marketing/content-engine", icon: FiZap },
-            { label: "Drip Campaigns", href: "/marketing/drip-campaigns", icon: FiMail },
+            {
+              label: "Social Accounts",
+              href: "/marketing/social-accounts",
+              icon: FiZap,
+            },
+            {
+              label: "Content Engine",
+              href: "/marketing/content-engine",
+              icon: FiZap,
+            },
+            {
+              label: "Drip Campaigns",
+              href: "/marketing/drip-campaigns",
+              icon: FiMail,
+            },
           ],
         },
-        // sales management change now
+        // {
+        //   icon: FiTrendingUp,
+        //   label: "RenGrowCure",
+        //   href: "/rengrowcure",
+        //   feature: "rengrowcure",
+        //   badge: "Hot",
+        //   description: "Pipeline, follow-ups, and revenue tracking",
+        //   submenu: [
+        //     { label: "LeadIntel", href: "/rengrowcure/leadIntel", icon: FiAward },
+        //     { label: "DistroEngine", href: "/rengrowcure/distroengine", icon: FiGitCommit },
+        //     { label: "Outreach Sequences", href: "/rengrowcure/outreach-sequences", icon: FiLayers },
+        //     { label: "Chronos", href: "/rengrowcure/chronos", icon: FiActivity },
+        //     { label: "Kinetics", href: "/rengrowcure/kinetics", icon: FiCheckSquare },
+        //     { label: "Reports & Analytics", href: "/rengrowcure/reportscure", icon: FiBarChart2 },
+        //   ]
+        // },
         {
-  icon: FiTrendingUp,
-  label: "RenGrowCure",
-  href: "/rengrowcure",
-  feature: "rengrowcure",
-  badge: "Hot",
-  description: "Pipeline, follow-ups, and revenue tracking",
-  submenu: [
-    { label: "LeadIntel", href: "/rengrowcure/leadIntel", icon: FiAward },
-    { label: "DistroEngine", href: "/rengrowcure/distroengine", icon: FiGitCommit },
-    { label: "Venture Matrix", href: "/rengrowcure/venture-matrix", icon: FiTrendingUp },
-    { label: "Outreach Sequences", href: "/rengrowcure/outreach-sequences", icon: FiLayers },
-    { label: "Chronos", href: "/rengrowcure/chronos", icon: FiActivity },
-    { label: "Kinetics", href: "/rengrowcure/kinetics", icon: FiCheckSquare },
-    { label: "Reports & Analytics", href: "/rengrowcure/reportscure", icon: FiBarChart2 },
-  ]
-}
-      ]
+          icon: FaRegHandshake,
+          label: "Deal Flow",
+          href: "/dealflow",
+          feature: "dealflow_opportunity",
+          badge: "Matrix",
+          description: "Opportunity pipeline & deal venture matrix",
+        },
+      ],
     },
     {
       groupTitle: "Productivity & Workspace",
       items: [
         {
-  icon: FiCheckCircle,
-  label: "Task Management",
-  href: "/tasks",
-  feature: "tasks",
-  badge: "12",
-  description: "Workstation, projects, intelligent OS tracking & productivity suite",
-  submenu: [
-    // --- CORE WORKFLOWS ---
-    { label: "Task Workstation", href: "/tasks/task-workstation", icon: FiZap },
-    { label: "My Assigned Tasks", href: "/tasks/my-tasks", icon: FiCheckCircle },
-    { label: "Projects Portfolio", href: "/tasks/project-portfolio", icon: FiFolder },
-    { label: "Project Time Tracker", href: "/tasks/time-tracker", icon: FiClock },
-    
-    // --- INTELLIGENT OS & TIME TRACKING ---
-    { label: "Activity & Behavior Tracker", href: "/tasks/os-tracker", icon: FiActivity },
-    { label: "10-Min Summary Logs", href: "/tasks/behavior-logs", icon: FiFileText },
-    
-    // --- RESOURCES & COLLABORATION ---
-    { label: "Task Resources & Vault", href: "/tasks/resources", icon: FiPaperclip },
-    { label: "Sprints & Milestones", href: "/tasks/sprints", icon: FiTarget },
-    
-    // --- TEAM & ANALYTICS ---
-    { label: "Team Workload & Capacity", href: "/tasks/team-workload", icon: FiUsers },
-    { label: "Reports & Productivity Analytics", href: "/tasks/analytics", icon: FiBarChart2 },
-  ],
-},
-        { icon: FiUsers, label: "Roles Management", href: "/roles", feature: "roles", requiresOwner: true },
-        { icon: FiMessageSquare, label: "Chat Workspace", href: "/chat", feature: "chat", badge: "Live" },
+          icon: FiCheckCircle,
+          label: "Task Management",
+          href: "/tasks",
+          feature: "tasks",
+          badge: "12",
+          description:
+            "Workstation, projects, intelligent OS tracking & productivity suite",
+          submenu: [
+            {
+              label: "Task Workstation",
+              href: "/tasks/task-workstation",
+              icon: FiZap,
+            },
+            {
+              label: "My Assigned Tasks",
+              href: "/tasks/my-tasks",
+              icon: FiCheckCircle,
+            },
+            {
+              label: "Projects Portfolio",
+              href: "/tasks/project-portfolio",
+              icon: FiFolder,
+            },
+            {
+              label: "Project Time Tracker",
+              href: "/tasks/time-tracker",
+              icon: FiClock,
+            },
+            {
+              label: "Activity & Behavior Tracker",
+              href: "/tasks/os-tracker",
+              icon: FiActivity,
+            },
+            {
+              label: "10-Min Summary Logs",
+              href: "/tasks/behavior-logs",
+              icon: FiFileText,
+            },
+            {
+              label: "Task Resources & Vault",
+              href: "/tasks/resources",
+              icon: FiPaperclip,
+            },
+            {
+              label: "Sprints & Milestones",
+              href: "/tasks/sprints",
+              icon: FiTarget,
+            },
+            {
+              label: "Team Workload & Capacity",
+              href: "/tasks/team-workload",
+              icon: FiUsers,
+            },
+            {
+              label: "Reports & Productivity Analytics",
+              href: "/tasks/analytics",
+              icon: FiBarChart2,
+            },
+          ],
+        },
+        {
+          icon: FiUsers,
+          label: "Roles Management",
+          href: "/roles",
+          feature: "roles",
+          requiresOwner: true,
+        },
+        {
+          icon: FiMessageSquare,
+          label: "Chat Workspace",
+          href: "/chat",
+          feature: "chat",
+          badge: "Live",
+        },
         { icon: FiSettings, label: "CRM Settings", href: "/crm-settings" },
-      ]
-    }
+      ],
+    },
   ];
 
   // Auto-expand active dropdown
   useEffect(() => {
     navGroups.forEach((g) => {
-      g.items.forEach((item) => {
-        if (item.submenu?.some((sub: any) => pathname === sub.href || pathname.startsWith(`${sub.href}/`))) {
+      (g?.items || []).forEach((item) => {
+        if (
+          item.submenu?.some(
+            (sub) =>
+              pathname === sub.href || pathname.startsWith(`${sub.href}/`),
+          )
+        ) {
           setOpenDropdown(item.label);
         }
       });
     });
   }, [pathname]);
 
-  const sidebarLogoSrc = crmSettings.logoUploadData || crmSettings.logoUrl || (typeof logo === 'string' ? logo : logo.src);
+  const fallbackLogo = typeof logo === "string" ? logo : logo.src;
+  const sidebarLogoSrc = resolveCrmLogo(crmSettings, fallbackLogo);
   const scheduleDate = hasMounted
-    ? new Date().toLocaleDateString('en', { month: 'short', day: 'numeric' })
-    : '—';
+    ? new Date().toLocaleDateString("en", { month: "short", day: "numeric" })
+    : "—";
 
-  // THEME SUIT COMPUTATION
-  const suit = crmSettings.sidebarThemeSuit || "enterprise_slate";
-  const isDarkSuit = suit === "executive_dark";
-  const isGlassSuit = suit === "glass_modern";
+  const sidebarBg = safeHex(crmSettings.sidebarBg, "#FFFFFF");
+  const sidebarText = safeHex(crmSettings.sidebarText, "#1E293B");
+  const sidebarBorder = safeHex(crmSettings.cardBorder, "#E2E8F0");
+  const brandColor = safeHex(crmSettings.primaryColor, "#111827");
+  const brandText = contrastText(brandColor);
+  const darkSurface = isDarkHex(sidebarBg);
+  const showOrgName = Boolean(crmSettings.showCompanyName);
+  const showTagline = Boolean(crmSettings.showTagline);
+  const taglineText = crmSettings.crmPurposeText || crmSettings.crmTagline;
+  const logoAlign = crmSettings.logoAlignment || "left";
 
   // Density spacing classes
-  const densityPadding = crmSettings.sidebarDensity === "compact"
-    ? "py-1.5 px-2.5 text-[11px]"
-    : crmSettings.sidebarDensity === "spacious"
-    ? "py-3 px-3.5 text-xs"
-    : "py-2 px-3 text-xs";
+  const densityPadding =
+    crmSettings.sidebarDensity === "compact"
+      ? "py-1.5 px-2.5 text-[11px]"
+      : crmSettings.sidebarDensity === "spacious"
+        ? "py-3 px-3.5 text-xs"
+        : "py-2 px-3 text-xs";
 
   // Corner Radius
-  const cornerRadiusClass = crmSettings.sidebarCornerRadius === "sharp"
-    ? "rounded-none"
-    : crmSettings.sidebarCornerRadius === "full"
-    ? "rounded-full"
-    : "rounded-xl";
+  const cornerRadiusClass =
+    crmSettings.sidebarCornerRadius === "sharp"
+      ? "rounded-none"
+      : crmSettings.sidebarCornerRadius === "full"
+        ? "rounded-full"
+        : "rounded-xl";
 
   // Active Item Style Calculator
   const getActiveStyle = (isActive: boolean) => {
     if (!isActive) {
-      if (isDarkSuit) {
-        return {
-          classes: "text-slate-400 hover:bg-slate-800/80 hover:text-slate-100",
-          style: undefined
-        };
-      }
-      if (isGlassSuit) {
-        return {
-          classes: "text-slate-700 hover:bg-white/50 hover:text-slate-950 hover:shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:backdrop-blur-md transition-all",
-          style: undefined
-        };
-      }
       return {
-        classes: "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
-        style: undefined
+        classes: "crm-nav-idle font-semibold",
+        style: {
+          color: sidebarText,
+          backgroundColor: "transparent",
+          border: "1px solid transparent",
+        } as React.CSSProperties,
       };
     }
 
     const activeMode = crmSettings.sidebarActiveStyle || "filled";
 
-    if (isDarkSuit) {
-      switch (activeMode) {
-        case "pill":
-          return {
-            classes: "font-bold text-cyan-400 bg-cyan-950/60 border border-cyan-800/80 shadow-sm",
-            style: undefined
-          };
-        case "border_left":
-          return {
-            classes: "font-bold text-white bg-slate-850 border-l-4 border-cyan-400",
-            style: { borderRadius: "0 10px 10px 0" }
-          };
-        case "subtle":
-          return {
-            classes: "font-bold text-cyan-300 bg-slate-800/90",
-            style: undefined
-          };
-        case "filled":
-        default:
-          return {
-            classes: "font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 shadow-md",
-            style: undefined
-          };
-      }
+    if (activeMode === "pill") {
+      return {
+        classes: "font-bold",
+        style: {
+          backgroundColor: hexToRgba(brandColor, 0.12),
+          color: brandColor,
+          border: `1px solid ${hexToRgba(brandColor, 0.4)}`,
+        } as React.CSSProperties,
+      };
     }
 
-    if (isGlassSuit) {
-      switch (activeMode) {
-        case "pill":
-          return {
-            classes: "font-bold text-slate-950 bg-white/75 border border-white/90 shadow-[0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_1px_rgba(255,255,255,0.9)] backdrop-blur-xl",
-            style: undefined
-          };
-        case "border_left":
-          return {
-            classes: "font-bold text-slate-950 bg-white/60 border-l-4 border-slate-900/80 shadow-sm backdrop-blur-xl",
-            style: { borderRadius: "0 10px 10px 0" }
-          };
-        case "subtle":
-          return {
-            classes: "font-bold text-slate-900 bg-white/50 shadow-xs backdrop-blur-md border border-white/60",
-            style: undefined
-          };
-        case "filled":
-        default:
-          return {
-            classes: "font-bold text-slate-950 bg-white/85 border border-white/90 shadow-[0_4px_20px_rgba(0,0,0,0.07),inset_0_1px_2px_rgba(255,255,255,1)] backdrop-blur-2xl",
-            style: undefined
-          };
-      }
+    if (activeMode === "border_left") {
+      return {
+        classes: "font-bold",
+        style: {
+          backgroundColor: hexToRgba(brandColor, 0.08),
+          color: brandColor,
+          borderLeft: `3px solid ${brandColor}`,
+          borderRadius: "0 10px 10px 0",
+        } as React.CSSProperties,
+      };
     }
 
-    switch (activeMode) {
-      case "pill":
-        return {
-          classes: "font-bold shadow-xs",
-          style: {
-            backgroundColor: `${crmSettings.primaryColor}14`,
-            color: crmSettings.primaryColor,
-            border: `1px solid ${crmSettings.primaryColor}35`,
-          }
-        };
-      case "border_left":
-        return {
-          classes: "font-bold text-slate-900 bg-slate-100/90",
-          style: {
-            borderLeft: `4px solid ${crmSettings.primaryColor}`,
-            borderRadius: "0 10px 10px 0"
-          }
-        };
-      case "subtle":
-        return {
-          classes: "font-bold text-slate-900 bg-slate-100",
-          style: undefined
-        };
-      case "filled":
-      default:
-        return {
-          classes: "font-bold text-white shadow-sm",
-          style: {
-            backgroundColor: crmSettings.primaryColor,
-            color: "#ffffff"
-          }
-        };
+    if (activeMode === "subtle") {
+      return {
+        classes: "font-bold",
+        style: {
+          backgroundColor: hexToRgba(brandColor, 0.08),
+          color: brandColor,
+          border: "1px solid transparent",
+        } as React.CSSProperties,
+      };
     }
+
+    return {
+      classes: "font-bold shadow-sm",
+      style: {
+        backgroundColor: brandColor,
+        color: brandText,
+        border: "1px solid transparent",
+      } as React.CSSProperties,
+    };
   };
 
   return (
@@ -349,417 +447,506 @@ export const Sidebar = () => {
 
       <aside
         className={cn(
-          "h-screen border-r transition-all duration-300 ease-in-out flex flex-col select-none",
-          // Desktop positioning
-          "md:sticky md:top-0 md:left-0 md:z-40",
+          "h-screen border-r transition-all duration-300 ease-in-out flex flex-col select-none shrink-0",
+          "hidden md:flex md:sticky md:top-0 md:left-0 md:z-40",
           isCollapsed ? "md:w-[72px]" : "md:w-[255px]",
-          // Mobile Off-canvas Drawer (highest priority layer)
           "fixed inset-y-0 left-0 z-[150] w-[270px] max-w-[85vw]",
-          isMobileOpen ? "translate-x-0 shadow-2xl" : "-translate-x-full md:translate-x-0",
-          isDarkSuit && "bg-[#0b1329] text-slate-100 border-slate-800/80 shadow-2xl",
-          isGlassSuit && "bg-white/35 backdrop-blur-3xl text-slate-800 border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]",
-          (!isDarkSuit && !isGlassSuit) && "bg-white text-slate-900 border-slate-200 shadow-xs"
+          isMobileOpen
+            ? "!flex translate-x-0 shadow-2xl"
+            : "-translate-x-full md:translate-x-0",
         )}
+        style={{
+          backgroundColor: sidebarBg,
+          color: sidebarText,
+          borderColor: sidebarBorder,
+        }}
       >
-      {/* Brand Header */}
-      <div 
-        className={cn(
-          "flex items-center justify-between px-3.5 relative py-3.5 border-b transition-colors",
-          isDarkSuit && "border-slate-800 bg-[#070d1e]",
-          isGlassSuit && "border-white/50 bg-white/30 backdrop-blur-2xl shadow-[inset_0_-1px_0_rgba(255,255,255,0.5)]",
-          (!isDarkSuit && !isGlassSuit) && "border-slate-100 bg-white"
-        )}
-      >
-        {!isCollapsed ? (
-          <Link href="/dashboard" className="flex flex-1 items-center justify-start pl-0.5 cursor-pointer overflow-hidden">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className={cn(
-                "shrink-0 p-1 rounded-xl border shadow-2xs",
-                isDarkSuit 
-                  ? "bg-slate-850 border-slate-700/60" 
-                  : isGlassSuit
-                  ? "bg-white/60 border-white/80 shadow-[0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-xl"
-                  : "bg-white border-slate-100"
-              )}>
-                <img
-                  src={sidebarLogoSrc}
-                  alt="CRM Logo"
-                  style={{
-                    maxHeight: crmSettings.logoHeight ? `${crmSettings.logoHeight}px` : "34px",
-                    maxWidth: crmSettings.logoWidth ? `${crmSettings.logoWidth}px` : "140px"
-                  }}
-                  className="w-auto object-contain transition-all"
-                />
-              </div>
-              <div className="min-w-0 overflow-hidden text-left">
-                <div className="flex items-center gap-1.5">
-                  <span className={cn(
-                    "text-xs font-extrabold tracking-tight truncate",
-                    isDarkSuit ? "text-white" : "text-slate-900"
-                  )}>
-                    {crmSettings.companyName || "Wholcure CRM"}
-                  </span>
-                  {crmSettings.sidebarShowStatusPulse && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" title="System Online & Synchronized" />
-                  )}
+        <style>{`
+          .crm-nav-idle:hover { background-color: ${hexToRgba(sidebarText, darkSurface ? 0.14 : 0.08)} !important; }
+        `}</style>
+        {/* Brand Header */}
+        <div
+          className="flex items-center justify-between px-3.5 relative py-3.5 border-b transition-colors"
+          style={{ borderColor: sidebarBorder, backgroundColor: sidebarBg }}
+        >
+          {!isCollapsed || isMobileOpen ? (
+            <Link
+              href="/dashboard"
+              className={cn(
+                "flex flex-1 items-center pl-0.5 cursor-pointer overflow-hidden",
+                logoAlign === "center" && "justify-center",
+                logoAlign === "right" && "justify-end",
+                logoAlign === "left" && "justify-start",
+              )}
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="shrink-0">
+                  <img
+                    src={sidebarLogoSrc}
+                    alt="CRM Logo"
+                    style={{
+                      maxHeight: crmSettings.logoHeight
+                        ? `${crmSettings.logoHeight}px`
+                        : "34px",
+                      maxWidth: crmSettings.logoWidth
+                        ? `${crmSettings.logoWidth}px`
+                        : "140px",
+                    }}
+                    className="w-auto object-contain transition-all"
+                  />
                 </div>
-                {crmSettings.crmPurposeText && (
-                  <p className={cn(
-                    "text-[9px] font-medium leading-tight truncate",
-                    isDarkSuit ? "text-slate-400" : "text-slate-500"
-                  )}>
-                    {crmSettings.crmPurposeText}
-                  </p>
+                {(showOrgName || showTagline) && (
+                  <div className="min-w-0 overflow-hidden text-left">
+                    {showOrgName && (
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className="text-xs font-extrabold tracking-tight truncate"
+                          style={{ color: sidebarText }}
+                        >
+                          {crmSettings.companyName || "Workspace"}
+                        </span>
+                        {crmSettings.sidebarShowStatusPulse && (
+                          <span
+                            className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0"
+                            title="System Online & Synchronized"
+                          />
+                        )}
+                      </div>
+                    )}
+                    {showTagline && taglineText && (
+                      <p
+                        className="text-[9px] font-medium leading-tight truncate"
+                        style={{ color: sidebarText, opacity: 0.7 }}
+                      >
+                        {taglineText}
+                      </p>
+                    )}
+                  </div>
+                )}
+                {!showOrgName && crmSettings.sidebarShowStatusPulse && (
+                  <span
+                    className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0"
+                    title="System Online & Synchronized"
+                  />
                 )}
               </div>
+            </Link>
+          ) : (
+            <div className="mx-auto shrink-0">
+              <img
+                src={sidebarLogoSrc}
+                alt="Logo"
+                className="h-7 w-7 object-contain rounded-lg"
+              />
             </div>
-          </Link>
-        ) : (
-          <div className="mx-auto shrink-0">
-            <img
-              src={sidebarLogoSrc}
-              alt="Logo"
-              className="h-7 w-7 object-contain rounded-lg"
-            />
-          </div>
-        )}
-        
-        {crmSettings.sidebarCollapsible && (
-          <button 
-            onClick={toggle} 
-            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-            className={cn(
-              "p-1.5 rounded-lg transition-all cursor-pointer border flex items-center justify-center shrink-0",
-              isDarkSuit
-                ? "text-slate-400 hover:text-white bg-slate-900 hover:bg-slate-800 border-slate-800"
-                : isGlassSuit
-                ? "text-slate-600 hover:text-slate-900 bg-white/50 hover:bg-white/80 border-white/60 shadow-2xs"
-                : "text-slate-400 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 border-slate-200",
-              isCollapsed ? "mx-auto w-7 h-7 mt-2" : "ml-2"
-            )}
-          >
-            <FiChevronLeft className={cn("text-xs transition-transform duration-300", isCollapsed && "rotate-180")} />
-          </button>
-        )}
-
-        {/* Mobile Close Drawer Button */}
-        <button
-          type="button"
-          onClick={() => setMobileOpen(false)}
-          className={cn(
-            "p-1.5 rounded-lg md:hidden transition ml-1 cursor-pointer",
-            isDarkSuit
-              ? "text-slate-400 hover:text-white bg-slate-800"
-              : "text-slate-400 hover:text-slate-800 bg-slate-100"
           )}
-          title="Close Navigation"
-          aria-label="Close navigation"
-        >
-          <FiX size={16} />
-        </button>
-      </div>
 
-      {/* Main Navigation with Group Titles */}
-      <nav className="flex-1 px-3 py-3 space-y-3 overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-300/40 [&::-webkit-scrollbar-thumb]:rounded-full">
-        {navGroups.map((group, gIdx) => {
-          const visibleItems = group.items.filter((item) => {
-            if (item.label === "Dashboard" || item.href === "/dashboard") return true;
-            if (!userInfo) return true;
-            if (item.requiresOwner && !isAccountOwnerUser) return false;
-            return canSeeMenuItem(item.href);
-          });
-
-          if (visibleItems.length === 0) return null;
-
-          return (
-            <div key={gIdx} className="space-y-1">
-              {!isCollapsed && crmSettings.sidebarShowGroupTitles && (
-                <div className="px-2 pt-1 pb-1">
-                  <p className={cn(
-                    "text-[9px] font-extrabold uppercase tracking-widest",
-                    isDarkSuit ? "text-slate-400" : isGlassSuit ? "text-slate-500/80" : "text-slate-400"
-                  )}>
-                    {group.groupTitle}
-                  </p>
-                </div>
+          {crmSettings.sidebarCollapsible && (
+            <button
+              onClick={toggle}
+              title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              className={cn(
+                "hidden md:flex p-1.5 rounded-lg transition-all cursor-pointer border items-center justify-center shrink-0",
+                isCollapsed ? "mx-auto w-7 h-7 mt-0" : "ml-2",
               )}
+              style={{
+                color: sidebarText,
+                borderColor: sidebarBorder,
+                backgroundColor: hexToRgba(sidebarText, 0.06),
+              }}
+            >
+              <FiChevronLeft
+                className={cn(
+                  "text-xs transition-transform duration-300",
+                  isCollapsed && "rotate-180",
+                )}
+              />
+            </button>
+          )}
 
-              {visibleItems.map((item, index) => {
-                const hasSubmenu = item.submenu && item.submenu.length > 0;
-                const isDropdownOpen = openDropdown === item.label;
-                const isSubmenuActive = item.submenu?.some((sub: any) => pathname === sub.href || pathname.startsWith(`${sub.href}/`));
-                const isDirectActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(`${item.href}/`));
-                const isActive = isDirectActive || isSubmenuActive;
-                const activeStyleConfig = getActiveStyle(isActive);
+          {/* Mobile Close Drawer Button */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen(false)}
+            className="p-1.5 rounded-lg md:hidden transition ml-1 cursor-pointer shrink-0"
+            style={{
+              color: sidebarText,
+              backgroundColor: hexToRgba(sidebarText, 0.08),
+            }}
+            title="Close Navigation"
+            aria-label="Close navigation"
+          >
+            <FiX size={16} />
+          </button>
+        </div>
 
-                return (
-                  <div 
-                    key={index} 
-                    className="relative group"
-                    onMouseEnter={() => isCollapsed && setHoveredCollapsedItem(item.label)}
-                    onMouseLeave={() => isCollapsed && setHoveredCollapsedItem(null)}
-                  >
-                    {hasSubmenu ? (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setOpenDropdown(isDropdownOpen ? null : item.label);
-                          if (item.href) {
-                            router.push(item.href);
-                          }
-                        }}
-                        className={cn(
-                          "w-full flex items-center justify-between cursor-pointer transition-all duration-150 relative font-semibold tracking-tight",
-                          densityPadding,
-                          cornerRadiusClass,
-                          activeStyleConfig.classes
-                        )}
-                        style={activeStyleConfig.style}
+        {/* Main Navigation with Group Titles */}
+        <nav className="flex-1 px-3 py-3 space-y-3 overflow-y-auto [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-300/40 [&::-webkit-scrollbar-thumb]:rounded-full">
+          {navGroups.map((group, gIdx) => {
+            const items = group?.items || [];
+            const visibleItems = items.filter((item) => {
+              if (item.label === "Dashboard" || item.href === "/dashboard")
+                return true;
+              if (!userInfo) return true;
+              if (item.requiresOwner && !isAccountOwnerUser) return false;
+              return canSeeMenuItem(item.href);
+            });
+
+            if (visibleItems.length === 0) return null;
+
+            return (
+              <div key={gIdx} className="space-y-1">
+                {(!isCollapsed || isMobileOpen) &&
+                  crmSettings.sidebarShowGroupTitles && (
+                    <div className="px-2 pt-1 pb-1">
+                      <p
+                        className="text-[9px] font-extrabold uppercase tracking-widest"
+                        style={{ color: sidebarText, opacity: 0.55 }}
                       >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <item.icon className={cn(
-                            "text-sm min-w-[16px]",
-                            isActive 
-                              ? (isGlassSuit ? "text-slate-900 font-bold" : isDarkSuit ? "text-cyan-400" : "text-white") 
-                              : isDarkSuit 
-                              ? "text-slate-400" 
-                              : "text-slate-500"
-                          )} />
-                          {!isCollapsed && <span className="truncate">{item.label}</span>}
-                        </div>
+                        {group.groupTitle}
+                      </p>
+                    </div>
+                  )}
 
-                        {!isCollapsed && (
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            {crmSettings.sidebarShowBadges && item.badge && (
-                              <span className={cn(
-                                "text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider",
-                                isActive 
-                                  ? (isGlassSuit ? "bg-slate-900/10 text-slate-800" : "bg-white/20 text-white")
-                                  : isDarkSuit 
-                                  ? "bg-slate-800 text-cyan-300 border border-slate-700" 
-                                  : isGlassSuit
-                                  ? "bg-white/60 text-slate-700 border border-white/80 shadow-2xs"
-                                  : "bg-slate-100 text-slate-600 border border-slate-200"
-                              )}>
+                {visibleItems.map((item, index) => {
+                  const hasSubmenu = item.submenu && item.submenu.length > 0;
+                  const isDropdownOpen = openDropdown === item.label;
+                  const isSubmenuActive =
+                    item.submenu?.some(
+                      (sub) =>
+                        pathname === sub.href ||
+                        pathname.startsWith(`${sub.href}/`),
+                    ) ?? false;
+                  const isDirectActive =
+                    pathname === item.href ||
+                    (item.href !== "/dashboard" &&
+                      pathname.startsWith(`${item.href}/`));
+                  const isActive = isDirectActive || isSubmenuActive;
+                  const activeStyleConfig = getActiveStyle(isActive);
+
+                  return (
+                    <div
+                      key={index}
+                      className="relative group"
+                      onMouseEnter={() =>
+                        isCollapsed &&
+                        !isMobileOpen &&
+                        setHoveredCollapsedItem(item.label)
+                      }
+                      onMouseLeave={() =>
+                        isCollapsed &&
+                        !isMobileOpen &&
+                        setHoveredCollapsedItem(null)
+                      }
+                    >
+                      {hasSubmenu ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setOpenDropdown(isDropdownOpen ? null : item.label);
+                            if (item.href) {
+                              router.push(item.href);
+                            }
+                          }}
+                          className={cn(
+                            "w-full flex items-center justify-between cursor-pointer transition-all duration-150 relative font-semibold tracking-tight",
+                            densityPadding,
+                            cornerRadiusClass,
+                            activeStyleConfig.classes,
+                          )}
+                          style={activeStyleConfig.style}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <item.icon className="text-sm min-w-[16px]" />
+                            {(!isCollapsed || isMobileOpen) && (
+                              <span className="truncate">{item.label}</span>
+                            )}
+                          </div>
+
+                          {(!isCollapsed || isMobileOpen) && (
+                            <div className="flex items-center gap-1.5 shrink-0">
+                              {crmSettings.sidebarShowBadges && item.badge && (
+                                <span
+                                  className="text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider border"
+                                  style={
+                                    isActive
+                                      ? {
+                                          backgroundColor:
+                                            "rgba(255,255,255,0.18)",
+                                          color: "inherit",
+                                          borderColor: "transparent",
+                                        }
+                                      : {
+                                          color: sidebarText,
+                                          borderColor: sidebarBorder,
+                                          backgroundColor: hexToRgba(
+                                            sidebarText,
+                                            0.06,
+                                          ),
+                                        }
+                                  }
+                                >
+                                  {item.badge}
+                                </span>
+                              )}
+                              <FiChevronDown
+                                className={cn(
+                                  "text-xs transition-transform duration-200",
+                                  isDropdownOpen && "rotate-180",
+                                  isActive ? "opacity-90" : "opacity-70",
+                                )}
+                              />
+                            </div>
+                          )}
+                        </button>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            "w-full flex items-center justify-between cursor-pointer transition-all duration-150 font-semibold tracking-tight",
+                            densityPadding,
+                            cornerRadiusClass,
+                            activeStyleConfig.classes,
+                          )}
+                          style={activeStyleConfig.style}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <item.icon className="text-sm min-w-[16px]" />
+                            {(!isCollapsed || isMobileOpen) && (
+                              <span className="truncate">{item.label}</span>
+                            )}
+                          </div>
+
+                          {(!isCollapsed || isMobileOpen) &&
+                            crmSettings.sidebarShowBadges &&
+                            item.badge && (
+                              <span
+                                className="text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider shrink-0 border"
+                                style={
+                                  isActive
+                                    ? {
+                                        backgroundColor:
+                                          "rgba(255,255,255,0.18)",
+                                        color: "inherit",
+                                        borderColor: "transparent",
+                                      }
+                                    : {
+                                        color: sidebarText,
+                                        borderColor: sidebarBorder,
+                                        backgroundColor: hexToRgba(
+                                          sidebarText,
+                                          0.06,
+                                        ),
+                                      }
+                                }
+                              >
                                 {item.badge}
                               </span>
                             )}
-                            <FiChevronDown 
-                              className={cn(
-                                "text-xs transition-transform duration-200", 
-                                isDropdownOpen && "rotate-180",
-                                isActive ? (isGlassSuit ? "text-slate-700" : "opacity-80") : "text-slate-400"
-                              )} 
-                            />
+                        </Link>
+                      )}
+
+                      {(!isCollapsed || isMobileOpen) &&
+                        hasSubmenu &&
+                        isDropdownOpen && (
+                          <div
+                            className="mt-1 mb-2 ml-4 border-l pl-2.5 space-y-1 animate-in fade-in duration-200"
+                            style={{ borderColor: sidebarBorder }}
+                          >
+                            {item.submenu?.map((subitem, subindex) => {
+                              const isSubActive =
+                                pathname === subitem.href ||
+                                pathname.startsWith(`${subitem.href}/`);
+                              return (
+                                <Link
+                                  key={subindex}
+                                  href={subitem.href}
+                                  className={cn(
+                                    "block py-1 px-2 text-[11px] font-medium rounded-lg transition-all cursor-pointer",
+                                    !isSubActive && "crm-nav-idle",
+                                    isSubActive && "font-bold",
+                                  )}
+                                  style={
+                                    isSubActive
+                                      ? {
+                                          backgroundColor: hexToRgba(
+                                            brandColor,
+                                            0.12,
+                                          ),
+                                          color: brandColor,
+                                        }
+                                      : { color: sidebarText }
+                                  }
+                                >
+                                  {subitem.label}
+                                </Link>
+                              );
+                            })}
                           </div>
                         )}
-                      </button>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          "w-full flex items-center justify-between cursor-pointer transition-all duration-150 font-semibold tracking-tight",
-                          densityPadding,
-                          cornerRadiusClass,
-                          activeStyleConfig.classes
-                        )}
-                        style={activeStyleConfig.style}
-                      >
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <item.icon className={cn(
-                            "text-sm min-w-[16px]",
-                            isActive 
-                              ? (isGlassSuit ? "text-slate-900 font-bold" : isDarkSuit ? "text-cyan-400" : "text-white") 
-                              : isDarkSuit 
-                              ? "text-slate-400" 
-                              : "text-slate-500"
-                          )} />
-                          {!isCollapsed && <span className="truncate">{item.label}</span>}
-                        </div>
 
-                        {!isCollapsed && crmSettings.sidebarShowBadges && item.badge && (
-                          <span className={cn(
-                            "text-[9px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider shrink-0",
-                            isActive 
-                              ? (isGlassSuit ? "bg-slate-900/10 text-slate-800" : "bg-white/20 text-white")
-                              : isDarkSuit 
-                              ? "bg-slate-800 text-cyan-300 border border-slate-700" 
-                              : isGlassSuit
-                              ? "bg-white/60 text-slate-700 border border-white/80 shadow-2xs"
-                              : "bg-slate-100 text-slate-600 border border-slate-200"
-                          )}>
-                            {item.badge}
-                          </span>
-                        )}
-                      </Link>
-                    )}
-
-                    {!isCollapsed && hasSubmenu && isDropdownOpen && (
-                      <div className={cn(
-                        "mt-1 mb-2 ml-4 border-l pl-2.5 space-y-1 animate-in fade-in duration-200",
-                        isDarkSuit ? "border-slate-800" : isGlassSuit ? "border-white/60" : "border-slate-200"
-                      )}>
-                        {item.submenu?.map((subitem: any, subindex: number) => {
-                          const isSubActive = pathname === subitem.href || pathname.startsWith(`${subitem.href}/`);
-                          return (
-                            <Link 
-                              key={subindex}
-                              href={subitem.href}
-                              className={cn(
-                                "block py-1 px-2 text-[11px] font-medium rounded-lg transition-all cursor-pointer",
-                                isSubActive 
-                                  ? isDarkSuit
-                                    ? "font-bold bg-slate-800 text-cyan-400"
-                                    : isGlassSuit
-                                    ? "font-bold bg-white/70 text-slate-950 shadow-2xs border border-white/80"
-                                    : "font-bold bg-slate-100 text-slate-900" 
-                                  : isDarkSuit
-                                  ? "text-slate-400 hover:text-white hover:bg-slate-850"
-                                  : isGlassSuit
-                                  ? "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-                                  : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
-                              )}
-                            >
-                              {subitem.label}
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {isCollapsed && hoveredCollapsedItem === item.label && (
-                      <div className={cn(
-                        "absolute left-full top-0 ml-2 z-50 border rounded-xl shadow-xl py-2 min-w-56 animate-in fade-in zoom-in-95 duration-150",
-                        isDarkSuit 
-                          ? "bg-[#0f172a] border-slate-700 text-white" 
-                          : isGlassSuit
-                          ? "bg-white/80 backdrop-blur-3xl border-white/80 text-slate-900 shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
-                          : "bg-white border-slate-200 text-slate-900"
-                      )}>
-                        <div className={cn(
-                          "px-3 py-1.5 border-b mb-1",
-                          isGlassSuit ? "border-slate-200/50" : "border-slate-150"
-                        )}>
-                          <p className="text-xs font-bold">{item.label}</p>
-                          {item.description && (
-                            <p className="text-[10px] mt-0.5 leading-tight text-slate-400">
-                              {item.description}
-                            </p>
-                          )}
-                        </div>
-                        {hasSubmenu ? (
-                          item.submenu?.map((subitem: any, subindex: number) => (
-                            <Link
-                              key={subindex}
-                              href={subitem.href}
-                              className={cn(
-                                "block px-3 py-1 text-xs font-medium transition-colors",
-                                pathname === subitem.href
-                                  ? (isGlassSuit ? "font-bold text-slate-950 bg-white/90 shadow-2xs" : "font-bold text-blue-500 bg-blue-50/10")
-                                  : "text-slate-500 hover:text-slate-900 hover:bg-slate-100/50"
-                              )}
-                            >
-                              {subitem.label}
-                            </Link>
-                          ))
-                        ) : (
-                          <Link
-                            href={item.href}
-                            className="block px-3 py-1 text-xs font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-100/50"
+                      {isCollapsed &&
+                        !isMobileOpen &&
+                        hoveredCollapsedItem === item.label && (
+                          <div
+                            className="absolute left-full top-0 ml-2 z-50 border rounded-xl shadow-xl py-2 min-w-56 animate-in fade-in zoom-in-95 duration-150"
+                            style={{
+                              backgroundColor: darkSurface
+                                ? "#0f172a"
+                                : "#ffffff",
+                              borderColor: sidebarBorder,
+                              color: darkSurface ? "#ffffff" : "#0f172a",
+                            }}
                           >
-                            Open Module
-                          </Link>
+                            <div
+                              className="px-3 py-1.5 border-b mb-1"
+                              style={{ borderColor: sidebarBorder }}
+                            >
+                              <p className="text-xs font-bold">{item.label}</p>
+                              {item.description && (
+                                <p className="text-[10px] mt-0.5 leading-tight text-slate-400">
+                                  {item.description}
+                                </p>
+                              )}
+                            </div>
+                            {hasSubmenu ? (
+                              item.submenu?.map((subitem, subindex) => (
+                                <Link
+                                  key={subindex}
+                                  href={subitem.href}
+                                  className="block px-3 py-1 text-xs font-medium transition-colors"
+                                  style={
+                                    pathname === subitem.href
+                                      ? { color: brandColor, fontWeight: 700 }
+                                      : undefined
+                                  }
+                                >
+                                  {subitem.label}
+                                </Link>
+                              ))
+                            ) : (
+                              <Link
+                                href={item.href}
+                                className="block px-3 py-1 text-xs font-medium"
+                              >
+                                Open Module
+                              </Link>
+                            )}
+                          </div>
                         )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </nav>
-
-      {/* Quick Schedule */}
-      {!isCollapsed && crmSettings.sidebarShowQuickStats && (
-        <div className="mx-2.5 mb-2.5">
-          <Link 
-            href="/calendar" 
-            className={cn(
-              "block rounded-xl border p-2.5 transition-all cursor-pointer group shadow-2xs",
-              isDarkSuit 
-                ? "bg-[#070d1e] border-slate-800/90 hover:border-slate-700" 
-                : isGlassSuit
-                ? "bg-white/40 border-white/60 hover:bg-white/60 shadow-[0_2px_12px_rgba(0,0,0,0.03)] backdrop-blur-xl"
-                : "bg-slate-50 border-slate-200 hover:bg-slate-100/80"
-            )} 
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className={cn(
-                  "rounded-lg p-1.5 shadow-2xs border",
-                  isDarkSuit 
-                    ? "bg-slate-850 border-slate-700 text-cyan-400" 
-                    : isGlassSuit
-                    ? "bg-white/70 border-white/80 text-slate-800"
-                    : "bg-white border-slate-200 text-slate-900"
-                )}>
-                  <FiCalendar size={12} />
-                </div>
-                <div>
-                  <p className="text-[9px] font-bold uppercase tracking-widest text-slate-400">Schedule Focus</p>
-                  <p className={cn("text-xs font-bold leading-tight", isDarkSuit ? "text-white" : "text-slate-900")}>
-                    {scheduleDate}
-                  </p>
-                </div>
+                    </div>
+                  );
+                })}
               </div>
-              <FiArrowRight size={11} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
-            </div>
-            <p className={cn("mt-1.5 text-[10px] font-medium leading-snug", isDarkSuit ? "text-slate-400" : "text-slate-600")}>
-              3 calls queued & 1 deal review today.
-            </p>
-          </Link>
-        </div>
-      )}
+            );
+          })}
+        </nav>
 
-      {/* Footer User Info */}
-      {!isCollapsed && userInfo && (
-        <div className={cn(
-          "p-2.5 border-t transition-colors",
-          isDarkSuit && "border-slate-800 bg-[#070d1e]",
-          isGlassSuit && "border-white/50 bg-white/30 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]",
-          (!isDarkSuit && !isGlassSuit) && "border-slate-100 bg-white"
-        )}>
-          <div className={cn(
-            "flex items-center gap-2.5 p-1.5 rounded-xl border transition-all",
-            isDarkSuit 
-              ? "bg-[#0b1329] border-slate-800" 
-              : isGlassSuit
-              ? "bg-white/50 border-white/70 shadow-2xs backdrop-blur-md"
-              : "bg-slate-50 border-slate-200/70"
-          )}>
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-[10px] border border-white/80 overflow-hidden shrink-0 shadow-2xs bg-white text-slate-900">
-              {userInfo?.avatar ? (
-                <img src={getAvatarUrl(userInfo?.avatar, userInfo?.name)} alt="Profile" className="w-full h-full object-cover" />
-              ) : (
-                <span className="uppercase">{userInfo?.name ? userInfo.name[0] : 'U'}</span>
-              )}
+        {/* Quick Schedule */}
+        {(!isCollapsed || isMobileOpen) &&
+          crmSettings.sidebarShowQuickStats && (
+            <div className="mx-2.5 mb-2.5">
+              <Link
+                href="/calendar"
+                className="block rounded-xl border p-2.5 transition-all cursor-pointer group shadow-2xs"
+                style={{
+                  borderColor: sidebarBorder,
+                  backgroundColor: hexToRgba(brandColor, 0.06),
+                  color: sidebarText,
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="rounded-lg p-1.5 shadow-2xs border"
+                      style={{
+                        borderColor: sidebarBorder,
+                        color: brandColor,
+                        backgroundColor: darkSurface
+                          ? "rgba(255,255,255,0.06)"
+                          : "#ffffff",
+                      }}
+                    >
+                      <FiCalendar size={12} />
+                    </div>
+                    <div>
+                      <p
+                        className="text-[9px] font-bold uppercase tracking-widest"
+                        style={{ color: sidebarText, opacity: 0.6 }}
+                      >
+                        Schedule Focus
+                      </p>
+                      <p
+                        className="text-xs font-bold leading-tight"
+                        style={{ color: sidebarText }}
+                      >
+                        {scheduleDate}
+                      </p>
+                    </div>
+                  </div>
+                  <FiArrowRight
+                    size={11}
+                    className="group-hover:translate-x-0.5 transition-transform"
+                    style={{ color: sidebarText, opacity: 0.6 }}
+                  />
+                </div>
+                <p
+                  className="mt-1.5 text-[10px] font-medium leading-snug"
+                  style={{ color: sidebarText, opacity: 0.75 }}
+                >
+                  3 calls queued & 1 deal review today.
+                </p>
+              </Link>
             </div>
-            <div className="overflow-hidden min-w-0 pr-1 flex-1">
-              <p className={cn("text-[11px] font-bold truncate leading-tight", isDarkSuit ? "text-white" : "text-slate-900")}>
-                {userInfo?.name || 'User'}
-              </p>
-              <p className={cn(
-                "text-[9px] font-semibold truncate uppercase tracking-wider mt-0.5",
-                isDarkSuit ? "text-cyan-400" : "text-slate-400"
-              )}>
-                {userInfo?.roleDetails?.role_name || accountTypeLabel || accountType || 'Member'}
-              </p>
+          )}
+
+        {/* Footer User Info */}
+        {(!isCollapsed || isMobileOpen) && userInfo && (
+          <div
+            className="p-2.5 border-t transition-colors"
+            style={{ borderColor: sidebarBorder, backgroundColor: sidebarBg }}
+          >
+            <div
+              className="flex items-center gap-2.5 p-1.5 rounded-xl border transition-all"
+              style={{
+                borderColor: sidebarBorder,
+                backgroundColor: hexToRgba(sidebarText, 0.05),
+              }}
+            >
+              <div className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-[10px] border border-white/80 overflow-hidden shrink-0 shadow-2xs bg-white text-slate-900">
+                {userInfo?.avatar ? (
+                  <img
+                    src={getAvatarUrl(userInfo?.avatar, userInfo?.name)}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="uppercase">
+                    {userInfo?.name ? userInfo.name[0] : "U"}
+                  </span>
+                )}
+              </div>
+              <div className="overflow-hidden min-w-0 pr-1 flex-1">
+                <p
+                  className="text-[11px] font-bold truncate leading-tight"
+                  style={{ color: sidebarText }}
+                >
+                  {userInfo?.name || "User"}
+                </p>
+                <p
+                  className="text-[9px] font-semibold truncate uppercase tracking-wider mt-0.5"
+                  style={{ color: sidebarText, opacity: 0.65 }}
+                >
+                  {userInfo?.roleDetails?.role_name ||
+                    accountTypeLabel ||
+                    accountType ||
+                    "Member"}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </aside>
-  </>
+        )}
+      </aside>
+    </>
   );
 };

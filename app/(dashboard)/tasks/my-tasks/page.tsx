@@ -30,7 +30,7 @@ export default function MyTasksPage() {
   };
 
   return (
-    <div className="p-4 md:p-6 bg-slate-50/30 min-h-screen">
+    <div className="p-3 sm:p-5 lg:p-6 bg-slate-50/40 min-h-screen overflow-x-hidden">
       <MyTasksView
         tasks={tasks}
         onStatusChange={handleStatusChange}

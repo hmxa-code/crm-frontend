@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { DripCampaignsHub } from '@/src/components/marketing/drip-campaigns/DripCampaignsHub';
+import { DripCampaignsHub } from '@/src/components/ui/marketing/drip-campaigns/DripCampaignsHub';
 
 export default function DripCampaignsPage() {
   return (

@@ -5,7 +5,6 @@ import EmojiPicker, { Theme } from 'emoji-picker-react';
 import { FiX, FiMessageSquare, FiSmile, FiSend } from 'react-icons/fi';
 import { getDiceBearAvatar } from '@/src/utils/avatarHelper';
 
-
 interface ChatThreadDrawerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -35,7 +34,7 @@ export default function ChatThreadDrawer({
       {/* Header */}
       <div className="h-14 px-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
         <div className="flex items-center gap-2">
-          <FiMessageSquare size={15} style={{ color: primaryColor }} />
+          <FiMessageSquare size={15} className="text-slate-800" />
           <h3 className="font-bold text-xs text-slate-900">Thread Discussion</h3>
         </div>
         <button
@@ -136,8 +135,8 @@ export default function ChatThreadDrawer({
           <button
             type="submit"
             disabled={!threadInput.trim()}
-            style={{ backgroundColor: primaryColor }}
-            className="p-2 disabled:opacity-40 text-white rounded-xl transition shadow-2xs hover:opacity-90"
+            style={{ backgroundColor: '#0f172a' }}
+            className="p-2 disabled:opacity-40 text-white rounded-xl transition shadow-2xs hover:opacity-90 bg-slate-900"
           >
             <FiSend size={13} />
           </button>

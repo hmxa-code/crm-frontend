@@ -1,4 +1,4 @@
-const normalizeApiUrl = (rawUrl: string | undefined, fallback: string) => {
+export const normalizeApiUrl = (rawUrl: string | undefined, fallback: string) => {
   if (!rawUrl) return fallback;
   const trimmed = rawUrl.trim();
   if (!trimmed) return fallback;
@@ -9,10 +9,19 @@ const normalizeApiUrl = (rawUrl: string | undefined, fallback: string) => {
   return fallback;
 };
 
-const API_BASE_URL = normalizeApiUrl(process.env.NEXT_PUBLIC_API_BASE_URL, 'http://localhost:5000/api');
+export const PRIMARY_API_URL = normalizeApiUrl(
+  process.env.NEXT_PUBLIC_API_BASE_URL,
+  'https://crm-backend-nine-theta.vercel.app/api'
+);
+
+export const FALLBACK_API_URL = 'http://localhost:5000/api';
+
+export const API_BASE_URL = PRIMARY_API_URL || FALLBACK_API_URL;
+
+export const getApiBaseUrl = () => API_BASE_URL;
 
 async function request<T = any>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  const primaryUrl = `${API_BASE_URL}${endpoint}`;
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers as Record<string, string> || {}),
@@ -25,10 +34,29 @@ async function request<T = any>(endpoint: string, options: RequestInit = {}): Pr
     }
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-  });
+  let response: Response;
+  try {
+    response = await fetch(primaryUrl, {
+      ...options,
+      headers,
+    });
+  } catch (networkError: any) {
+    // If primary URL failed due to network error and primary is not localhost:5000, fallback to localhost:5000
+    if (API_BASE_URL !== FALLBACK_API_URL) {
+      try {
+        console.warn(`[API Client] Primary backend (${API_BASE_URL}) unreachable. Retrying with fallback (${FALLBACK_API_URL})...`);
+        const fallbackUrl = `${FALLBACK_API_URL}${endpoint}`;
+        response = await fetch(fallbackUrl, {
+          ...options,
+          headers,
+        });
+      } catch (fallbackError) {
+        throw networkError;
+      }
+    } else {
+      throw networkError;
+    }
+  }
 
   if (!response.ok) {
     let errorMessage = 'API request failed';

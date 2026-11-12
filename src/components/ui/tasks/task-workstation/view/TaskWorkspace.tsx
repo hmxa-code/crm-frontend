@@ -90,7 +90,7 @@ export default function TaskWorkspace() {
   };
 
   return (
-    <div className="space-y-6 p-4 bg-slate-50/50 min-h-[calc(100vh-140px)]">
+    <div className="space-y-4 sm:space-y-6 max-w-7xl mx-auto w-full px-2 sm:px-6 lg:px-8 py-3 sm:py-5 overflow-x-hidden">
       <TaskFiltersBar
         search={search}
         setSearch={setSearch}

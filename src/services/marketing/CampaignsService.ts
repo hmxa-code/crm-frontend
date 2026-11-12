@@ -1,5 +1,8 @@
 import { Campaign, CampaignMetricsSummary } from '@/src/types/marketing/campaign';
 
+// Re-export types so they can be imported from this service file too
+export type { Campaign, CampaignMetricsSummary };
+
 /**
  * Enterprise Level Professional Hardcoded Campaign Repository
  * Strictly decoupled from in-feature automations.
@@ -245,7 +248,7 @@ export const ENTERPRISE_HARDCODED_CAMPAIGNS: Campaign[] = [
     created_by: 'Elena Rostova',
     createdAt: '2026-10-21T11:45:00Z',
     updatedAt: '2026-10-29T12:30:00Z',
-  }
+  },
 ];
 
 export const MOCK_FALLBACK_CAMPAIGNS = ENTERPRISE_HARDCODED_CAMPAIGNS;
@@ -334,7 +337,9 @@ export const CampaignsService = {
    */
   updateCampaignStatus: async (id: string, status: any): Promise<boolean> => {
     const current = getStore();
-    const updated = current.map((c) => (c._id === id ? { ...c, status, updatedAt: new Date().toISOString() } : c));
+    const updated = current.map((c) =>
+      c._id === id ? { ...c, status, updatedAt: new Date().toISOString() } : c,
+    );
     saveStore(updated);
     return true;
   },
@@ -369,5 +374,5 @@ export const CampaignsService = {
 
   seedDynamicCampaigns: async (): Promise<boolean> => {
     return true;
-  }
+  },
 };

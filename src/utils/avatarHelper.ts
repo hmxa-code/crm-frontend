@@ -7,6 +7,16 @@ import loreleiStyleDef from '@dicebear/styles/lorelei.json';
 const loreleiStyle = new Style(loreleiStyleDef as any);
 
 /**
+ * Default API URL used when NEXT_PUBLIC_API_BASE_URL is not set.
+ * - development: local backend
+ * - production: deployed backend on Vercel
+ */
+const DEFAULT_API_URL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:5000/api'
+    : 'https://crm-backend-nine-theta.vercel.app/api';
+
+/**
  * Generates DiceBear anime-style (lorelei) avatar data URI based on name/seed
  */
 export const getDiceBearAvatar = (seed: string = 'User'): string => {
@@ -27,21 +37,21 @@ const getInitialsSvg = (name: string, size: number = 100): string => {
     .map(word => word[0]?.toUpperCase())
     .join('')
     .slice(0, 2) || 'U';
-  
+
   const colors = ['#21a9ff', '#6dc6fe', '#3b82f6', '#1d4ed8', '#60a5fa'];
   const nameHash = Array.from(name || 'User')
     .reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const bgColor = colors[nameHash % colors.length];
-  
+
   const svg = `
     <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
       <rect width="100%" height="100%" fill="${bgColor}"/>
       <text x="50%" y="50%" font-family="Arial, sans-serif" 
-            font-size="${size/2.2}" font-weight="bold" fill="white" 
+            font-size="${size / 2.2}" font-weight="bold" fill="white" 
             text-anchor="middle" dominant-baseline="central">${initials}</text>
     </svg>
   `;
-  
+
   return `data:image/svg+xml;base64,${btoa(svg)}`;
 };
 
@@ -75,13 +85,13 @@ export const getAvatarUrl = (avatarPath: string | null | undefined, userName: st
       return fallback;
     };
 
-    const API_BASE_URL = normalizeApiUrl(process.env.NEXT_PUBLIC_API_BASE_URL, 'http://localhost:5000/api');
+    const API_BASE_URL = normalizeApiUrl(process.env.NEXT_PUBLIC_API_BASE_URL, DEFAULT_API_URL);
     const BASE_URL = API_BASE_URL.replace(/\/api$/, '').replace(/\/$/, '');
     const finalPath = cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`;
 
     return `${BASE_URL}${finalPath}`;
   }
-  
+
   return getInitialsSvg(userName);
 };
 

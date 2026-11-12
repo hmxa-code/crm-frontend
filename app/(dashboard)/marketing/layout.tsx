@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function MarketingLayout({
@@ -15,8 +16,11 @@ export default function MarketingLayout({
   }
 
   return (
-    <div className="mx-auto max-w-7xl">
-      {children}
+    <div className="w-full min-h-screen bg-[#f8fafc] font-sans antialiased">
+      {/* Main Content View Container */}
+      <div className="w-full">
+        {children}
+      </div>
     </div>
   );
 }

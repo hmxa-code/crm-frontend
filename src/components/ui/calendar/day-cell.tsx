@@ -28,16 +28,23 @@ export function DayCell({ day, currentDate, events, onEventClick, onDateClick }:
   });
 
   const handleCellClick = (e: React.MouseEvent) => {
-    // Only open add modal if explicitly clicking empty cell space (not events)
-    onDateClick(day);
+    // If this day already contains scheduled events, clicking anywhere on the day opens event view details
+    if (dayEvents.length > 0) {
+      onEventClick(dayEvents[0]);
+    } else {
+      // Empty day cell click opens the schedule modal for this date
+      onDateClick(day);
+    }
   };
 
   const handleBadgeClick = (e: React.MouseEvent, event: CalendarEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     onEventClick(event);
   };
 
   const handleQuickAddClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     onDateClick(day);
   };
@@ -79,9 +86,9 @@ export function DayCell({ day, currentDate, events, onEventClick, onDateClick }:
         onClick={(e) => e.stopPropagation()} 
         className="flex-1 flex flex-col gap-1 overflow-y-auto max-h-[60px] sm:max-h-[90px] scrollbar-none mt-0.5 cursor-default"
       >
-        {dayEvents.map((event) => (
+        {dayEvents.map((event, index) => (
           <EventBadge
-            key={event.id}
+            key={event.id || `evt-idx-${index}-${Date.now()}`}
             event={event}
             onClick={handleBadgeClick}
           />

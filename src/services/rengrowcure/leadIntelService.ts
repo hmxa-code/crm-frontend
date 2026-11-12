@@ -1,6 +1,8 @@
 import { ScoringProfile, QualificationRule, ScoringTelemetryEvent } from '@/src/types/rengrowcure/leadIntel';
+import { API_BASE_URL as BASE_CLIENT_URL, FALLBACK_API_URL } from '@/src/api/client';
 
-const API_BASE_URL = 'http://localhost:5000/api/rengrowcure/lead-intel';
+const API_BASE = BASE_CLIENT_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'https://crm-backend-nine-theta.vercel.app/api' || 'http://localhost:5000/api';
+const API_BASE_URL = `${API_BASE}/rengrowcure/lead-intel`;
 
 // API Service Functions
 const api = {
@@ -170,7 +172,7 @@ export const leadIntelService = {
   deleteRule: (id: string) => api.deleteRule(id),
   getRulesCount: async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/rengrowcure/lead-intel/rules-count');
+      const response = await fetch(`${API_BASE_URL}/rules-count`);
       if (!response.ok) throw new Error('Failed to fetch rules count');
       return await response.json();
     } catch (error) {
